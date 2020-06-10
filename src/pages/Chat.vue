@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-page
+  q-layout(view="lHh Lpr lFf")
     q-header(elevated)
       q-toolbar
         q-btn(flat round icon="arrow_back" to='/')
@@ -8,16 +8,18 @@
         q-toolbar-title {{server.name}}
         q-btn(flat round icon="videocam")
         q-btn(flat round icon="call")
-    div.q-pa-md.justify-center.row
-      div(ref="chatRef" style="width: 100%; max-width: 800px")
-        q-chat-message(label="Sunday, 19th")
-        message(v-for="message in messages"
-          :key="message.receivedAt || message.sentAt"
-          :message="message"
-          :server="server")
-    q-footer.q-pa-xs.justify-center.row.no-wrap()
-      q-input.col(dense rounded standout autofocus placeholder="Type your message" v-model="message" @keydown.enter.prevent="send")
-      q-btn.q-mx-sm(flat round icon="send" @click="send")
+    q-page-container
+      q-page
+        div.q-pa-md.justify-center.row
+          div(ref="chatRef" style="width: 100%; max-width: 800px")
+            q-chat-message(label="Sunday, 19th")
+            message(v-for="message in messages"
+              :key="message.receivedAt || message.sentAt"
+              :message="message"
+              :server="server")
+        q-footer.q-pa-xs.justify-center.row.no-wrap()
+          q-input.col(dense rounded standout autofocus placeholder="Type your message" v-model="message" @keydown.enter.prevent="send")
+          q-btn.q-mx-sm(flat round icon="send" @click="send")
 </template>
 
 <script lang="ts">

@@ -23,7 +23,6 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     { id, strData }: { id: string; strData: string }
   ) => {
     const data: Data = JSON.parse(strData)
-    console.log(data)
     const server = state.servers.find(s => s.id === id)
     if (!server) return // TODO error
     const dataHandlers = {

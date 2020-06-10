@@ -1,18 +1,23 @@
 <template lang="pug">
-  q-page
-    div.col-12(v-if="starting") Starting...
-    q-input.col-6(v-model="name" label="name" required)
-    q-btn.col-6(v-if="started" @click="changeName" :disabled="!name") Change name
-    q-btn.col-6(v-else @click="start" :disabled="!name") Start
-    q-list.col-12(bordered separator)
-      q-item(v-for="{id, name, status, hostname, secure, port} in servers"
-        :to="'/chat/' + id"
-        :key="id"
-        clickable
-        v-ripple)
-        q-item-section
-          q-item-label {{name}} - {{status}}
-          q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
+  q-layout(view="lHh Lpr lFf")
+    q-header(elevated)
+      q-toolbar
+        q-toolbar-title Patient chat
+    q-page-container
+      q-page
+        div.col-12(v-if="starting") Starting...
+        q-input.col-6(v-model="name" label="name" required)
+        q-btn.col-6(v-if="started" @click="changeName" :disabled="!name") Change name
+        q-btn.col-6(v-else @click="start" :disabled="!name") Start
+        q-list.col-12(bordered separator)
+          q-item(v-for="{id, name, status, hostname, secure, port} in servers"
+            :to="'/chat/' + id"
+            :key="id"
+            clickable
+            v-ripple)
+            q-item-section
+              q-item-label {{name}} - {{status}}
+              q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
 </template>
 
 <script lang="ts">
