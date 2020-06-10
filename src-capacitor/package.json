@@ -1,0 +1,17 @@
+{
+  "name": "patient-chat-direct-webrtc",
+  "version": "0.0.1",
+  "description": "Peer to peer video chat without servers or internet",
+  "author": "Pierre-Louis Mercereau <24897252+plmercereau@users.noreply.github.com>",
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^2.1.2",
+    "@capacitor/cli": "^1.0.0",
+    "@capacitor/core": "^1.0.0",
+    "@ionic-native/web-server": "^5.26.0",
+    "@ionic-native/zeroconf": "^5.26.0",
+    "cordova-plugin-socket-tcp": "^1.6.0",
+    "cordova-plugin-webserver": "git+https://github.com/bykof/cordova-plugin-webserver.git",
+    "cordova-plugin-zeroconf": "^1.4.2"
+  }
+}

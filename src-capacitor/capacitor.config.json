@@ -1,0 +1,7 @@
+{
+  "appId": "plus.platy.chat",
+  "appName": "Patient Chat",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "www"
+}
