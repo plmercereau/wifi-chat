@@ -20,15 +20,6 @@ const mutation: MutationTree<ServersStateInterface> = {
         status: 'disconnected'
       })
   },
-  available: (state, id: string) => {
-    console.log('servers/available')
-    const serverConnection = state.servers.get(id)
-    if (serverConnection)
-      state.servers = state.servers.set(id, {
-        ...serverConnection,
-        status: 'available'
-      })
-  },
   remove(state, server: ServerConnection) {
     console.log('servers/remove')
     state.servers = state.servers.delete(server.id)

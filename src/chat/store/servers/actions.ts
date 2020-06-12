@@ -1,21 +1,6 @@
 import { ActionTree } from 'vuex'
 import { ServersStateInterface } from './state'
-
-type DataName = {
-  type: 'name'
-  value: string
-}
-
-type DataMessage = {
-  type: 'message'
-  value: string
-}
-type DataAvatar = {
-  type: 'avatar'
-  value: string
-}
-
-type Data = DataName | DataMessage | DataAvatar
+import { Data } from 'src/chat/types'
 
 const actions: ActionTree<ServersStateInterface, {}> = {
   onData: (
@@ -33,7 +18,8 @@ const actions: ActionTree<ServersStateInterface, {}> = {
           'messages/receive',
           { id, message: data.value },
           { root: true }
-        )
+        ),
+      status: () => commit('update', { id, status: data.value })
     }
     dataHandlers[data.type]()
   }

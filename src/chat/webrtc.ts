@@ -2,8 +2,17 @@ import Peer from 'simple-peer'
 import axios from 'axios'
 import { Store } from 'vuex'
 
-import { Server, HandlePeerRequest } from './types'
+import {
+  Server,
+  HandlePeerRequest,
+  Status,
+  MessageData,
+  NameData,
+  AvatarData,
+  StatusData
+} from './types'
 import { log } from './switcher'
+import { Data } from '@vue/composition-api/dist/component'
 
 const peers = new Map<string, ExtendedPeer>()
 
@@ -25,27 +34,40 @@ class ExtendedPeer extends Peer {
       log('peer error')
     })
     this.on('connect', () => {
-      this.store.commit('servers/available', id)
       log('peer connect: ' + id)
       this.sendName()
       this.sendAvatar()
+      this.sendStatus('available')
     })
     this.on('data', strData => {
       log('data received')
       store.dispatch('servers/onData', { id, strData })
     })
   }
-  send(m: unknown) {
-    super.send(JSON.stringify(m))
+  sendData(data: Data) {
+    this.send(JSON.stringify(data))
   }
-  message(m: string) {
-    this.send({ type: 'message', value: m })
+  sendMessage(m: string[]) {
+    const data: MessageData = { type: 'message', value: m }
+    this.sendData(data)
   }
   sendName() {
-    this.send({ type: 'name', value: this.store.getters['local/name'] })
+    const data: NameData = {
+      type: 'name',
+      value: this.store.getters['local/name']
+    }
+    this.sendData(data)
   }
   sendAvatar() {
-    this.send({ type: 'avatar', value: this.store.getters['local/avatar'] })
+    const data: AvatarData = {
+      type: 'avatar',
+      value: this.store.getters['local/avatar']
+    }
+    this.sendData(data)
+  }
+  sendStatus(status: Status) {
+    const data: StatusData = { type: 'status', value: status }
+    this.sendData(data)
   }
 }
 

@@ -10,23 +10,29 @@
         q-btn.col-6(v-if="started" @click="changeName" :disabled="!name") Change name
         q-btn.col-6(v-else @click="start" :disabled="!name") Start
         q-list.col-12(bordered separator)
-          q-item(v-for="{id, name, status, hostname, secure, port} in servers"
+          q-item(v-for="{id, name, status, hostname, secure, port, avatar} in servers"
             :to="'/chat/' + id"
             :key="id"
             clickable
             v-ripple)
+            q-item-section(avatar)
+              avatar(:src="avatar" :status="status" :name="name")
             q-item-section
-              q-item-label {{name}} - {{status}}
+              q-item-label {{name}}
               q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
+import AvatarComponent from 'components/Avatar.vue'
 import { useStart, EventBus, useServers } from 'src/chat'
 import { store } from 'src/store'
 
 export default defineComponent({
   name: 'PageIndex',
+  components: {
+    avatar: AvatarComponent
+  },
   setup() {
     const started = ref(false)
     const starting = ref(false)

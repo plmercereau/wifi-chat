@@ -9,14 +9,42 @@ export type Message = {
   sent: boolean
   sentAt?: number
   receivedAt?: number
-  message: string
+  message: string[]
 }
+export type Status =
+  | 'available'
+  | 'busy'
+  | 'disconnected'
+  | 'offline'
+  | 'online'
 
 export type ServerConnection = Server & {
   name?: string
   avatar?: string
-  status: 'available' | 'busy' | 'disconnected' | 'offline'
+  status: Status
 }
+
+export type NameData = {
+  type: 'name'
+  value: string
+}
+
+export type MessageData = {
+  type: 'message'
+  value: string[]
+}
+
+export type AvatarData = {
+  type: 'avatar'
+  value: string
+}
+
+export type StatusData = {
+  type: 'status'
+  value: Status
+}
+
+export type Data = NameData | MessageData | AvatarData | StatusData
 
 export type WatchEvent = (server?: Server) => Promise<void>
 

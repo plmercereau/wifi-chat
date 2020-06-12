@@ -41,7 +41,7 @@ export default defineComponent({
       moment(message.value.receivedAt || message.value.sentAt).from(now.value)
     )
     const name = computed(() => (message.value.sent ? 'me' : server.value.name))
-    const text = computed(() => [message.value.message])
+    const text = computed(() => message.value.message)
     const sent = computed(() => message.value.sent)
     return { stamp, avatar, name, text, sent }
   }
