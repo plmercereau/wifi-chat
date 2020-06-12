@@ -3,12 +3,16 @@
     q-header(elevated)
       q-toolbar
         q-toolbar-title Patient chat
+        q-btn(round unelevated icon="more_vert")
+          q-menu(auto-close)
+            q-list
+              q-item(clickable to="/settings")
+                q-item-section Settings
     q-page-container
       q-page
         div.col-12(v-if="starting") Starting...
         q-input.col-6(v-model="name" label="name" required)
-        q-btn.col-6(v-if="started" @click="changeName" :disabled="!name") Change name
-        q-btn.col-6(v-else @click="start" :disabled="!name") Start
+        q-btn.col-6(v-if="!started" @click="start" :disabled="!name") Start
         q-list.col-12(bordered separator)
           q-item(v-for="{id, name, status, hostname, secure, port, avatar} in servers"
             :to="'/chat/' + id"
@@ -52,14 +56,10 @@ export default defineComponent({
         startServer()
       }
     }
-    const changeName = () => {
-      store.dispatch('local/name', name.value)
-    }
     return {
       starting,
       started,
       start,
-      changeName,
       servers: useServers(store),
       name
     }

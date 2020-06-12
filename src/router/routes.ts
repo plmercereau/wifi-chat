@@ -9,6 +9,10 @@ const routes: RouteConfig[] = [
     path: '/chat/:id',
     component: () => import('pages/Chat.vue'),
     props: true
+  },
+  {
+    path: '/settings',
+    component: () => import('pages/Settings.vue')
   }
 ]
 
