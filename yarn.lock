@@ -1095,6 +1095,18 @@
   resolved "https://registry.yarnpkg.com/@quasar/fastclick/-/fastclick-1.1.4.tgz#21ed3e9a4387dcb43022a08af4ef08a5f1abf159"
   integrity sha512-i9wbyV4iT+v4KhtHJynUFhH5LiEPvAEgSnwMqPN4hf/8uRe82nDl5qP5agrp2el1h0HzyBpbvHaW7NB0BPrtvA==
 
+"@quasar/quasar-app-extension-qoverlay@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-app-extension-qoverlay/-/quasar-app-extension-qoverlay-1.0.3.tgz#94420e9c66118e85ce82fe321e7818ffabddb405"
+  integrity sha512-Vf/E+p7KcivIHWB9A+4lbCXNJAV1WYUYg4lL7bRZF5ySejEjNyaRmQuslnVtXgEK6BY4Gu5DxVX8gNThC/TJ2w==
+  dependencies:
+    "@quasar/quasar-ui-qoverlay" "^1.0.3"
+
+"@quasar/quasar-ui-qoverlay@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-ui-qoverlay/-/quasar-ui-qoverlay-1.0.3.tgz#6fc4bf77c3f60eff770c8df9a8df4a4f95fb27dd"
+  integrity sha512-Hgyw8F0l9QTIBFYaJPN/uvIcu6IlaAiCrYpt2nt60zUz8UAOfg745z/LKpd9uJFTrtMMYq2tj6cRJY1HpCln3A==
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"

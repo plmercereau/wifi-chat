@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@quasar/app": "^1.6.2",
+    "@quasar/quasar-app-extension-qoverlay": "^1.0.3",
     "@types/bonjour": "^3.5.6",
     "@types/node": "^10.17.15",
     "@types/simple-peer": "^9.6.0",
