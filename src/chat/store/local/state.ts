@@ -1,9 +1,11 @@
 import { v4 as uuidv4 } from 'uuid'
+import { Status } from 'src/chat/types'
 
 export interface LocalStateInterface {
   id: string
   name: string
   avatar: string
+  status: Status
 }
 
 const avatars = [
@@ -15,7 +17,8 @@ const randomAvatar = () => avatars[Math.floor(Math.random() * avatars.length)]
 export const initialState = (): LocalStateInterface => ({
   id: uuidv4(), // TODO persist
   name: '',
-  avatar: randomAvatar()
+  avatar: randomAvatar(),
+  status: 'offline'
 })
 
 export default initialState()

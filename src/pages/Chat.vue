@@ -8,8 +8,8 @@
         q-btn(flat round icon="videocam")
         q-btn(flat round icon="call")
     q-page-container
-      q-page
-        div.q-pa-md.justify-center.row
+      q-page.q-pa-md.justify-center
+        div.row
           div(ref="chatRef" style="width: 100%; max-width: 800px")
             template(v-for="[date, dayMessages] in messages")
               q-chat-message(:label="day(date)")

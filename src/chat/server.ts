@@ -51,23 +51,30 @@ const useRemoveServer = (store: Store<{}>) => async (
 export const useStop = (store: Store<{}>) => async () => {
   log('stopping')
   EventBus.$emit('stopping')
+  store.commit('local/stop')
+
   await unwatch()
   await unpublish()
   await stopServer()
   disconnectAll()
-  store.commit('reset')
+  store.commit('reset') // TODO does it really work?
   EventBus.$emit('stopped')
+  store.commit('local/stopped')
 }
 
 export const useStart = (store: Store<{}>) => {
   const handlePeerRequest = useHandlePeerRequest(store)
 
   return async () => {
-    log('starting')
-    EventBus.$emit('starting')
-    await startServer(handlePeerRequest)
-    await publish(store.getters['local/id'])
-    watch(useAddServer(store), useRemoveServer(store))
-    EventBus.$emit('started')
+    if (store.getters['local/name']) {
+      log('starting')
+      EventBus.$emit('starting')
+      store.commit('local/start')
+      await startServer(handlePeerRequest)
+      await publish(store.getters['local/id'])
+      watch(useAddServer(store), useRemoveServer(store))
+      EventBus.$emit('started')
+      store.commit('local/started')
+    }
   }
 }

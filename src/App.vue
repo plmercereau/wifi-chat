@@ -5,7 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import { defineComponent, onMounted } from '@vue/composition-api'
+import { useStart } from './chat'
+import { store } from './store'
 
 export default defineComponent({
   name: 'App',
@@ -24,7 +26,10 @@ export default defineComponent({
     //     }
     //   }
     // )
-
+    const start = useStart(store)
+    onMounted(async () => {
+      await start()
+    })
     return {}
   }
 })

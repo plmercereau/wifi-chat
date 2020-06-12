@@ -3,7 +3,7 @@
     q-header(elevated)
       q-toolbar
         q-btn(flat round icon="arrow_back" to='/')
-        div Settings
+        q-toolbar-title Settings
     q-page-container
       q-page
         div.q-pa-md.justify-center.row

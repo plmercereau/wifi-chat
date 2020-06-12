@@ -3,16 +3,14 @@
     q-header(elevated)
       q-toolbar
         q-toolbar-title Patient chat
+        avatar.absolute-center(:src="avatar" :status="status" :name="name")
         q-btn(round unelevated icon="more_vert")
           q-menu(auto-close)
             q-list
               q-item(clickable to="/settings")
                 q-item-section Settings
     q-page-container
-      q-page
-        div.col-12(v-if="starting") Starting...
-        q-input.col-6(v-model="name" label="name" required)
-        q-btn.col-6(v-if="!started" @click="start" :disabled="!name") Start
+      q-page.q-pa-md
         q-list.col-12(bordered separator)
           q-item(v-for="{id, name, status, hostname, secure, port, avatar} in servers"
             :to="'/chat/' + id"
@@ -23,11 +21,11 @@
               avatar(:src="avatar" :status="status" :name="name")
             q-item-section
               q-item-label {{name}}
-              q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
+              //- q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api'
+import { defineComponent, ref, computed } from '@vue/composition-api'
 import AvatarComponent from 'components/Avatar.vue'
 import { useStart, EventBus, useServers } from 'src/chat'
 import { store } from 'src/store'
@@ -37,10 +35,16 @@ export default defineComponent({
   components: {
     avatar: AvatarComponent
   },
+  beforeRouteEnter: (to, from, next) => {
+    if (store.getters['local/name']) next()
+    else next('/start')
+  },
   setup() {
     const started = ref(false)
     const starting = ref(false)
-    const name = ref(store.getters['local/name'])
+    const name = computed(() => store.getters['local/name'])
+    const avatar = computed(() => store.getters['local/avatar'])
+    const status = computed(() => store.getters['local/status'])
     // TODO forget about this mess: set the server status into the store!
     EventBus.$on('starting', () => {
       starting.value = true
@@ -60,8 +64,10 @@ export default defineComponent({
       starting,
       started,
       start,
-      servers: useServers(store),
-      name
+      name,
+      avatar,
+      status,
+      servers: useServers(store)
     }
   }
 })

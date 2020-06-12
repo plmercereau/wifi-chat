@@ -7,6 +7,18 @@ const mutation: MutationTree<LocalStateInterface> = {
   },
   name: (state, name: string) => {
     state.name = name
+  },
+  start: state => {
+    state.status = 'disconnected'
+  },
+  started: state => {
+    state.status = 'available'
+  },
+  stop: state => {
+    state.status = 'disconnected'
+  },
+  stopped: state => {
+    state.status = 'offline'
   }
 }
 

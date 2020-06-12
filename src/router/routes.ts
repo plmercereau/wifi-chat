@@ -13,6 +13,10 @@ const routes: RouteConfig[] = [
   {
     path: '/settings',
     component: () => import('pages/Settings.vue')
+  },
+  {
+    path: '/start',
+    component: () => import('pages/Start.vue')
   }
 ]
 
