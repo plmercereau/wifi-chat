@@ -26,7 +26,9 @@ const useAddServer = (store: Store<{}>) => async (
     )
       return
     const isOnline = await checkServer(server)
-    store.commit('servers/add', server)
+    if (store.getters['servers/get'](server.id))
+      store.commit('servers/update', server)
+    else store.commit('servers/add', server)
     // const serverConnection:ServerConnection = store.getters['servers/get'](server)
     if (isOnline) {
       log('Server is up')
