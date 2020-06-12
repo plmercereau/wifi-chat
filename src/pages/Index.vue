@@ -25,9 +25,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
 import AvatarComponent from 'components/Avatar.vue'
-import { useStart, EventBus, useServers } from 'src/chat'
+import { useStart, useServers } from 'src/chat'
 import { store } from 'src/store'
 
 export default defineComponent({
@@ -40,19 +40,9 @@ export default defineComponent({
     else next('/start')
   },
   setup() {
-    const started = ref(false)
-    const starting = ref(false)
     const name = computed(() => store.getters['local/name'])
     const avatar = computed(() => store.getters['local/avatar'])
     const status = computed(() => store.getters['local/status'])
-    // TODO forget about this mess: set the server status into the store!
-    EventBus.$on('starting', () => {
-      starting.value = true
-    })
-    EventBus.$on('started', () => {
-      starting.value = false
-      started.value = true
-    })
     const startServer = useStart(store)
     const start = () => {
       if (name.value) {
@@ -61,8 +51,6 @@ export default defineComponent({
       }
     }
     return {
-      starting,
-      started,
       start,
       name,
       avatar,
