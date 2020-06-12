@@ -29,13 +29,14 @@ import { defineComponent, computed } from '@vue/composition-api'
 import AvatarComponent from 'components/Avatar.vue'
 import { useStart, useServers } from 'src/chat'
 import { store } from 'src/store'
+import { Route, NavigationGuardNext } from 'vue-router'
 
 export default defineComponent({
   name: 'PageIndex',
   components: {
     avatar: AvatarComponent
   },
-  beforeRouteEnter: (to, from, next) => {
+  beforeRouteEnter: (to: Route, from: Route, next: NavigationGuardNext) => {
     if (store.getters['local/name']) next()
     else next('/start')
   },
