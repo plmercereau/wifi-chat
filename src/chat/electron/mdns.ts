@@ -31,10 +31,12 @@ let browser: Browser | undefined
 
 export const watch = (onUp: WatchEvent, onDown: WatchEvent) => {
   log('watch')
-  browser = getBonjour().find({ type: SERVICE_TYPE, protocol: 'tcp' })
-  browser.on('up', service => {
-    onUp(bonjourToServer(service))
-  })
+  browser = getBonjour().find(
+    { type: SERVICE_TYPE, protocol: 'tcp' },
+    service => {
+      onUp(bonjourToServer(service))
+    }
+  )
   browser.on('down', service => {
     onDown(bonjourToServer(service))
   })

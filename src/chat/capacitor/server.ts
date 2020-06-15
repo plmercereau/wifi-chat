@@ -1,46 +1,50 @@
-import {
-  WebServer,
-  Response
-} from 'app/src-capacitor/node_modules/@ionic-native/web-server'
-import { SERVICE_PORT, HTTP_HEADERS } from '../config'
+import { WebSocketServer } from 'app/src-capacitor/node_modules/@ionic-native/web-socket-server'
+
+import { SERVICE_PORT } from '../config'
 
 import { log } from './utils'
-import { HandlePeerRequest } from '../types'
-
+import { ExtendedPeer, setPeer, getPeer } from '../webrtc'
+import { store } from '../../store'
 export const stopServer = async () => {
-  log('stop http server')
-  await WebServer.stop()
+  log('stop ws server')
+  await WebSocketServer.stop()
 }
 
-export const startServer = async (handlePeerRequest: HandlePeerRequest) => {
+export const startServer = async () => {
   try {
     await stopServer()
   } finally {
-    log('start http server')
-    const res: Response = {
-      status: 200,
-      headers: HTTP_HEADERS
-    }
-    WebServer.onRequest().subscribe(req => {
-      log('On request')
-      handlePeerRequest(req.body)
-        .then(answer => {
-          res.body = answer
-        })
-        .catch(err => {
-          log('bad request', JSON.stringify(err))
-          res.status = 400
-          res.body = 'Bad Request'
-        })
-        .finally(() => {
-          WebServer.sendResponse(req.requestId, res)
-            .then(() => log('http response ok.'))
-            .catch(err => {
-              log(err)
-            })
-        })
+    log('start ws server')
+    return new Promise<void>((resolve, reject) => {
+      const peerIds: Map<string, string> = new Map()
+      WebSocketServer.start(SERVICE_PORT, {}).subscribe({
+        next: server => {
+          log(`listening to port ${server.addr}:${server.port}...`)
+          resolve()
+        },
+        error: error => {
+          log('Unexpected error', error)
+          reject(error)
+        }
+      })
+      WebSocketServer.watchOpen().subscribe(result => {
+        // TODO
+      })
+      WebSocketServer.watchMessage().subscribe(result => {
+        console.log(`Received message ${result.msg} from ${result.conn.uuid}`)
+        const parsedData = JSON.parse(result.msg)
+
+        if (parsedData.id) {
+          const peer = new ExtendedPeer({ id: parsedData.id, store })
+          // ? update store?
+          peer.id = parsedData.id
+          setPeer(parsedData.id, peer)
+        } else {
+          const peerId = peerIds.get(result.conn.uuid)
+          console.log('trigger signal')
+          if (peerId) getPeer(peerId)?.signal(result.msg)
+        }
+      })
     })
-    await WebServer.start(SERVICE_PORT)
-    log(`listening to port ${SERVICE_PORT}...`)
   }
 }

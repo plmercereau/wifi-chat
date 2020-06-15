@@ -10,10 +10,9 @@ android {
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
 
-    implementation "org.nanohttpd:nanohttpd:+"
     implementation "org.jmdns:jmdns:3.5.5"
 }
-
+apply from: "../../node_modules/cordova-plugin-websocket-server/src/android/websocket-server.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

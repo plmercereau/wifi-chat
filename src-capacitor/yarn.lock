@@ -31,10 +31,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@ionic-native/web-server@^5.26.0":
+"@ionic-native/web-socket-server@^5.26.0":
   version "5.26.0"
-  resolved "https://registry.yarnpkg.com/@ionic-native/web-server/-/web-server-5.26.0.tgz#9c468b3d67fd8cdab7219fc813b8a8232f5a8ac7"
-  integrity sha512-5rooo2WnwhFEAQjSiE/NErmANfRRwkK3vDp2I5cI8wmEnxX896CcdJq9mOvdSYoOsu+zn/bX5N8in0vfZTyoww==
+  resolved "https://registry.yarnpkg.com/@ionic-native/web-socket-server/-/web-socket-server-5.26.0.tgz#a2fd4f54cdc4a9d987cb6dd1274f9b0fd54327de"
+  integrity sha512-itJtPFy/jFSPa0HFdQ/fVGQUIIj5ZLV0SA+DcnKmozKQe1Ns8J6IJgJARhnOVCHwNZViwA5Ui0lzpQRPKJBhBA==
   dependencies:
     "@types/cordova" latest
 
@@ -135,11 +135,10 @@ cordova-plugin-socket-tcp@^1.6.0:
   resolved "https://registry.yarnpkg.com/cordova-plugin-socket-tcp/-/cordova-plugin-socket-tcp-1.6.0.tgz#12e8c089af247dc0531a189ce3feb5c6e50dd9ac"
   integrity sha512-0xVu2VktyVd1I1fk3opw+p4m8mwoXsJGrpRZT2FBzB4rkBkVTph35NE/z+3+VAO/UrZ4i53w66PKvfxRqFZVRg==
 
-"cordova-plugin-webserver@git+https://github.com/bykof/cordova-plugin-webserver.git":
-  version "1.0.1"
-  resolved "git+https://github.com/bykof/cordova-plugin-webserver.git#3cba720a64269e7169b655cc7eb62f5cfaedbb59"
-  dependencies:
-    universal-router "^5.1.0"
+cordova-plugin-websocket-server@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-websocket-server/-/cordova-plugin-websocket-server-1.6.0.tgz#5ea95f6b28ad0608150969725759ce972029c497"
+  integrity sha512-41FUXWGOa+jUcft8PUBuibv1AhUT1wRnIt9TIQVFcjV1oDySGZ1oDmGzjtRi//UNEOvTGUPzkHeZfJKJs0TMpA==
 
 cordova-plugin-zeroconf@^1.4.2:
   version "1.4.2"
@@ -285,11 +284,6 @@ os-tmpdir@~1.0.2:
   resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
   integrity sha1-u+Z0BseaqFxc/sdm/lc0VV36EnQ=
 
-path-to-regexp@^2.1.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-2.4.0.tgz#35ce7f333d5616f1c1e1bfe266c3aba2e5b2e704"
-  integrity sha512-G6zHoVqC6GGTQkZwF4lkuEyMbVOjoBKAEybQUypI1WTkqinCOrq2x6U2+phkJ1XsEMTy4LjtwPI7HW+NVrRR2w==
-
 plist@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/plist/-/plist-3.0.1.tgz#a9b931d17c304e8912ef0ba3bdd6182baf2e1f8c"
@@ -384,13 +378,6 @@ tslib@^1.9.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
-
-universal-router@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/universal-router/-/universal-router-5.1.0.tgz#a0e7500fb3b484790521083c155324776e1b6c73"
-  integrity sha512-Es8QWjX6CAqoWJ8oD3KgGHYfLkqvhzJr01J9tMgD8TN5ixyOHmopZTem7s439fYsDVZ1pFbcnplab9/w4+vbYQ==
-  dependencies:
-    path-to-regexp "^2.1.0"
 
 universalify@^0.1.0:
   version "0.1.2"

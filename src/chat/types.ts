@@ -56,7 +56,7 @@ export interface Module {
     timeout?: number
   ) => Promise<boolean>
   defaultName: () => Promise<string>
-  startServer: (handlePeerRequest: HandlePeerRequest) => Promise<void>
+  startServer: () => Promise<void>
   stopServer: () => Promise<void>
   publish: (name: string) => Promise<void>
   unpublish: () => Promise<void>

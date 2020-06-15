@@ -1,10 +1,8 @@
 import Peer from 'simple-peer'
-import axios from 'axios'
 import { Store } from 'vuex'
 
 import {
   Server,
-  HandlePeerRequest,
   Status,
   MessageData,
   NameData,
@@ -13,25 +11,52 @@ import {
 } from './types'
 import { log } from './switcher'
 import { Data } from '@vue/composition-api/dist/component'
+import WebSocket from 'isomorphic-ws'
 
 const peers = new Map<string, ExtendedPeer>()
 
 type ExtendedPeerOptions = Peer.Options & {
   id: string
+  ws?: WebSocket
   store: Store<{}>
 }
 
-class ExtendedPeer extends Peer {
+export const setPeer = (id: string, peer: ExtendedPeer) => peers.set(id, peer)
+export class ExtendedPeer extends Peer {
   id: string
+  ws: WebSocket | undefined
   store: Store<{}>
   constructor(opts: ExtendedPeerOptions) {
-    const { id, store, ...peerOptions } = opts
-    super({ trickle: false, objectMode: true, ...peerOptions })
+    const { id, ws, store, ...peerOptions } = opts
+    const stream = new MediaStream()
+    super({ trickle: false, objectMode: true, stream, ...peerOptions })
     this.id = id
+    this.ws = ws
     this.store = store
-    this.on('error', () => {
+    setPeer(id, this)
+    if (ws) {
+      ws.addEventListener('error', error => {
+        console.log('ws client error', error)
+      })
+      if (peerOptions.initiator) {
+        ws.addEventListener('open', () => {
+          console.log('ws client: on open')
+          ws.send(JSON.stringify({ id: this.id }))
+        })
+      }
+    }
+    this.on('signal', data => {
+      console.log('ws peer signal', data)
+      this.ws?.send(JSON.stringify(data))
+    })
+
+    this.on('error', error => {
       // TODO commit something
-      log('peer error')
+      log('peer error', error)
+    })
+    this.on('close', () => {
+      // TODO commit something
+      log('peer close')
     })
     this.on('connect', () => {
       log('peer connect: ' + id)
@@ -40,8 +65,15 @@ class ExtendedPeer extends Peer {
       this.sendStatus('available')
     })
     this.on('data', strData => {
-      log('data received')
-      store.dispatch('servers/onData', { id, strData })
+      log('data received', this.id, strData)
+      store.dispatch('servers/onData', { id: this.id, strData })
+    })
+    this.on('stream', (stream: MediaStream) => {
+      console.log('on add stream', stream)
+      store.dispatch('call/ring')
+    })
+    this.on('track', (track: any, stream: MediaStream) => {
+      console.log('on add track')
     })
   }
   sendData(data: Data) {
@@ -77,50 +109,31 @@ export const connect = async (
 ): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
     log('connecting')
-    const peer = new ExtendedPeer({ id, store, initiator: true })
-    peers.set(id, peer) // TODO revoir
-    peer.on('signal', data => {
-      log('(local) signal', data)
-      axios
-        .post(
-          `${secure ? 'https' : 'http'}://${hostname}:${port}`,
-          JSON.stringify({ id: store.getters['local/id'], signal: data })
-        )
-        .then(({ status, data }) => {
-          if (status === 200) {
-            peer.signal(data)
-          } else {
-            reject(status)
-          }
-        })
-        .catch(err => reject(err))
+    const ws = new WebSocket(`${secure ? 'wss' : 'ws'}://${hostname}:${port}`)
+    const peer = new ExtendedPeer({ id, ws, store, initiator: true })
+    ws.addEventListener('message', function incoming({ data }) {
+      console.log('ws client: on open', data)
+      peer.signal(data)
+    })
+    ws.addEventListener('error', error => {
+      console.log('ws client error', error)
+      reject()
     })
     peer.on('connect', () => {
       resolve()
     })
+    peer.on('error', error => {
+      reject(error)
+    })
   })
 }
-
-export const useHandlePeerRequest = (
-  store: Store<{}>
-): HandlePeerRequest => body =>
-  new Promise<string>((resolve, reject) => {
-    const { id, signal } = JSON.parse(body)
-    const peer = new ExtendedPeer({ id, store })
-    peers.set(id, peer) // TODO revoir
-    peer.on('error', () => {
-      reject()
-    })
-    peer.on('signal', data => {
-      resolve(JSON.stringify(data))
-    })
-    peer.signal(JSON.stringify(signal))
-  })
 
 export const disconnectAll = () => {
   for (const [, peer] of peers) peer.destroy()
   peers.clear()
 }
 
-export const getPeer = (server: Server) => peers.get(server.id)
+export const getPeer = (key: Server | string) =>
+  peers.get(typeof key === 'string' ? key : key.id)
+
 export const getAllPeers = () => peers

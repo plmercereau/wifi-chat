@@ -1,56 +1,57 @@
 import http from 'http'
 
-import { SERVICE_PORT, HTTP_HEADERS } from '../config'
+import { SERVICE_PORT } from '../config'
 
 import { log } from './utils'
-import { HandlePeerRequest } from '../types'
+import WebSocket from 'isomorphic-ws'
+import electron from 'electron'
+const WS = electron.remote.require('ws')
 
-let server: http.Server
+let wss: WebSocket.Server | undefined
 
-export const stopServer = () => {
-  log('stop http server')
-  server?.close()
-  return Promise.resolve()
-}
+export const stopServer = () =>
+  new Promise<void>((resolve, reject) => {
+    log('stop ws server')
+    if (wss) {
+      for (const client of wss.clients) {
+        client.close()
+      }
+      wss.close(err => {
+        if (err) reject(err)
+        else resolve()
+      })
+    }
+    resolve()
+  })
 
-export const startServer = async (handlePeerRequest: HandlePeerRequest) => {
+import { ExtendedPeer, setPeer, getPeer } from '../webrtc'
+import { store } from '../../store'
+
+export const startServer = async () => {
   try {
     await stopServer()
   } finally {
-    log('start http server')
-    server = http.createServer(function(req, res) {
-      if (req.method === 'POST') {
-        let body = ''
-        req.on('data', chunk => {
-          body += chunk.toString() // convert Buffer to string
-        })
-        req.on('end', () => {
-          handlePeerRequest(body)
-            .then(answer => {
-              res.writeHead(200, HTTP_HEADERS)
-              res.end(answer)
-            })
-            .catch(err => {
-              log(err)
-              res.writeHead(500, HTTP_HEADERS)
-              res.end('Internal error')
-            })
-        })
-      } else {
-        res.writeHead(400, HTTP_HEADERS)
-        res.end('Bad Request')
-      }
-    })
-    return new Promise<void>((resolve, reject) => {
-      server.listen(SERVICE_PORT, undefined, (err: unknown) => {
-        if (err) {
-          log(err)
-          reject()
+    log('start ws server')
+    const wss = new WS.Server({ port: SERVICE_PORT }) as WebSocket.Server
+    const peerIds: Map<WebSocket, string> = new Map()
+    wss.on('connection', ws => {
+      ws.addEventListener('message', ({ data }) => {
+        console.log('ws message', data)
+        const parsedData = JSON.parse(data)
+        if (parsedData.id) {
+          new ExtendedPeer({ id: parsedData.id, ws, store })
+          // ? update store?
+          peerIds.set(ws, parsedData.id)
         } else {
-          log(`listening to port ${SERVICE_PORT}...`)
-          resolve()
+          console.log('trigger signal')
+          const id = peerIds.get(ws)
+          if (id) getPeer(id)?.signal(data)
         }
       })
     })
+    wss.on('error', error => {
+      console.log('wss error', error)
+    })
+    return Promise.resolve()
   }
 }

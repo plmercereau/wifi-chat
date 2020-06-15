@@ -8,10 +8,10 @@
     "@capacitor/android": "^2.1.2",
     "@capacitor/cli": "^1.0.0",
     "@capacitor/core": "^1.0.0",
-    "@ionic-native/web-server": "^5.26.0",
+    "@ionic-native/web-socket-server": "^5.26.0",
     "@ionic-native/zeroconf": "^5.26.0",
     "cordova-plugin-socket-tcp": "^1.6.0",
-    "cordova-plugin-webserver": "git+https://github.com/bykof/cordova-plugin-webserver.git",
+    "cordova-plugin-websocket-server": "^1.6.0",
     "cordova-plugin-zeroconf": "^1.4.2"
   }
 }

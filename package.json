@@ -17,15 +17,16 @@
     "@ionic/pwa-elements": "^1.5.2",
     "@quasar/extras": "^1.0.0",
     "@vue/composition-api": "^0.5.0",
-    "axios": "^0.19.2",
     "bonjour": "^3.5.0",
     "immutable": "^4.0.0-rc.12",
+    "isomorphic-ws": "^4.0.1",
     "moment": "^2.26.0",
     "quasar": "^1.9.5",
     "simple-peer": "^9.7.2",
     "uuid": "^8.1.0",
     "vue-i18n": "^8.0.0",
-    "vuex-persist": "^2.2.0"
+    "vuex-persist": "^2.2.0",
+    "ws": "^7.3.0"
   },
   "devDependencies": {
     "@quasar/app": "^1.6.2",
@@ -34,6 +35,7 @@
     "@types/node": "^10.17.15",
     "@types/simple-peer": "^9.6.0",
     "@types/uuid": "^8.0.0",
+    "@types/ws": "^7.2.5",
     "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.17.0",
     "babel-eslint": "^10.0.1",

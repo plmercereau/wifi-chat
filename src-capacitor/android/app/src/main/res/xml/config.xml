@@ -6,8 +6,8 @@
     <param name="android-package" value="cz.blocshop.socketsforcordova.SocketPlugin"/>
   </feature>
 
-  <feature name="Webserver">
-    <param name="android-package" value="org.apache.cordova.plugin.Webserver"/>
+  <feature name="WebSocketServer">
+    <param name="android-package" value="net.becvert.cordova.WebSocketServerPlugin"/>
   </feature>
 
   <feature name="ZeroConf">

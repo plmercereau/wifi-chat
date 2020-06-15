@@ -12,13 +12,14 @@ import {
   checkServer
 } from './switcher'
 import { Server } from './types'
-import { disconnectAll, useHandlePeerRequest, connect } from './webrtc'
+import { disconnectAll, connect } from './webrtc'
 
 export const EventBus = new Vue()
 
 const useAddServer = (store: Store<{}>) => async (
   server?: Server
 ): Promise<void> => {
+  console.log('adding server', server)
   if (server) {
     if (
       process.env.NODE_ENV !== 'development' &&
@@ -35,8 +36,8 @@ const useAddServer = (store: Store<{}>) => async (
       store.commit('servers/online', server.id)
       try {
         await connect(server, store)
-      } catch {
-        log('connection failed')
+      } catch (error) {
+        log('connection failed', error)
       }
     }
   }
@@ -65,14 +66,12 @@ export const useStop = (store: Store<{}>) => async () => {
 }
 
 export const useStart = (store: Store<{}>) => {
-  const handlePeerRequest = useHandlePeerRequest(store)
-
   return async () => {
     if (store.getters['local/name']) {
       log('starting')
       EventBus.$emit('starting')
       store.commit('local/start')
-      await startServer(handlePeerRequest)
+      await startServer()
       await publish(store.getters['local/id'])
       watch(useAddServer(store), useRemoveServer(store))
       EventBus.$emit('started')
