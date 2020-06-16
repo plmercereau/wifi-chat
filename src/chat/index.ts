@@ -6,9 +6,9 @@ import VuexPersistence from 'vuex-persist'
 import localModule from './store/local'
 import serversModule from './store/servers'
 import messagesModule from './store/messages'
+import callModule from './store/call'
 import { ServerConnection } from './types'
 import { log, checkServer } from './switcher'
-import { store } from 'quasar/wrappers'
 
 type StoreType = {}
 
@@ -34,6 +34,7 @@ export function ChatPlugin(
   store.registerModule('local', localModule)
   store.registerModule('servers', serversModule)
   store.registerModule('messages', messagesModule)
+  store.registerModule('call', callModule)
 
   // TODO make messages serialisable. See https://github.com/championswimmer/vuex-persist/issues/112
   const vuexLocal = new VuexPersistence<StoreType>({

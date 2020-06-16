@@ -43,8 +43,11 @@ export type StatusData = {
   type: 'status'
   value: Status
 }
-
-export type Data = NameData | MessageData | AvatarData | StatusData
+export type CallData = {
+  type: 'call'
+  value?: string // * not used (yet)
+}
+export type Data = NameData | MessageData | AvatarData | StatusData | CallData
 
 export type WatchEvent = (server?: Server) => Promise<void>
 

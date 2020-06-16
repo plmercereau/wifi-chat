@@ -19,7 +19,10 @@ const actions: ActionTree<ServersStateInterface, {}> = {
           { id, message: data.value },
           { root: true }
         ),
-      status: () => commit('update', { id, status: data.value })
+      status: () => commit('update', { id, status: data.value }),
+      call: () => {
+        dispatch('call/ring', { id }, { root: true })
+      }
     }
     dataHandlers[data.type]()
   }

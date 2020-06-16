@@ -7,11 +7,13 @@ import {
   MessageData,
   NameData,
   AvatarData,
-  StatusData
+  StatusData,
+  CallData
 } from './types'
 import { log } from './switcher'
 import { Data } from '@vue/composition-api/dist/component'
-// import WebSocket from 'isomorphic-ws'
+
+let remoteStream: MediaStream | undefined
 
 const peers = new Map<string, ExtendedPeer>()
 
@@ -38,7 +40,6 @@ export class ExtendedPeer extends Peer {
     this.on('signal', data => {
       log('(peer) signal', data)
       signal(JSON.stringify(data))
-      // this.ws.send()
     })
 
     this.on('error', error => {
@@ -61,7 +62,8 @@ export class ExtendedPeer extends Peer {
     })
     this.on('stream', (stream: MediaStream) => {
       console.log('(peer) add stream', stream)
-      store.dispatch('call/ring')
+      remoteStream = stream
+      store.dispatch('call/ready', { id: this.id })
     })
     this.on('track', (track: any, stream: MediaStream) => {
       console.log('(peer) add track')
@@ -91,6 +93,10 @@ export class ExtendedPeer extends Peer {
   }
   sendStatus(status: Status) {
     const data: StatusData = { type: 'status', value: status }
+    this.sendData(data)
+  }
+  call() {
+    const data: CallData = { type: 'call' }
     this.sendData(data)
   }
 }
@@ -129,7 +135,7 @@ export const connect = async (
     })
 
     ws.addEventListener('message', function incoming({ data }) {
-      log('(ws client) message', data)
+      log('(ws client) message', data.length)
       peer.signal(data)
     })
 
@@ -151,3 +157,12 @@ export const getPeer = (key: Server | string) =>
   peers.get(typeof key === 'string' ? key : key.id)
 
 export const getAllPeers = () => peers
+
+export const getRemoteStream = () => remoteStream
+
+// TODO
+export const removeAllTracks = (stream?: MediaStream) => {
+  stream?.getTracks().forEach(track => {
+    track.stop()
+  })
+}

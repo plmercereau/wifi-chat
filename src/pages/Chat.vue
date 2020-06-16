@@ -5,17 +5,17 @@
         q-btn(flat round icon="arrow_back" to='/')
         avatar(:src="server.avatar" :status="server.status" :name="server.name")
         q-toolbar-title {{server.name}}
-        q-btn(flat round icon="videocam")
-        q-btn(flat round icon="call")
+        q-btn(flat round icon="videocam" @click="videoCall")
+        q-btn(flat round icon="call" @click="audioCall")
     q-page-container
       q-page.q-pa-md.justify-center
         div.row
           div(ref="chatRef" style="width: 100%; max-width: 800px")
             template(v-for="[date, dayMessages] in messages")
               q-chat-message(:label="day(date)")
-              message(v-for="message in dayMessages"
-                :key="message.receivedAt || message.sentAt"
-                :message="message"
+              message(v-for="m in dayMessages"
+                :key="m.receivedAt || m.sentAt"
+                :message="m"
                 :server="server")
         q-footer.q-pa-xs.justify-center.row.no-wrap()
           q-input.col(dense rounded standout autofocus placeholder="Type your message" v-model="message" @keydown.enter.prevent="send")
@@ -62,7 +62,7 @@ export default defineComponent({
       setScrollPosition(target, offset, duration)
     }
     onMounted(() => {
-      scrollDown(1)
+      scrollDown()
     })
     const day = (date: string) => {
       return moment(date).calendar(null, {
@@ -71,7 +71,6 @@ export default defineComponent({
         lastWeek: '[Last] dddd',
         sameElse: 'dddd, Do'
       })
-      // return date
     }
     const send = () => {
       if (!message.value) return
@@ -84,7 +83,31 @@ export default defineComponent({
       scrollDown()
     }
 
-    return { chatRef, server, messages, send, message, day }
+    const call = async (constraints: MediaStreamConstraints) => {
+      await store.dispatch('call/call', { id: props.id, constraints })
+    }
+    const videoCall = async () => {
+      await call({
+        audio: true,
+        video: true
+      })
+    }
+    const audioCall = async () => {
+      await call({
+        audio: true,
+        video: false
+      })
+    }
+    return {
+      chatRef,
+      server,
+      messages,
+      send,
+      message,
+      day,
+      videoCall,
+      audioCall
+    }
   }
 })
 </script>
