@@ -1,5 +1,12 @@
 <template lang="pug">
   q-layout(view="lHh Lpr lFf")
+    q-overlay(v-model="calling" no-scroll :z-index="5000")
+      template(#body)
+        div.fixed-center
+          div.row.justify-evenly.q-pa-md
+            div Calling {{server.name}}...
+          div.row.justify-evenly.q-pa-md
+            q-btn(color="red" icon="call_end" @click="hangup")        
     q-header(elevated)
       q-toolbar
         q-btn(flat round icon="arrow_back" to='/')
@@ -83,22 +90,28 @@ export default defineComponent({
       scrollDown()
     }
 
-    const call = async (constraints: MediaStreamConstraints) => {
-      await store.dispatch('call/call', { id: props.id, constraints })
+    const call = (constraints: MediaStreamConstraints) => {
+      store.dispatch('call/call', { id: props.id, constraints })
     }
-    const videoCall = async () => {
-      await call({
+    const calling = computed(() => store.getters['call/calling'])
+    const hangup = () => {
+      store.dispatch('call/hangup', true)
+    }
+    const videoCall = () => {
+      call({
         audio: true,
         video: true
       })
     }
-    const audioCall = async () => {
-      await call({
+    const audioCall = () => {
+      call({
         audio: true,
         video: false
       })
     }
     return {
+      calling,
+      hangup,
       chatRef,
       server,
       messages,

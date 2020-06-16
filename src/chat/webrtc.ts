@@ -1,15 +1,7 @@
 import Peer from 'simple-peer'
 import { Store } from 'vuex'
 
-import {
-  Server,
-  Status,
-  MessageData,
-  NameData,
-  AvatarData,
-  StatusData,
-  CallData
-} from './types'
+import { Server, Status } from './types'
 import { log } from './switcher'
 import { Data } from '@vue/composition-api/dist/component'
 
@@ -20,14 +12,18 @@ const peers = new Map<string, ExtendedPeer>()
 type ExtendedPeerOptions = Peer.Options & {
   id: string
   signal: (data: string) => void
-  // ws: WebSocket
   store: Store<{}>
+}
+
+export const removeAllTracks = (stream?: MediaStream) => {
+  stream?.getTracks().forEach(track => {
+    track.stop()
+  })
 }
 
 export const setPeer = (id: string, peer: ExtendedPeer) => peers.set(id, peer)
 export class ExtendedPeer extends Peer {
   id: string
-  // ws: WebSocket
   store: Store<{}>
   constructor(opts: ExtendedPeerOptions) {
     const { id, signal, store, ...peerOptions } = opts
@@ -73,31 +69,28 @@ export class ExtendedPeer extends Peer {
     super.send(JSON.stringify(data))
   }
   sendMessage(m: string[]) {
-    const data: MessageData = { type: 'message', value: m }
-    this.sendData(data)
+    this.sendData({ type: 'message', value: m })
   }
   sendName() {
-    const data: NameData = {
+    this.sendData({
       type: 'name',
       value: this.store.getters['local/name']
-    }
-    console.log('send name')
-    this.sendData(data)
+    })
   }
   sendAvatar() {
-    const data: AvatarData = {
+    this.sendData({
       type: 'avatar',
       value: this.store.getters['local/avatar']
-    }
-    this.sendData(data)
+    })
   }
   sendStatus(status: Status) {
-    const data: StatusData = { type: 'status', value: status }
-    this.sendData(data)
+    this.sendData({ type: 'status', value: status })
   }
   call() {
-    const data: CallData = { type: 'call' }
-    this.sendData(data)
+    this.sendData({ type: 'call' })
+  }
+  hangup() {
+    this.sendData({ type: 'call', value: 'hangup' })
   }
 }
 
@@ -159,10 +152,3 @@ export const getPeer = (key: Server | string) =>
 export const getAllPeers = () => peers
 
 export const getRemoteStream = () => remoteStream
-
-// TODO
-export const removeAllTracks = (stream?: MediaStream) => {
-  stream?.getTracks().forEach(track => {
-    track.stop()
-  })
-}

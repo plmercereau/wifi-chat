@@ -12,28 +12,25 @@
 <script lang="ts">
 import { defineComponent, computed, watch } from '@vue/composition-api'
 import { store } from '../store'
-import { getRemoteStream } from '../chat/webrtc'
 export default defineComponent({
   name: 'CallOverlay',
   setup(_, { root: { $router } }) {
     const ringing = computed(() => store.getters['call/ringing'])
-    const caller = computed(() => store.getters['call/remote'])
+    const caller = computed(() =>
+      store.getters['servers/get'](store.getters['call/remote'])
+    )
     const pickup = async () => {
       await store.dispatch('call/pickup')
     }
     watch(
-      () => store.getters['call/calling'],
-      calling => {
-        console.log('calling', calling)
-        if (calling) {
-          $router.push('/call')
-          console.log(getRemoteStream())
-        }
+      () => store.getters['call/ongoing'],
+      ongoing => {
+        if (ongoing) $router.push(`/call/${store.getters['call/remote']}`)
       }
     )
 
     const hangup = () => {
-      store.dispatch('call/hangup')
+      store.dispatch('call/hangup', true)
     }
     return { ringing, caller, pickup, hangup }
   }

@@ -11,8 +11,9 @@ const routes: RouteConfig[] = [
     props: true
   },
   {
-    path: '/call',
-    component: () => import('pages/Call.vue')
+    path: '/call/:id',
+    component: () => import('pages/Call.vue'),
+    props: true
   },
   {
     path: '/settings',

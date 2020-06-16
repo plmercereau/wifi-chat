@@ -3,15 +3,15 @@ import { CallStateInterface } from './state'
 import { getPeer } from 'src/chat/webrtc'
 
 const actions: ActionTree<CallStateInterface, {}> = {
-  ring: ({ commit }, { id }: { id: string; stream: MediaStream }) => {
+  // TODO ring = call with initiator=false
+  ring: ({ commit }, { id }: { id: string }) => {
     console.log('call/ring')
     commit('ring', id)
   },
-  call: ({ commit, rootGetters }, { id }: { id: string }) => {
+  call: ({ commit }, { id }: { id: string }) => {
     console.log('call/call')
     commit('call', id)
-    const server = rootGetters['servers/get'](id)
-    const peer = getPeer(server)
+    const peer = getPeer(id)
     peer?.call()
   },
   ready: ({ commit }, payload: { id: string }) => {
@@ -22,8 +22,12 @@ const actions: ActionTree<CallStateInterface, {}> = {
     console.log('call/pickup')
     commit('pickup')
   },
-  hangup: ({ commit }) => {
+  hangup: ({ commit, getters }, initiator = false) => {
     console.log('call/hangup')
+    if (initiator) {
+      console.log('call/hangup: initiator')
+      if (getters['remote']) getPeer(getters['remote'])?.hangup()
+    }
     commit('hangup')
   }
 }

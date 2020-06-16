@@ -7,6 +7,7 @@ const mutation: MutationTree<CallStateInterface> = {
   },
   call: (state, id) => {
     state.remote = id
+    state.calling = true
   },
   ring: (state, id) => {
     console.log('mutation call/ring', id)
@@ -17,15 +18,19 @@ const mutation: MutationTree<CallStateInterface> = {
     if (id) state.remote = id
     state.stream = true
     state.ringing = false
-    state.calling = true
+    state.ongoing = true
+    state.calling = false
   },
   pickup: state => {
     state.ringing = false
-    state.calling = true
+    state.ongoing = true
+    state.calling = false
   },
   hangup: state => {
-    state.calling = false
+    state.ongoing = false
     state.ringing = false
+    state.calling = false
+    state.stream = false
     state.remote = undefined
   }
 }

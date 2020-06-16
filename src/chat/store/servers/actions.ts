@@ -21,7 +21,9 @@ const actions: ActionTree<ServersStateInterface, {}> = {
         ),
       status: () => commit('update', { id, status: data.value }),
       call: () => {
-        dispatch('call/ring', { id }, { root: true })
+        if (data.value === 'hangup')
+          dispatch('call/hangup', false, { root: true })
+        else dispatch('call/ring', { id }, { root: true })
       }
     }
     dataHandlers[data.type]()

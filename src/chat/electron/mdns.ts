@@ -11,7 +11,7 @@ let bonjour: Bonjour | undefined
 const getBonjour = () => {
   if (!bonjour)
     bonjour = electron.remote.require('bonjour')({
-      loopback: true
+      loopback: process.env.NODE_ENV === 'development'
     })
   return bonjour as Bonjour
 }

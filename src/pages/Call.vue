@@ -19,7 +19,7 @@
 import { defineComponent, ref, watch, computed } from '@vue/composition-api'
 import { store } from 'src/store'
 import AvatarComponent from 'components/Avatar.vue'
-import { getPeer, getRemoteStream } from 'src/chat/webrtc'
+import { getPeer, getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
 import { Route, NavigationGuardNext } from 'vue-router'
 
 export default defineComponent({
@@ -27,32 +27,42 @@ export default defineComponent({
   components: {
     avatar: AvatarComponent
   },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
   beforeRouteEnter: (to: Route, from: Route, next: NavigationGuardNext) => {
-    if (store.getters['local/id'] && store.getters['call/calling']) next()
+    if (store.getters['local/id'] && store.getters['call/ongoing']) next()
     else next('/')
   },
-  setup(_, { root: { $router } }) {
+  setup(props, { root: { $router } }) {
     const localStream = ref<MediaStream>()
     const remoteStream = ref<MediaStream>()
     watch(
       () => store.getters['call/stream'],
-      () => {
-        remoteStream.value = getRemoteStream()
+      (stream: boolean) => {
+        console.log(stream)
+        if (stream) remoteStream.value = getRemoteStream()
+        else if (remoteStream.value) {
+          removeAllTracks(remoteStream.value)
+          removeAllTracks(localStream.value)
+          $router.push(`/chat/${props.id}`)
+        }
       }
     )
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then(local => {
         localStream.value = local
-        const server = store.getters['call/remote']
-        const peer = getPeer(server)
+        const peer = getPeer(props.id)
         peer?.addStream(local)
       })
     const hangup = () => {
-      store.dispatch('call/hangup')
-      $router.go(-1)
+      store.dispatch('call/hangup', true)
     }
-    const server = computed(() => store.getters['call/remote'])
+    const server = computed(() => store.getters['servers/get'](props.id))
     return {
       server,
       hangup,
