@@ -26,6 +26,7 @@ export const startServer = async () => {
           reject(error)
         }
       })
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       WebSocketServer.watchOpen().subscribe(result => {
         // TODO
       })

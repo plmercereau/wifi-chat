@@ -61,7 +61,8 @@ export class ExtendedPeer extends Peer {
       remoteStream = stream
       store.dispatch('call/ready', { id: this.id })
     })
-    this.on('track', (track: any, stream: MediaStream) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    this.on('track', (track: MediaStreamTrack, stream: MediaStream) => {
       console.log('(peer) add track')
     })
   }

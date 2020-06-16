@@ -43,7 +43,6 @@ export default defineComponent({
     watch(
       () => store.getters['call/stream'],
       (stream: boolean) => {
-        console.log(stream)
         if (stream) remoteStream.value = getRemoteStream()
         else if (remoteStream.value) {
           removeAllTracks(remoteStream.value)
