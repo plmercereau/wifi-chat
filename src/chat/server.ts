@@ -21,11 +21,7 @@ const useAddServer = (store: Store<{}>) => async (
 ): Promise<void> => {
   console.log('adding server', server)
   if (server) {
-    if (
-      process.env.NODE_ENV !== 'development' &&
-      server.id === store.getters['local/id']
-    )
-      return
+    if (server.id === store.getters['local/id']) return
     const isOnline = await checkServer(server)
     if (store.getters['servers/get'](server.id))
       store.commit('servers/update', server)
