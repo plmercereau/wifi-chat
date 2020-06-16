@@ -5,14 +5,14 @@ import { ServerConnection } from '../../types'
 
 const actions: ActionTree<MessagesStateInterface, {}> = {
   receive: ({ commit }, { id, message }: { id: string; message: string[] }) => {
-    console.log('messages/receive')
+    console.log('messages/receive', id, message)
     commit('add', { id, sent: false, receivedAt: Date.now(), message })
   },
   send: (
     { commit, rootGetters },
     { id, message }: { id: string; message: string[] }
   ) => {
-    console.log('messages/send')
+    console.log('messages/send', id)
     const server: ServerConnection | undefined = rootGetters['servers/get'](id)
     if (!server) return // TODO error
     const peer = getPeer(server)

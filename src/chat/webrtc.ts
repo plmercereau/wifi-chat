@@ -11,73 +11,64 @@ import {
 } from './types'
 import { log } from './switcher'
 import { Data } from '@vue/composition-api/dist/component'
-import WebSocket from 'isomorphic-ws'
+// import WebSocket from 'isomorphic-ws'
 
 const peers = new Map<string, ExtendedPeer>()
 
 type ExtendedPeerOptions = Peer.Options & {
   id: string
-  ws?: WebSocket
+  signal: (data: string) => void
+  // ws: WebSocket
   store: Store<{}>
 }
 
 export const setPeer = (id: string, peer: ExtendedPeer) => peers.set(id, peer)
 export class ExtendedPeer extends Peer {
   id: string
-  ws: WebSocket | undefined
+  // ws: WebSocket
   store: Store<{}>
   constructor(opts: ExtendedPeerOptions) {
-    const { id, ws, store, ...peerOptions } = opts
-    const stream = new MediaStream()
-    super({ trickle: false, objectMode: true, stream, ...peerOptions })
+    const { id, signal, store, ...peerOptions } = opts
+    log('(peer) creating', id, peerOptions.initiator)
+    super({ trickle: false, objectMode: true, ...peerOptions })
     this.id = id
-    this.ws = ws
     this.store = store
     setPeer(id, this)
-    if (ws) {
-      ws.addEventListener('error', error => {
-        console.log('ws client error', error)
-      })
-      if (peerOptions.initiator) {
-        ws.addEventListener('open', () => {
-          console.log('ws client: on open')
-          ws.send(JSON.stringify({ id: this.id }))
-        })
-      }
-    }
+
     this.on('signal', data => {
-      console.log('ws peer signal', data)
-      this.ws?.send(JSON.stringify(data))
+      log('(peer) signal', data)
+      signal(JSON.stringify(data))
+      // this.ws.send()
     })
 
     this.on('error', error => {
       // TODO commit something
-      log('peer error', error)
+      log('(peer) error', error)
     })
     this.on('close', () => {
       // TODO commit something
-      log('peer close')
+      log('(peer) close')
     })
     this.on('connect', () => {
-      log('peer connect: ' + id)
+      log('(peer) connect: ' + id)
       this.sendName()
       this.sendAvatar()
       this.sendStatus('available')
     })
     this.on('data', strData => {
-      log('data received', this.id, strData)
+      log('(peer) data received', this.id, strData)
       store.dispatch('servers/onData', { id: this.id, strData })
     })
     this.on('stream', (stream: MediaStream) => {
-      console.log('on add stream', stream)
+      console.log('(peer) add stream', stream)
       store.dispatch('call/ring')
     })
     this.on('track', (track: any, stream: MediaStream) => {
-      console.log('on add track')
+      console.log('(peer) add track')
     })
   }
   sendData(data: Data) {
-    this.send(JSON.stringify(data))
+    super.send(JSON.stringify(data))
   }
   sendMessage(m: string[]) {
     const data: MessageData = { type: 'message', value: m }
@@ -88,6 +79,7 @@ export class ExtendedPeer extends Peer {
       type: 'name',
       value: this.store.getters['local/name']
     }
+    console.log('send name')
     this.sendData(data)
   }
   sendAvatar() {
@@ -106,27 +98,49 @@ export class ExtendedPeer extends Peer {
 export const connect = async (
   { id, hostname, port, secure }: Server,
   store: Store<{}>
-): Promise<void> => {
-  return new Promise<void>((resolve, reject) => {
-    log('connecting')
+): Promise<void> =>
+  new Promise<void>((resolve, reject) => {
+    log('(ws client) connecting to ' + id)
+    const localId = store.getters['local/id']
+    if (peers.get(id)) {
+      log('(ws client): no connection: peer already exists', peers.get(id))
+      return
+    }
+    if (localId === id) {
+      log('(ws client): cannot connect to loopback (self)')
+      return
+    }
     const ws = new WebSocket(`${secure ? 'wss' : 'ws'}://${hostname}:${port}`)
-    const peer = new ExtendedPeer({ id, ws, store, initiator: true })
-    ws.addEventListener('message', function incoming({ data }) {
-      console.log('ws client: on open', data)
-      peer.signal(data)
+    ws.addEventListener('open', () => {
+      log('(ws client) connected. Sending local id')
+      ws.send(JSON.stringify({ id: localId }))
     })
+
     ws.addEventListener('error', error => {
-      console.log('ws client error', error)
+      log('(ws client) error', error)
       reject()
     })
+    const peer = new ExtendedPeer({
+      id,
+      store,
+      signal: (message: string) => {
+        ws.send(message)
+      }
+    })
+
+    ws.addEventListener('message', function incoming({ data }) {
+      log('(ws client) message', data)
+      peer.signal(data)
+    })
+
     peer.on('connect', () => {
+      log('(connect) peer connected. resolve')
       resolve()
     })
     peer.on('error', error => {
       reject(error)
     })
   })
-}
 
 export const disconnectAll = () => {
   for (const [, peer] of peers) peer.destroy()

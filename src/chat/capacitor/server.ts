@@ -3,8 +3,7 @@ import { WebSocketServer } from 'app/src-capacitor/node_modules/@ionic-native/we
 import { SERVICE_PORT } from '../config'
 
 import { log } from './utils'
-import { ExtendedPeer, setPeer, getPeer } from '../webrtc'
-import { store } from '../../store'
+import { getPeer } from '../webrtc'
 export const stopServer = async () => {
   log('stop ws server')
   await WebSocketServer.stop()
@@ -35,10 +34,8 @@ export const startServer = async () => {
         const parsedData = JSON.parse(result.msg)
 
         if (parsedData.id) {
-          const peer = new ExtendedPeer({ id: parsedData.id, store })
-          // ? update store?
-          peer.id = parsedData.id
-          setPeer(parsedData.id, peer)
+          // const peer = new ExtendedPeer({ id: parsedData.id, store, ws: (0 as unknown) as WebSocket })
+          // TODO peer.on('signal', () => ...)
         } else {
           const peerId = peerIds.get(result.conn.uuid)
           console.log('trigger signal')

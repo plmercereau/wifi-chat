@@ -191,9 +191,12 @@ module.exports = configure(function(ctx) {
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack(/* cfg */) {
+      extendWebpack(cfg) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
+        cfg.resolve = {
+          mainFields: ['main', 'browser']
+        }
       }
     }
   }

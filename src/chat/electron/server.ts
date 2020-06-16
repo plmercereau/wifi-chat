@@ -1,11 +1,13 @@
-import http from 'http'
+import WebSocket from 'ws'
+// import electron from 'electron'
+const WS = window.require('ws')
 
+import { store } from '../../store'
+
+import { ExtendedPeer, getPeer } from '../webrtc'
 import { SERVICE_PORT } from '../config'
 
 import { log } from './utils'
-import WebSocket from 'isomorphic-ws'
-import electron from 'electron'
-const WS = electron.remote.require('ws')
 
 let wss: WebSocket.Server | undefined
 
@@ -20,37 +22,52 @@ export const stopServer = () =>
         if (err) reject(err)
         else resolve()
       })
-    }
-    resolve()
+    } else resolve()
   })
-
-import { ExtendedPeer, setPeer, getPeer } from '../webrtc'
-import { store } from '../../store'
 
 export const startServer = async () => {
   try {
     await stopServer()
   } finally {
-    log('start ws server')
+    log('(ws server) start')
     const wss = new WS.Server({ port: SERVICE_PORT }) as WebSocket.Server
     const peerIds: Map<WebSocket, string> = new Map()
     wss.on('connection', ws => {
-      ws.addEventListener('message', ({ data }) => {
-        console.log('ws message', data)
-        const parsedData = JSON.parse(data)
+      log('(ws server) connection')
+
+      ws.on('message', data => {
+        const parsedData = JSON.parse(data.toString())
+        log('(ws server) reveiced message. parsed data:', parsedData)
         if (parsedData.id) {
-          new ExtendedPeer({ id: parsedData.id, ws, store })
-          // ? update store?
-          peerIds.set(ws, parsedData.id)
+          log('(ws server) received ID', parsedData.id)
+          if (store.getters['local/id'] === parsedData.id) {
+            log('(ws server) loopback peer. Do nothing')
+          } else {
+            new ExtendedPeer({
+              id: parsedData.id,
+              store,
+              initiator: true,
+              signal: (message: string) => {
+                ws.send(message)
+              }
+            })
+            peerIds.set(ws, parsedData.id)
+          }
         } else {
-          console.log('trigger signal')
+          log('(ws server) trigger signal of peer id ', peerIds.get(ws))
           const id = peerIds.get(ws)
-          if (id) getPeer(id)?.signal(data)
+          if (id) {
+            const serverPeer = getPeer(id)
+            if (serverPeer) serverPeer.signal(data.toString())
+            else log('(ws server) peer not found')
+          } else {
+            log('(ws server) peer idnot found.', peerIds)
+          }
         }
       })
     })
     wss.on('error', error => {
-      console.log('wss error', error)
+      log('wss error', error)
     })
     return Promise.resolve()
   }
