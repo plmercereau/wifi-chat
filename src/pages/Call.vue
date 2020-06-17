@@ -16,11 +16,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from '@vue/composition-api'
+import { defineComponent, ref, watch } from '@vue/composition-api'
 import { store } from 'src/store'
 import AvatarComponent from 'components/Avatar.vue'
 import { getPeer, getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
 import { Route, NavigationGuardNext } from 'vue-router'
+import { useServer, useCall } from 'src/compositions'
 
 export default defineComponent({
   name: 'PageCall',
@@ -58,10 +59,8 @@ export default defineComponent({
         const peer = getPeer(props.id)
         peer?.addStream(local)
       })
-    const hangup = () => {
-      store.dispatch('call/hangup', true)
-    }
-    const server = computed(() => store.getters['servers/get'](props.id))
+    const server = useServer(props)
+    const { hangup } = useCall(server)
     return {
       server,
       hangup,

@@ -32,15 +32,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from '@vue/composition-api'
+import { defineComponent, ref } from '@vue/composition-api'
 import { store } from 'src/store'
+import { useLocal } from 'src/compositions'
 
 export default defineComponent({
   name: 'PageChat',
   setup() {
     // TODO create an inline input component that wraps the 'set name' logic
-    const name = computed<string>(() => store.getters['local/name'])
-    const avatar = computed<string>(() => store.getters['local/avatar'])
+    const { name, avatar } = useLocal()
     const inputName = ref('')
     const editingName = ref(false)
     const editName = () => {
@@ -48,7 +48,6 @@ export default defineComponent({
       inputName.value = name.value
     }
     const changeName = () => {
-      console.log('change name', inputName.value)
       store.dispatch('local/name', inputName.value)
       editingName.value = false
     }

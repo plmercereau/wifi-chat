@@ -6,7 +6,13 @@ import { ServerConnection } from '../../types'
 const actions: ActionTree<MessagesStateInterface, {}> = {
   receive: ({ commit }, { id, message }: { id: string; message: string[] }) => {
     console.log('messages/receive', id, message)
-    commit('add', { id, sent: false, receivedAt: Date.now(), message })
+    commit('add', {
+      id,
+      sent: false,
+      receivedAt: Date.now(),
+      message,
+      type: 'message'
+    })
   },
   send: (
     { commit, rootGetters },
@@ -17,7 +23,13 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
     if (!server) return // TODO error
     const peer = getPeer(server)
     peer?.sendMessage(message)
-    commit('add', { id, sent: true, sentAt: Date.now(), message })
+    commit('add', {
+      id,
+      sent: true,
+      sentAt: Date.now(),
+      message,
+      type: 'message'
+    })
   }
 }
 

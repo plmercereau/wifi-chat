@@ -10,6 +10,13 @@ export type Message = {
   sentAt?: number
   receivedAt?: number
   message: string[]
+  type: 'message' | 'call'
+}
+export type OutputMessage = {
+  timestamp: number
+  type: 'message' | 'date' | 'call'
+  data?: string | string[]
+  sent?: boolean
 }
 export type Status =
   | 'available'

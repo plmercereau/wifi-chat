@@ -1,12 +1,11 @@
 import { Message } from '../../types'
-import { OrderedMap } from 'immutable'
 
 export interface MessagesStateInterface {
-  messages: OrderedMap<string, OrderedMap<string, Message[]>>
+  messages: { [id: string]: Message[] }
 }
 
 export const initialState = (): MessagesStateInterface => ({
-  messages: OrderedMap<string, OrderedMap<string, Message[]>>()
+  messages: {}
 })
 
 export default initialState()

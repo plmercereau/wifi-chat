@@ -3,7 +3,7 @@
     q-header(elevated)
       q-toolbar
         q-toolbar-title Patient chat
-        avatar.absolute-center(:src="avatar" :status="status" :name="name")
+        p-avatar.absolute-center(:src="avatar" :status="status" :name="name")
         q-btn(round unelevated icon="more_vert")
           q-menu(auto-close)
             q-list
@@ -18,32 +18,31 @@
             clickable
             v-ripple)
             q-item-section(avatar)
-              avatar(:src="avatar" :status="status" :name="name")
+              p-avatar(:src="avatar" :status="status" :name="name")
             q-item-section
               q-item-label {{name}}
               //- q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
+import { Route, NavigationGuardNext } from 'vue-router'
 import AvatarComponent from 'components/Avatar.vue'
 import { useStart, useServers } from 'src/chat'
 import { store } from 'src/store'
-import { Route, NavigationGuardNext } from 'vue-router'
+import { useLocal } from 'src/compositions'
 
 export default defineComponent({
   name: 'PageIndex',
   components: {
-    avatar: AvatarComponent
+    PAvatar: AvatarComponent
   },
   beforeRouteEnter: (to: Route, from: Route, next: NavigationGuardNext) => {
     if (store.getters['local/name']) next()
     else next('/start')
   },
   setup() {
-    const name = computed(() => store.getters['local/name'])
-    const avatar = computed(() => store.getters['local/avatar'])
-    const status = computed(() => store.getters['local/status'])
+    const { name, avatar, status } = useLocal()
     const startServer = useStart(store)
     const start = () => {
       if (name.value) {
