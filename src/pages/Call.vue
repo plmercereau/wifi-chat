@@ -46,7 +46,7 @@ export default defineComponent({
     const showMenu = () => {
       clicked.value = true
       if (timeout) clearTimeout(timeout)
-      timeout = setTimeout(() => (clicked.value = false), 2000)
+      timeout = setTimeout(() => (clicked.value = false), 1500)
     }
     const visibleMenu = computed(() => hover.value || clicked.value)
     const localStream = ref<MediaStream>()
