@@ -9,7 +9,7 @@
         div.q-pa-md.justify-center.row
           q-avatar(size="128px" font-size="52px" color="primary")
             img(v-if="avatar" :src="avatar")
-            q-btn.absolute-bottom-right(round icon="camera_alt" color="primary" size="sm")
+            q-btn.native-mobile-only.absolute-bottom-right(round icon="camera_alt" color="primary" size="sm")
           q-list.col-12
             q-item
               q-item-section(avatar)

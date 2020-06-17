@@ -1,22 +1,23 @@
 <template lang="pug">
   q-layout(view="lHh Lpr lFf")
-    q-header(elevated)
-      q-toolbar(v-if="server")
-        q-btn(flat round icon="arrow_back" to='/')
-        avatar(:src="server.avatar" :status="server.status" :name="server.name")
-        q-toolbar-title {{server.name}}
-    q-page-container
-      q-page.q-pa-md.justify-center
-        div(v-if="remoteStream")
-        video(:srcObject.prop="remoteStream" autoplay)
-        div(v-if="localStream") local
-        video.local(:srcObject.prop="localStream" autoplay mute)
-        q-footer.q-pa-xs.justify-center.row.no-wrap
-          q-btn(color="red" icon="call_end" @click="hangup")  
+    //- q-header(elevated)
+    //-   q-toolbar(v-if="server")
+    //-     avatar(:src="server.avatar" :status="server.status" :name="server.name")
+    //-     q-toolbar-title {{server.name}}
+    q-page-container(@mousemove="showMenu" @click="showMenu")
+      q-page.fullscreen
+        video.fit.q-pa-xs(:srcObject.prop="remoteStream" autoplay playsinline)
+        video.local.absolute-bottom-right.q-pa-md(:srcObject.prop="localStream" autoplay mute)
+        div.q-pa-lg.justify-center.row.no-wrap.absolute-bottom(@mouseover="hover = true" @mouseleave="hover = false")
+          transition(appear
+            enter-active-class="animated fadeIn"
+            leave-active-class="animated fadeOut")
+            div(v-if="visibleMenu")
+              q-btn(color="red" icon="call_end" @click="hangup")  
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from '@vue/composition-api'
+import { defineComponent, ref, watch, computed } from '@vue/composition-api'
 import { store } from 'src/store'
 import AvatarComponent from 'components/Avatar.vue'
 import { getPeer, getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
@@ -39,6 +40,15 @@ export default defineComponent({
     else next('/')
   },
   setup(props, { root: { $router } }) {
+    const hover = ref(false)
+    const clicked = ref(false)
+    let timeout: NodeJS.Timeout
+    const showMenu = () => {
+      clicked.value = true
+      if (timeout) clearTimeout(timeout)
+      timeout = setTimeout(() => (clicked.value = false), 2000)
+    }
+    const visibleMenu = computed(() => hover.value || clicked.value)
     const localStream = ref<MediaStream>()
     const remoteStream = ref<MediaStream>()
     watch(
@@ -62,6 +72,9 @@ export default defineComponent({
     const server = useServer(props)
     const { hangup } = useCall(server)
     return {
+      hover,
+      showMenu,
+      visibleMenu,
       server,
       hangup,
       localStream,
@@ -74,5 +87,6 @@ export default defineComponent({
 video.local {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
+  width: 30%;
 }
 </style>
