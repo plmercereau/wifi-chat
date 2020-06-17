@@ -65,7 +65,6 @@ export default defineComponent({
           resultType: CameraResultType.DataUrl,
           height: 128
         })
-        console.log(dataUrl?.length)
         store.dispatch('local/avatar', dataUrl)
       } catch (error) {
         console.log(error)
