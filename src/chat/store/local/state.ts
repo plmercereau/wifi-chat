@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
 import { Status } from 'src/chat/types'
 import { uid } from 'quasar'
 export interface LocalStateInterface {
