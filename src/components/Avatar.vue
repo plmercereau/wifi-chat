@@ -1,6 +1,6 @@
 <template lang="pug">
   q-avatar(color="primary")
-    img(v-if="src" :src="src")
+    q-img(v-if="src" :src="src" :ratio="1")
     div(v-else-if="name") {{initials}}
     q-badge.absolute-bottom-right(v-if="color" color="white" style="border-radius: 10px; width: 14px; height: 14px")
       q-badge.absolute-center(:color="color" style="border-radius: 7px; width: 10px; height: 12px")

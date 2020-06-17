@@ -8,8 +8,8 @@
       q-page
         div.q-pa-md.justify-center.row
           q-avatar(size="128px" font-size="52px" color="primary")
-            img(v-if="avatar" :src="avatar")
-            q-btn.native-mobile-only.absolute-bottom-right(round icon="camera_alt" color="primary" size="sm")
+            q-img(v-if="avatar" :src="avatar" :ratio="1")
+            q-btn.absolute-bottom-right(round icon="camera_alt" color="primary" size="sm" @click="changeAvatar")
           q-list.col-12
             q-item
               q-item-section(avatar)
@@ -35,6 +35,8 @@
 import { defineComponent, ref } from '@vue/composition-api'
 import { store } from 'src/store'
 import { useLocal } from 'src/compositions'
+import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core'
+const { Camera } = Plugins
 
 export default defineComponent({
   name: 'PageChat',
@@ -52,7 +54,32 @@ export default defineComponent({
       editingName.value = false
     }
 
-    return { name, avatar, editName, editingName, changeName, inputName }
+    const changeAvatar = async () => {
+      try {
+        const { dataUrl } = await Camera.getPhoto({
+          // * See https://capacitor.ionicframework.com/docs/apis/camera/
+          quality: 90,
+          allowEditing: true,
+          direction: CameraDirection.Front,
+          // promptLabelHeader: 'Change your avatar',
+          resultType: CameraResultType.DataUrl,
+          height: 128
+        })
+        console.log(dataUrl?.length)
+        store.dispatch('local/avatar', dataUrl)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    return {
+      name,
+      avatar,
+      editName,
+      editingName,
+      changeName,
+      inputName,
+      changeAvatar
+    }
   }
 })
 </script>

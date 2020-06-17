@@ -19,6 +19,9 @@ const mutation: MutationTree<LocalStateInterface> = {
   },
   stopped: state => {
     state.status = 'offline'
+  },
+  avatar: (state, avatar: string) => {
+    state.avatar = avatar
   }
 }
 
