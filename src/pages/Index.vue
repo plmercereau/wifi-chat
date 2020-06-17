@@ -3,7 +3,8 @@
     q-header(elevated)
       q-toolbar
         q-toolbar-title Patient chat
-        p-avatar.absolute-center(:src="avatar" :status="status" :name="name")
+        p-avatar(:src="avatar" :status="status" :name="name")
+        q-toolbar-title {{name}}
         q-btn(round unelevated icon="more_vert")
           q-menu(auto-close)
             q-list
