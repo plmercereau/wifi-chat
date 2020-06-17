@@ -1,6 +1,6 @@
 <template lang="pug">
   q-layout.fit(view="lHh Lpr lFf" @mousemove="showMenu" @click="showMenu")
-    q-header.transparent
+    q-header.transparent(@mouseover="hover = true" @mouseleave="hover = false")
       transition(appear
         enter-active-class="animated fadeIn"
         leave-active-class="animated fadeOut")
