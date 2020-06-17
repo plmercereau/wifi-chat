@@ -1,13 +1,22 @@
 <template lang="pug">
-  q-layout(view="lHh Lpr lFf")
-    //- q-header(elevated)
-    //-   q-toolbar(v-if="server")
-    //-     avatar(:src="server.avatar" :status="server.status" :name="server.name")
-    //-     q-toolbar-title {{server.name}}
-    q-page-container(@mousemove="showMenu" @click="showMenu")
-      q-page.fullscreen
-        video.fit.q-pa-xs(:srcObject.prop="remoteStream" autoplay playsinline)
-        video.local.absolute-bottom-right.q-pa-md(:srcObject.prop="localStream" autoplay mute)
+  q-layout.fit(view="lHh Lpr lFf" @mousemove="showMenu" @click="showMenu")
+    q-header.transparent
+      transition(appear
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut")
+        q-toolbar.bg-primary.z-top.absolute(v-if="visibleMenu && server")
+          avatar(:src="server.avatar" :status="server.status" :name="server.name")
+          q-toolbar-title {{server.name}}
+    q-page-container
+      q-page
+        transition(appear
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut")
+          video.fit.q-pa-xs(v-if="remoteStream" :srcObject.prop="remoteStream" autoplay playsinline)
+        transition(appear
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut")
+          video.local.absolute-bottom-right.q-pa-md(v-if="localStream" :srcObject.prop="localStream" autoplay mute)
         div.q-pa-lg.justify-center.row.no-wrap.absolute-bottom(@mouseover="hover = true" @mouseleave="hover = false")
           transition(appear
             enter-active-class="animated fadeIn"
