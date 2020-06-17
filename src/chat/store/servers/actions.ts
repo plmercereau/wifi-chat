@@ -9,7 +9,10 @@ const actions: ActionTree<ServersStateInterface, {}> = {
   ) => {
     const data: Data = JSON.parse(strData)
     const server = state.servers.find(s => s.id === id)
-    if (!server) return // TODO error
+    if (!server) {
+      console.log('servers/onData: no server found')
+      return
+    }
     const dataHandlers = {
       name: () => commit('update', { id, name: data.value }),
       avatar: () => commit('update', { id, avatar: data.value }),

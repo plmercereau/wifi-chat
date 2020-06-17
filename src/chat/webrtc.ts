@@ -39,11 +39,11 @@ export class ExtendedPeer extends Peer {
     })
 
     this.on('error', error => {
-      // TODO commit something
+      // TODO reconnect?
       log('(peer) error', error)
     })
     this.on('close', () => {
-      // TODO commit something
+      // TODO reconnect?
       log('(peer) close')
     })
     this.on('connect', () => {

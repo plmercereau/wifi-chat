@@ -56,7 +56,6 @@ export const watch = (onUp: WatchEvent, onDown: WatchEvent) => {
     if (result.action === 'added') {
       onUp(zeroconfToServer(result.service))
     } else if (result.action === 'resolved') {
-      // TODO check if it works
       log('resolved service', result.service)
       onUp(zeroconfToServer(result.service))
     } else {

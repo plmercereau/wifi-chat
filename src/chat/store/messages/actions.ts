@@ -20,7 +20,10 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
   ) => {
     console.log('messages/send', id)
     const server: ServerConnection | undefined = rootGetters['servers/get'](id)
-    if (!server) return // TODO error
+    if (!server) {
+      console.log('messages/send: no server found')
+      return
+    }
     const peer = getPeer(server)
     peer?.sendMessage(message)
     commit('add', {

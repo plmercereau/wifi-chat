@@ -3,7 +3,7 @@ import { ServersStateInterface } from './state'
 
 const getters: GetterTree<ServersStateInterface, {}> = {
   all: state => [...state.servers.values()],
-  list: state => [...state.servers.values()], // TODO .filter(server => server.status !== 'offline'),
+  list: state => [...state.servers.values()], // TODO not the archived / offline servers with no messages history
   get: state => (id: string) => state.servers.get(id)
 }
 

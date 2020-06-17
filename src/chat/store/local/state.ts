@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import { Status } from 'src/chat/types'
-
+import { uid } from 'quasar'
 export interface LocalStateInterface {
   id: string
   name: string
@@ -15,7 +15,7 @@ const avatars = [
 const randomAvatar = () => avatars[Math.floor(Math.random() * avatars.length)]
 
 export const initialState = (): LocalStateInterface => ({
-  id: uuidv4(), // TODO persist
+  id: uid(),
   name: '',
   avatar: randomAvatar(),
   status: 'offline'

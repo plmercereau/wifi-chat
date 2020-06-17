@@ -36,7 +36,6 @@ export function ChatPlugin(
   store.registerModule('messages', messagesModule)
   store.registerModule('call', callModule)
 
-  // TODO make messages serialisable. See https://github.com/championswimmer/vuex-persist/issues/112
   const vuexLocal = new VuexPersistence<StoreType>({
     storage: window.localStorage,
     modules: ['local', 'messages']
