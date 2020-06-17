@@ -1,11 +1,11 @@
-[ ] capture avatar in electon. See https://capacitor.ionicframework.com/docs/pwa-elements/
+[x] capture avatar in electon. See https://capacitor.ionicframework.com/docs/pwa-elements/
 [ ] mirror call/ring actions
 [ ] network/wifi
 [ ] reconnect when connection is lost
-[ ] poll
+[ ] poll unconnected servers
 [ ] get rid of netcat/checkServer as it is implied when ws connection succeeds/fails
-[ ] limit animations in quasar.conf
-[ ] archive offline servers
+[ ] limit animations in quasar.conf to the ones that are actually used
+[ ] archive offline servers when no messages history
 [ ] swipe item to call
 [ ] swipe item to archive
 [ ] add calls (rejected/stared + duration) to chat messages
