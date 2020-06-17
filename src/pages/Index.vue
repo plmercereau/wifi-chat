@@ -11,7 +11,7 @@
                 q-item-section Settings
     q-page-container
       q-page.q-pa-md
-        q-list.col-12(bordered separator)
+        q-list.col-12(v-if="servers.length > 0" bordered separator)
           q-item(v-for="{id, name, status, hostname, secure, port, avatar} in servers"
             :to="'/chat/' + id"
             :key="id"
@@ -22,6 +22,7 @@
             q-item-section
               q-item-label {{name}}
               //- q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
+        div(v-else) No one else seems to be connected for now. Watching new peers...
 </template>
 
 <script lang="ts">
