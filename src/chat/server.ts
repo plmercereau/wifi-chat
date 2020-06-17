@@ -19,15 +19,14 @@ export const EventBus = new Vue()
 const useAddServer = (store: Store<{}>) => async (
   server?: Server
 ): Promise<void> => {
-  console.log('adding server', server)
   if (server) {
     if (server.id === store.getters['local/id']) return
-    const isOnline = await checkServer(server)
+    console.log('adding server', server)
     if (store.getters['servers/get'](server.id))
       store.commit('servers/update', server)
     else store.commit('servers/add', server)
     // const serverConnection:ServerConnection = store.getters['servers/get'](server)
-    if (isOnline) {
+    if (await checkServer(server)) {
       log('Server is up')
       store.commit('servers/online', server.id)
       try {
