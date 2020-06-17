@@ -32,6 +32,7 @@ export const startServer = async () => {
     log('(ws server) start')
     const wss = new WS.Server({ port: SERVICE_PORT }) as WebSocket.Server
     const peerIds: Map<WebSocket, string> = new Map()
+
     wss.on('connection', ws => {
       log('(ws server) connection')
 
@@ -61,7 +62,7 @@ export const startServer = async () => {
             if (serverPeer) serverPeer.signal(data.toString())
             else log('(ws server) peer not found')
           } else {
-            log('(ws server) peer idnot found.', peerIds)
+            log('(ws server) peer id not found.', peerIds)
           }
         }
       })
