@@ -1,5 +1,7 @@
 import { boot } from 'quasar/wrappers'
 import { ChatPlugin } from 'src/chat'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import adapter from 'webrtc-adapter'
 
 import { Dark } from 'quasar'
 if (process.env.MODE === 'electron') {
