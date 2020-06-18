@@ -39,12 +39,11 @@ export class ExtendedPeer extends Peer {
     })
 
     this.on('error', error => {
-      // TODO reconnect?
       log('(peer) error', error)
     })
     this.on('close', () => {
-      // TODO reconnect?
       log('(peer) close')
+      store.dispatch('servers/status', { id: this.id, status: 'disconnected' })
     })
     this.on('connect', () => {
       log('(peer) connect: ' + id)
@@ -104,11 +103,11 @@ export const connect = async (
     const localId = store.getters['local/id']
     if (peers.get(id)) {
       log('(ws client): no connection: peer already exists', peers.get(id))
-      return
+      resolve()
     }
     if (localId === id) {
       log('(ws client): cannot connect to loopback (self)')
-      return
+      resolve()
     }
     const ws = new WebSocket(`${secure ? 'wss' : 'ws'}://${hostname}:${port}`)
     ws.addEventListener('open', () => {
@@ -134,11 +133,11 @@ export const connect = async (
     })
 
     peer.on('connect', () => {
-      log('(connect) peer connected. resolve')
+      log('(ws client) peer connected. resolve.')
       resolve()
     })
     peer.on('error', error => {
-      reject(error)
+      reject('(ws client) peer error. reject ' + error)
     })
   })
 

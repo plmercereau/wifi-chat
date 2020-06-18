@@ -1,18 +1,13 @@
 import { ActionTree } from 'vuex'
 import { ServersStateInterface } from './state'
-import { Data } from 'src/chat/types'
+import { Data, Status } from 'src/chat/types'
 
 const actions: ActionTree<ServersStateInterface, {}> = {
   onData: (
-    { state, commit, dispatch },
+    { commit, dispatch },
     { id, strData }: { id: string; strData: string }
   ) => {
     const data: Data = JSON.parse(strData)
-    const server = state.servers.find(s => s.id === id)
-    if (!server) {
-      console.log('servers/onData: no server found')
-      return
-    }
     const dataHandlers = {
       name: () => commit('update', { id, name: data.value }),
       avatar: () => commit('update', { id, avatar: data.value }),
@@ -22,7 +17,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
           { id, message: data.value },
           { root: true }
         ),
-      status: () => commit('update', { id, status: data.value }),
+      status: () => dispatch('status', { id, status: data.value }),
       call: () => {
         if (data.value === 'hangup')
           dispatch('call/hangup', false, { root: true })
@@ -30,6 +25,9 @@ const actions: ActionTree<ServersStateInterface, {}> = {
       }
     }
     dataHandlers[data.type]()
+  },
+  status: ({ commit }, { id, status }: { id: string; status: Status }) => {
+    commit('update', { id, status: status })
   }
 }
 

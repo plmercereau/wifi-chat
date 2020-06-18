@@ -8,7 +8,7 @@
       q-page
         div.q-pa-md.justify-center.row
           q-avatar(size="128px" font-size="52px" color="primary")
-            q-img(v-if="avatar" :src="avatar" :ratio="1")
+            p-avatar-image(:name="name" :src="avatar")
             q-btn.absolute-bottom-right(round icon="camera_alt" color="primary" size="sm" @click="changeAvatar")
           q-list.col-12
             q-item
@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
+import AvatarImageComponent from 'components/AvatarImage.vue'
 import { store } from 'src/store'
 import { useLocal } from 'src/compositions'
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core'
@@ -40,6 +41,9 @@ const { Camera } = Plugins
 
 export default defineComponent({
   name: 'PageChat',
+  components: {
+    PAvatarImage: AvatarImageComponent
+  },
   setup() {
     // TODO create an inline input component that wraps the 'set name' logic
     const { name, avatar } = useLocal()

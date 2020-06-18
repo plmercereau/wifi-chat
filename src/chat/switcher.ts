@@ -8,7 +8,6 @@ else _module = require('src/chat/web').default
 
 const {
   log,
-  checkServer,
   defaultName,
   watch,
   unwatch,
@@ -20,7 +19,6 @@ const {
 
 export {
   log,
-  checkServer,
   defaultName,
   watch,
   unwatch,

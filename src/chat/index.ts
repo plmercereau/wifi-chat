@@ -8,17 +8,16 @@ import serversModule from './store/servers'
 import messagesModule from './store/messages'
 import callModule from './store/call'
 import { ServerConnection } from './types'
-import { log, checkServer } from './switcher'
 
 type StoreType = {}
 
 export { useStart, useStop, EventBus } from './server'
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $poll: NodeJS.Timeout
-  }
-}
+// declare module 'vue/types/vue' {
+//   interface Vue {
+//     $poll: NodeJS.Timeout
+//   }
+// }
 
 export interface ChatPluginOptions {
   store: Store<StoreType>
@@ -38,23 +37,23 @@ export function ChatPlugin(
 
   const vuexLocal = new VuexPersistence<StoreType>({
     storage: window.localStorage,
-    modules: ['local', 'messages']
+    modules: ['local', 'messages', 'servers']
   })
   vuexLocal.plugin(store)
   // TODO complete, reconnect, limit attempts...
-  const poll = setInterval(() => {
-    for (const server of store.getters['servers/all'] as ServerConnection[]) {
-      if (server.status === 'offline') {
-        checkServer(server).then(result => {
-          if (result) {
-            log('Server is up')
-            server.status = 'disconnected'
-            store.commit('servers/add', server)
-          }
-        })
-      }
-    }
-  }, 3000)
+  // const poll = setInterval(() => {
+  //   for (const server of store.getters['servers/all'] as ServerConnection[]) {
+  //     if (server.status === 'offline') {
+  //       checkServer(server).then(result => {
+  //         if (result) {
+  //           log('Server is up')
+  //           server.status = 'disconnected'
+  //           store.commit('servers/add', server)
+  //         }
+  //       })
+  //     }
+  //   }
+  // }, 3000)
 
-  Vue.prototype.$poll = poll
+  // Vue.prototype.$poll = poll
 }

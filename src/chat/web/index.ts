@@ -1,9 +1,6 @@
 import { Module } from '../types'
 
 const webModule: Module = {
-  checkServer: () => {
-    throw Error('not implemented')
-  },
   defaultName: async () => Promise.resolve('localhost'),
   startServer: () => {
     throw Error('not implemented')

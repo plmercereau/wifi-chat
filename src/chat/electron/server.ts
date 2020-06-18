@@ -38,7 +38,7 @@ export const startServer = async () => {
 
       ws.on('message', data => {
         const parsedData = JSON.parse(data.toString())
-        log('(ws server) reveiced message. parsed data:', parsedData)
+        log('(ws server) received message. parsed data:', parsedData)
         if (parsedData.id) {
           log('(ws server) received ID', parsedData.id)
           if (store.getters['local/id'] === parsedData.id) {

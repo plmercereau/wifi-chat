@@ -34,7 +34,7 @@ export const startServer = async () => {
       })
 
       WebSocketServer.watchMessage().subscribe(result => {
-        log(`(ws server) reveiced message from ${result.conn.uuid}.`, result)
+        log(`(ws server) received message from ${result.conn.uuid}.`, result)
         const parsedData = JSON.parse(result.msg)
         if (parsedData.id) {
           log('(ws server) received ID', parsedData.id)

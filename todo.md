@@ -3,7 +3,7 @@
 [ ] network/wifi
 [ ] reconnect when connection is lost
 [ ] poll unconnected servers
-[ ] get rid of netcat/checkServer as it is implied when ws connection succeeds/fails
+[x] get rid of netcat/checkServer as it is implied when ws connection succeeds/fails
 [ ] limit animations in quasar.conf to the ones that are actually used
 [ ] archive offline servers when no messages history
 [ ] swipe item to call
@@ -14,4 +14,11 @@
 [ ] add more composable methods
 [ ] change http(s) service type to ws(s)?
 [ ] implement WSS?
-[ ] stop using immutable in the servers vuex module, and uninstall the immutable package
+[x] stop using immutable in the servers vuex module, and uninstall the immutable package
+[ ] prompts to allow network connections on electron startup: use the same thread (remote?)
+[ ] prompts to allow network connections on electron startup: don't show again
+[ ] mute call
+[ ] start/call video during call
+[ ] show audio waves instead of video when video is off - of show avatar?
+[ ] block calls when server is disconnected/not available
+[ ] block messages when server is disconnected/not available - queue them at a later stage

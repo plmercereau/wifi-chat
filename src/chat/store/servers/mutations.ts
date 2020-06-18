@@ -5,31 +5,33 @@ import { ServersStateInterface, initialState } from './state'
 const mutation: MutationTree<ServersStateInterface> = {
   add(state, server: Server) {
     console.log('servers/add')
-    const serverConnection: ServerConnection = {
-      ...server,
-      status: 'offline'
+    state.servers = {
+      ...state.servers,
+      [server.id]: {
+        ...server,
+        status: 'offline'
+      }
     }
-    state.servers = state.servers.set(server.id, serverConnection)
   },
   online: (state, id: string) => {
     console.log('servers/online')
-    const serverConnection = state.servers.get(id)
-    if (serverConnection)
-      state.servers = state.servers.set(id, {
-        ...serverConnection,
-        status: 'disconnected'
-      })
+    state.servers = {
+      ...state.servers,
+      [id]: { ...state.servers[id], status: 'disconnected' }
+    }
   },
   remove(state, server: ServerConnection) {
     console.log('servers/remove')
-    state.servers = state.servers.delete(server.id)
+    const servers = { ...state.servers }
+    delete servers[server.id]
+    state.servers = servers
   },
   update(state, { id, ...server }: { id: string } & Partial<ServerConnection>) {
     console.log('servers/update')
-    const oldValue = state.servers.get(id)
-    if (!oldValue) return
-    const newValue = { ...oldValue, ...server }
-    state.servers = state.servers.set(id, newValue)
+    state.servers = {
+      ...state.servers,
+      [id]: { ...state.servers[id], ...server }
+    }
   },
   reset(state) {
     Object.assign(state, initialState())

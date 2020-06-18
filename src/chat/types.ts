@@ -61,10 +61,6 @@ export type WatchEvent = (server?: Server) => Promise<void>
 export type HandlePeerRequest = (body: string) => Promise<string>
 
 export interface Module {
-  checkServer: (
-    { hostname, port }: Server,
-    timeout?: number
-  ) => Promise<boolean>
   defaultName: () => Promise<string>
   startServer: () => Promise<void>
   stopServer: () => Promise<void>

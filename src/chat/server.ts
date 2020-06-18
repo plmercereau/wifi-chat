@@ -8,8 +8,7 @@ import {
   startServer,
   stopServer,
   publish,
-  unpublish,
-  checkServer
+  unpublish
 } from './switcher'
 import { Server } from './types'
 import { disconnectAll, connect } from './webrtc'
@@ -25,15 +24,10 @@ const useAddServer = (store: Store<{}>) => async (
     if (store.getters['servers/get'](server.id))
       store.commit('servers/update', server)
     else store.commit('servers/add', server)
-    // const serverConnection:ServerConnection = store.getters['servers/get'](server)
-    if (await checkServer(server)) {
-      log('Server is up')
-      store.commit('servers/online', server.id)
-      try {
-        await connect(server, store)
-      } catch (error) {
-        log('connection failed', error)
-      }
+    try {
+      await connect(server, store)
+    } catch (error) {
+      log('connection failed', error)
     }
   }
 }
