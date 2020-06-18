@@ -130,11 +130,6 @@ compare-versions@^3.1.0:
   resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-3.6.0.tgz#1a5689913685e5a87637b8d3ffca75514ec41d62"
   integrity sha512-W6Af2Iw1z4CB7q4uU4hv646dW9GQuBM+YpC0UvUCWSD8w90SJjp+ujJuXaEMtAXBtSqGfMPuFOVn4/+FlaqfBA==
 
-cordova-plugin-socket-tcp@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/cordova-plugin-socket-tcp/-/cordova-plugin-socket-tcp-1.6.0.tgz#12e8c089af247dc0531a189ce3feb5c6e50dd9ac"
-  integrity sha512-0xVu2VktyVd1I1fk3opw+p4m8mwoXsJGrpRZT2FBzB4rkBkVTph35NE/z+3+VAO/UrZ4i53w66PKvfxRqFZVRg==
-
 cordova-plugin-websocket-server@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/cordova-plugin-websocket-server/-/cordova-plugin-websocket-server-1.6.0.tgz#5ea95f6b28ad0608150969725759ce972029c497"
