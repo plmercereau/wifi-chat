@@ -43,7 +43,11 @@ export class ExtendedPeer extends Peer {
     })
     this.on('close', () => {
       log('(peer) close')
-      store.dispatch('servers/status', { id: this.id, status: 'disconnected' })
+      peers.delete(this.id)
+      this.store.dispatch('servers/status', {
+        id: this.id,
+        status: 'disconnected'
+      })
     })
     this.on('connect', () => {
       log('(peer) connect: ' + id)
@@ -102,16 +106,33 @@ export const connect = async (
     log('(ws client) connecting to ' + id)
     const localId = store.getters['local/id']
     if (peers.get(id)) {
-      log('(ws client): no connection: peer already exists', peers.get(id))
-      resolve()
+      log('(ws client): peer already exists.', peers.get(id))
+      reject()
     }
     if (localId === id) {
       log('(ws client): cannot connect to loopback (self)')
-      resolve()
+      reject()
     }
     const ws = new WebSocket(`${secure ? 'wss' : 'ws'}://${hostname}:${port}`)
+    let peer: ExtendedPeer | undefined
     ws.addEventListener('open', () => {
-      log('(ws client) connected. Sending local id')
+      log(
+        '(ws client) connected. Creating peer and sending local id through the websocket'
+      )
+      peer = new ExtendedPeer({
+        id,
+        store,
+        signal: (message: string) => {
+          ws.send(message)
+        }
+      })
+      peer.on('connect', () => {
+        log('(ws client) peer connected. resolve.')
+        resolve()
+      })
+      peer.on('error', error => {
+        reject('(ws client) peer error. reject ' + error)
+      })
       ws.send(JSON.stringify({ id: localId }))
     })
 
@@ -119,25 +140,20 @@ export const connect = async (
       log('(ws client) error', error)
       reject()
     })
-    const peer = new ExtendedPeer({
-      id,
-      store,
-      signal: (message: string) => {
-        ws.send(message)
-      }
+    ws.addEventListener('close', () => {
+      log('(ws client) close')
+      peer?.destroy()
     })
-
     ws.addEventListener('message', function incoming({ data }) {
       log('(ws client) message', data.length)
-      peer.signal(data)
-    })
-
-    peer.on('connect', () => {
-      log('(ws client) peer connected. resolve.')
-      resolve()
-    })
-    peer.on('error', error => {
-      reject('(ws client) peer error. reject ' + error)
+      try {
+        peer?.signal(data)
+      } catch (error) {
+        // * Peer has been probably destroyed
+        console.log('(ws client) peer signal error', error)
+        ws.close()
+        reject()
+      }
     })
   })
 

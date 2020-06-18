@@ -7,7 +7,8 @@ import localModule from './store/local'
 import serversModule from './store/servers'
 import messagesModule from './store/messages'
 import callModule from './store/call'
-import { ServerConnection } from './types'
+import { ServerConnection, Status } from './types'
+import { connect } from './webrtc'
 
 type StoreType = {}
 
@@ -41,19 +42,26 @@ export function ChatPlugin(
   })
   vuexLocal.plugin(store)
   // TODO complete, reconnect, limit attempts...
-  // const poll = setInterval(() => {
-  //   for (const server of store.getters['servers/all'] as ServerConnection[]) {
-  //     if (server.status === 'offline') {
-  //       checkServer(server).then(result => {
-  //         if (result) {
-  //           log('Server is up')
-  //           server.status = 'disconnected'
-  //           store.commit('servers/add', server)
-  //         }
-  //       })
-  //     }
-  //   }
-  // }, 3000)
+  setInterval(() => {
+    const status: Status = store.getters['local/status']
+    if (status === 'available') {
+      console.log(
+        '(poll) local server available. browse disconnected servers...'
+      )
+      for (const server of store.getters[
+        'servers/disconnected'
+      ] as ServerConnection[]) {
+        console.log(`(poll) trying to connect to ${server.id} ${server.name}`)
+        connect(server, store)
+          .then(() => {
+            console.log(`(poll) connected to ${server.id}`)
+          })
+          .catch(() => {
+            console.log(`(poll) impossible to connect to ${server.id}`)
+          })
+      }
+    }
+  }, 4000)
 
   // Vue.prototype.$poll = poll
 }
