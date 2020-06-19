@@ -1,5 +1,5 @@
 {
-  "name": "patient-chat-direct-webrtc",
+  "name": "wifi-chat",
   "version": "0.0.1",
   "description": "Peer to peer video chat without servers or internet",
   "author": "Pierre-Louis Mercereau <24897252+plmercereau@users.noreply.github.com>",

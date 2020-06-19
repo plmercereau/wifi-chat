@@ -1,4 +1,4 @@
-# Patient Chat (patient-chat-direct-webrtc)
+# Wifi Video Chat
 
 Peer to peer video chat without servers or internet
 

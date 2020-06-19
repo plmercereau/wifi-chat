@@ -1,4 +1,4 @@
-export const APP_NAME = 'patientchat'
+export const APP_NAME = 'wifichat'
 export const SERVICE_NAME =
   APP_NAME +
   '-' +

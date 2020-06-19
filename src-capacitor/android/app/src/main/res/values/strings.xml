@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Patient Chat</string>
-    <string name="title_activity_main">Patient Chat</string>
+    <string name="app_name">Wifi Chat</string>
+    <string name="title_activity_main">Wifi Chat</string>
     <string name="package_name">plus.platy.chat</string>
     <string name="custom_url_scheme">plus.platy.chat</string>
 </resources>

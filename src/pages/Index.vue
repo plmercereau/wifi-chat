@@ -2,7 +2,7 @@
   q-layout(view="lHh Lpr lFf")
     q-header(elevated)
       q-toolbar
-        q-toolbar-title Patient chat
+        q-toolbar-title Wifi Video Chat
         p-avatar(:src="avatar" :status="status" :name="name")
         q-toolbar-title {{name}}
         q-btn(round unelevated icon="more_vert")

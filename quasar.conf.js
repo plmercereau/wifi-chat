@@ -119,8 +119,8 @@ module.exports = configure(function(ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Patient Chat',
-        short_name: 'Patient Chat',
+        name: 'Wifi Video Chat',
+        short_name: 'Wifi Video Chat',
         description: 'Peer to peer video chat without servers or internet',
         display: 'standalone',
         orientation: 'portrait',
@@ -185,7 +185,7 @@ module.exports = configure(function(ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'patient-chat-direct-webrtc'
+        appId: 'wifi-chat'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

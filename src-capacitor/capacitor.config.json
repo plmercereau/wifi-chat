@@ -1,6 +1,6 @@
 {
   "appId": "plus.platy.chat",
-  "appName": "Patient Chat",
+  "appName": "Wifi Chat",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
   "webDir": "www"
