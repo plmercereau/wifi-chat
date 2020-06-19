@@ -11,7 +11,7 @@ import {
   unpublish
 } from './switcher'
 import { Server } from './types'
-import { disconnectAll, connect } from './webrtc'
+import { disconnectAll } from './webrtc'
 
 export const EventBus = new Vue()
 
@@ -25,7 +25,7 @@ const useAddServer = (store: Store<{}>) => async (
       store.commit('servers/update', server)
     else store.commit('servers/add', server)
     try {
-      await connect(server, store)
+      await store.dispatch('servers/connect', server)
     } catch (error) {
       log('connection failed', error)
     }

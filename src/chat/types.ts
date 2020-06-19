@@ -18,12 +18,7 @@ export type OutputMessage = {
   data?: string | string[]
   sent?: boolean
 }
-export type Status =
-  | 'available'
-  | 'busy'
-  | 'disconnected'
-  | 'offline'
-  | 'online'
+export type Status = 'available' | 'busy' | 'disconnected' | 'archived'
 
 export type ServerConnection = Server & {
   name?: string

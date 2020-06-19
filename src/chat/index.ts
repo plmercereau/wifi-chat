@@ -8,16 +8,11 @@ import serversModule from './store/servers'
 import messagesModule from './store/messages'
 import callModule from './store/call'
 import { ServerConnection } from './types'
+import { startPoll } from './poll'
 
 type StoreType = {}
 
 export { useStart, useStop, EventBus } from './server'
-
-// declare module 'vue/types/vue' {
-//   interface Vue {
-//     $poll: NodeJS.Timeout
-//   }
-// }
 
 export interface ChatPluginOptions {
   store: Store<StoreType>
@@ -40,28 +35,5 @@ export function ChatPlugin(
     modules: ['local', 'messages', 'servers']
   })
   vuexLocal.plugin(store)
-  // TODO not sure it is really needed
-  // TODO after x attemps, remove the server (if no history)?
-  // setInterval(() => {
-  //   const status: Status = store.getters['local/status']
-  //   if (status === 'available') {
-  //     console.log(
-  //       '(poll) local server available. browse disconnected servers...'
-  //     )
-  //     for (const server of store.getters[
-  //       'servers/disconnected'
-  //     ] as ServerConnection[]) {
-  //       console.log(`(poll) trying to connect to ${server.id} ${server.name}`)
-  //       connect(server, store)
-  //         .then(() => {
-  //           console.log(`(poll) connected to ${server.id}`)
-  //         })
-  //         .catch(() => {
-  //           console.log(`(poll) impossible to connect to ${server.id}`)
-  //         })
-  //     }
-  //   }
-  // }, 4000)
-
-  // Vue.prototype.$poll = poll
+  startPoll()
 }

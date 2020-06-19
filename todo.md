@@ -7,7 +7,7 @@
 - [x] poll unconnected servers
 - [x] get rid of netcat/checkServer as it is implied when ws connection succeeds/fails
 - [ ] limit animations in quasar.conf to the ones that are actually used
-- [ ] archive offline servers when no messages history
+- [x] archive offline servers when no messages history
 - [x] swipe item to call
 - [ ] swipe item to archive
 - [ ] add calls information (rejected/stared + duration) to chat messages
@@ -18,8 +18,10 @@
 - [ ] implement WSS?
 - [x] stop using immutable in the servers vuex module, and uninstall the immutable package
 - [ ] prompts to allow network connections on electron startup: use the same thread (remote?) -> sign electron app?
-- [ ] mute call
-- [ ] start/call video during call
+- [ ] mute/unmute call
+- [ ] change front/rear camera
+- [ ] select audio/video sources, if more than one each
+- [ ] start/stop video during call
 - [ ] show audio waves instead of video when video is off - of show avatar?
 - [ ] block calls when server is disconnected/not available
 - [ ] block messages when server is disconnected/not available - queue them at a later stage
