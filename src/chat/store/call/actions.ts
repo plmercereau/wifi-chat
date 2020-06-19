@@ -1,33 +1,25 @@
 import { ActionTree } from 'vuex'
-import { CallStateInterface } from './state'
+import { CallStateInterface, CallOptions } from './state'
 import { getPeer } from 'src/chat/webrtc'
 
 const actions: ActionTree<CallStateInterface, {}> = {
-  // TODO ring = call with initiator=false
-  ring: ({ commit }, { id }: { id: string }) => {
+  ring: ({ commit }, { id, initiator }: CallOptions) => {
     console.log('call/ring')
-    commit('ring', id)
+    if (initiator && id) getPeer(id)?.ring()
+    commit('ring', { id, initiator })
   },
-  call: ({ commit }, { id }: { id: string }) => {
-    console.log('call/call')
-    commit('call', id)
-    const peer = getPeer(id)
-    peer?.call()
-  },
-  ready: ({ commit }, payload: { id: string }) => {
-    console.log('call/ready')
-    commit('ready', payload.id)
-  },
-  pickup: ({ commit }) => {
+  pickup: ({ commit, getters }, { initiator }: CallOptions = {}) => {
     console.log('call/pickup')
+    if (initiator && getters['remote']) getPeer(getters['remote'])?.pickup()
     commit('pickup')
   },
-  hangup: ({ commit, getters }, initiator = false) => {
+  ready: ({ commit }) => {
+    console.log('call/ready')
+    commit('ready')
+  },
+  hangup: ({ commit, getters }, { initiator }: CallOptions = {}) => {
     console.log('call/hangup')
-    if (initiator) {
-      console.log('call/hangup: initiator')
-      if (getters['remote']) getPeer(getters['remote'])?.hangup()
-    }
+    if (initiator && getters['remote']) getPeer(getters['remote'])?.hangup()
     commit('hangup')
   }
 }

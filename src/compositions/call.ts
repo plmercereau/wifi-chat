@@ -4,16 +4,17 @@ import { Ref, computed } from '@vue/composition-api'
 
 export const useCall = (server: Ref<ServerConnection>) => {
   const call = (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     constraints: MediaStreamConstraints = {
       audio: true,
       video: true
     }
   ) => {
-    store.dispatch('call/call', { id: server.value.id, constraints })
+    store.dispatch('call/ring', { id: server.value.id, initiator: true })
   }
   const calling = computed<boolean>(() => store.getters['call/calling'])
   const hangup = () => {
-    store.dispatch('call/hangup', true)
+    store.dispatch('call/hangup', { initiator: true })
   }
   const videoCall = () => {
     call()

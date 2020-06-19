@@ -57,19 +57,19 @@ export class ExtendedPeer extends Peer {
     })
     this.on('data', strData => {
       log('(peer) data received', this.id, strData)
-      store.dispatch('servers/onData', { id: this.id, strData })
+      store.dispatch('servers/on', { id: this.id, strData })
     })
     this.on('stream', (stream: MediaStream) => {
       console.log('(peer) add stream', stream)
       remoteStream = stream
-      store.dispatch('call/ready', { id: this.id })
+      store.dispatch('call/ready')
     })
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.on('track', (track: MediaStreamTrack, stream: MediaStream) => {
       console.log('(peer) add track')
     })
   }
-  sendData(data: Data) {
+  private sendData(data: Data) {
     super.send(JSON.stringify(data))
   }
   sendMessage(m: string[]) {
@@ -90,11 +90,17 @@ export class ExtendedPeer extends Peer {
   sendStatus(status: Status) {
     this.sendData({ type: 'status', value: status })
   }
-  call() {
-    this.sendData({ type: 'call' })
+  private callAction(value: string) {
+    this.sendData({ type: 'call', value })
+  }
+  ring() {
+    this.callAction('ring')
+  }
+  pickup() {
+    this.callAction('pickup')
   }
   hangup() {
-    this.sendData({ type: 'call', value: 'hangup' })
+    this.callAction('hangup')
   }
 }
 

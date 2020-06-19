@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-overlay(v-model="ringing" no-scroll :z-index="5000")
+  q-overlay(v-model="receivingCall" no-scroll :z-index="5000")
     template(#body)
       div.fixed-center
         div.row.justify-evenly.q-pa-md
@@ -10,29 +10,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch } from '@vue/composition-api'
+import { defineComponent, computed, watchEffect } from '@vue/composition-api'
 import { store } from '../store'
 export default defineComponent({
   name: 'CallOverlay',
   setup(_, { root: { $router } }) {
-    const ringing = computed(() => store.getters['call/ringing'])
-    const caller = computed(() =>
-      store.getters['servers/get'](store.getters['call/remote'])
+    const receivingCall = computed(() => store.getters['call/receivingCall'])
+    const remoteId = computed(() => store.getters['call/remote'])
+    const caller = computed(
+      () => remoteId.value && store.getters['servers/get'](remoteId.value)
     )
     const pickup = async () => {
-      await store.dispatch('call/pickup')
+      await store.dispatch('call/pickup', { initiator: true })
     }
-    watch(
-      () => store.getters['call/ongoing'],
-      ongoing => {
-        if (ongoing) $router.push(`/call/${store.getters['call/remote']}`)
+    const stop = watchEffect(() => {
+      if (store.getters['call/starting']) {
+        $router.push(`/call/${remoteId.value}`)
+        stop()
       }
-    )
+    })
 
     const hangup = () => {
-      store.dispatch('call/hangup', true)
+      store.dispatch('call/hangup', { initiator: true })
     }
-    return { ringing, caller, pickup, hangup }
+    return { receivingCall, caller, pickup, hangup }
   }
 })
 </script>

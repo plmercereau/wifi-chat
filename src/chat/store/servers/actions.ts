@@ -3,7 +3,7 @@ import { ServersStateInterface } from './state'
 import { Data, Status } from 'src/chat/types'
 
 const actions: ActionTree<ServersStateInterface, {}> = {
-  onData: (
+  on: (
     { commit, dispatch },
     { id, strData }: { id: string; strData: string }
   ) => {
@@ -18,11 +18,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
           { root: true }
         ),
       status: () => dispatch('status', { id, status: data.value }),
-      call: () => {
-        if (data.value === 'hangup')
-          dispatch('call/hangup', false, { root: true })
-        else dispatch('call/ring', { id }, { root: true })
-      }
+      call: () => dispatch(`call/${data.value}`, { id }, { root: true })
     }
     dataHandlers[data.type]()
   },

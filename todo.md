@@ -1,7 +1,7 @@
-# TODO
+# TODO list
 
 - [x] capture avatar in electon. See https://capacitor.ionicframework.com/docs/pwa-elements/
-- [ ] mirror call/ring actions
+- [x] mirror call/ring actions
 - [ ] network/wifi
 - [x] reconnect when connection is lost
 - [x] poll unconnected servers
@@ -10,17 +10,17 @@
 - [ ] archive offline servers when no messages history
 - [ ] swipe item to call
 - [ ] swipe item to archive
-- [ ] add calls (rejected/stared + duration) to chat messages
+- [ ] add calls information (rejected/stared + duration) to chat messages
 - [ ] chat duration
-- [ ] autoanswer option?
+- [ ] auto-answer option?
 - [ ] add more composable methods
-- [ ] change http(s) service type to ws(s)?
+- [ ] change http(s) mDNS service type to something else e.g. ws(s) or a custom type
 - [ ] implement WSS?
 - [x] stop using immutable in the servers vuex module, and uninstall the immutable package
-- [ ] prompts to allow network connections on electron startup: use the same thread (remote?)
-- [ ] prompts to allow network connections on electron startup: don't show again
+- [ ] prompts to allow network connections on electron startup: use the same thread (remote?) -> sign electron app?
 - [ ] mute call
 - [ ] start/call video during call
 - [ ] show audio waves instead of video when video is off - of show avatar?
 - [ ] block calls when server is disconnected/not available
 - [ ] block messages when server is disconnected/not available - queue them at a later stage
+- [ ] first chat message is not set in the getter

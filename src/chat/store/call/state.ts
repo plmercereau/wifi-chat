@@ -1,16 +1,14 @@
+export type CallOptions = { id?: string; initiator?: boolean }
+
 export interface CallStateInterface {
-  ringing: boolean
-  ongoing: boolean
-  calling: boolean
+  status: 'pending' | 'ringing' | 'starting' | 'ongoing'
+  initiator: boolean
   remote?: string
-  stream: boolean
 }
 
 export const initialState = (): CallStateInterface => ({
-  ringing: false,
-  ongoing: false,
-  calling: false,
-  stream: false,
+  status: 'pending',
+  initiator: false,
   remote: undefined
 })
 

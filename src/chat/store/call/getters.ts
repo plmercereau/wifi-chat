@@ -2,11 +2,11 @@ import { GetterTree } from 'vuex'
 import { CallStateInterface } from './state'
 
 const getters: GetterTree<CallStateInterface, {}> = {
-  ringing: state => state.ringing && !!state.remote,
-  ongoing: state => state.ongoing && !!state.remote,
-  calling: state => state.calling && !!state.remote,
-  remote: state => state.remote,
-  stream: state => state.stream
+  receivingCall: state => !state.initiator && state.status === 'ringing',
+  calling: state => state.initiator && state.status === 'ringing',
+  starting: state => state.status === 'starting',
+  ongoing: state => state.status === 'ongoing',
+  remote: state => state.remote
 }
 
 export default getters

@@ -26,7 +26,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from '@vue/composition-api'
+import {
+  defineComponent,
+  ref,
+  watchEffect,
+  computed
+} from '@vue/composition-api'
 import { store } from 'src/store'
 import AvatarComponent from 'components/Avatar.vue'
 import { getPeer, getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
@@ -45,7 +50,7 @@ export default defineComponent({
     }
   },
   beforeRouteEnter: (to: Route, from: Route, next: NavigationGuardNext) => {
-    if (store.getters['local/id'] && store.getters['call/ongoing']) next()
+    if (store.getters['local/id'] && store.getters['call/remote']) next()
     else next('/')
   },
   setup(props, { root: { $router } }) {
@@ -60,23 +65,21 @@ export default defineComponent({
     const visibleMenu = computed(() => hover.value || clicked.value)
     const localStream = ref<MediaStream>()
     const remoteStream = ref<MediaStream>()
-    watch(
-      () => store.getters['call/stream'],
-      (stream: boolean) => {
-        if (stream) remoteStream.value = getRemoteStream()
-        else if (remoteStream.value) {
-          removeAllTracks(remoteStream.value)
-          removeAllTracks(localStream.value)
-          $router.push(`/chat/${props.id}`)
-        }
+    const stop = watchEffect(() => {
+      if (store.getters['call/ongoing']) remoteStream.value = getRemoteStream()
+      else if (remoteStream.value) {
+        removeAllTracks(remoteStream.value)
+        removeAllTracks(localStream.value)
+        $router.push(`/chat/${props.id}`)
+        stop()
       }
-    )
+    })
+    // TODO onMounted and async/await
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then(local => {
         localStream.value = local
-        const peer = getPeer(props.id)
-        peer?.addStream(local)
+        getPeer(props.id)?.addStream(local)
       })
     const server = useServer(props)
     const { hangup } = useCall(server)

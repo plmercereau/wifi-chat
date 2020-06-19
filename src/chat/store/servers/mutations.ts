@@ -4,7 +4,7 @@ import { ServersStateInterface, initialState } from './state'
 
 const mutation: MutationTree<ServersStateInterface> = {
   add(state, server: Server) {
-    console.log('servers/add')
+    console.log('servers/add', server)
     state.servers = {
       ...state.servers,
       [server.id]: {
@@ -26,11 +26,11 @@ const mutation: MutationTree<ServersStateInterface> = {
     delete servers[server.id]
     state.servers = servers
   },
-  update(state, { id, ...server }: { id: string } & Partial<ServerConnection>) {
+  update(state, server: { id: string } & Partial<ServerConnection>) {
     console.log('servers/update')
     state.servers = {
       ...state.servers,
-      [id]: { ...state.servers[id], ...server }
+      [server.id]: { ...state.servers[server.id], ...server }
     }
   },
   reset(state) {
