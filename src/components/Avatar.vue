@@ -13,8 +13,7 @@ import { defineComponent, computed, PropType } from '@vue/composition-api'
 const colors: { [key in Status]?: string } = {
   busy: 'red',
   disconnected: 'grey',
-  offline: 'grey',
-  online: 'grey',
+  archived: 'grey',
   available: 'green'
 }
 export default defineComponent({

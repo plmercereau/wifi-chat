@@ -43,7 +43,6 @@ export const startServer = async () => {
           } else {
             new ExtendedPeer({
               id: parsedData.id,
-              store,
               initiator: true,
               signal: (message: string) => {
                 WebSocketServer.send(result.conn, message)

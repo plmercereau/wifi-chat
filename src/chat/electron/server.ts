@@ -46,7 +46,6 @@ export const startServer = async () => {
           } else {
             new ExtendedPeer({
               id: parsedData.id,
-              store,
               initiator: true,
               signal: (message: string) => {
                 ws.send(message)
