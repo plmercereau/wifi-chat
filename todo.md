@@ -25,6 +25,6 @@
 - [ ] show audio waves instead of video when video is off - of show avatar?
 - [x] block calls when server is disconnected/not available
 - [ ] block sending messages when server is disconnected/not available - queue them at a later stage
-- [ ] first chat message is not set in the getter
+- [x] first chat message is not set in the getter
 - [x] on start, remote server stays connected in the list (persisted that way)
 - [x] set 'busy' status when calling

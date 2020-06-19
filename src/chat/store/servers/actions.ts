@@ -34,6 +34,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     { id, checkHistory }: { id: string; checkHistory: boolean }
   ) => {
     log('dispatch servers/remove')
+    // TODO rootGetters['messages/get'](id).length === 0 => dedicated getter
     if (!checkHistory || rootGetters['messages/get'](id).length === 0)
       commit('remove', id)
   },

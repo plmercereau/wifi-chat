@@ -17,18 +17,22 @@ const getters: GetterTree<MessagesStateInterface, {}> = {
       const timeSpan = second(timestamp)
       const day = Math.floor(timestamp / (1000 * 60 * 60 * 24))
       if (day > lastDay) {
-        result.push({ type: 'date', data: [], sent: false, timestamp })
+        result.push({
+          type: 'date',
+          data: [],
+          sent: false,
+          timestamp: timestamp - 1
+        })
         lastDay = day
       }
       if (timeSpan > lastTimeSpan + 3 || lastSender != message.sent) {
-        const newSpan = !!newMessage
         newMessage = {
           type: 'message',
           timestamp,
           data: message.message,
           sent: message.sent
         }
-        if (newSpan) result.push(newMessage)
+        result.push(newMessage)
         lastTimeSpan = timeSpan
         lastSender = message.sent
       } else if (newMessage?.data) {
