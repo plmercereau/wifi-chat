@@ -41,27 +41,28 @@ export function ChatPlugin(
     modules: ['local', 'messages', 'servers']
   })
   vuexLocal.plugin(store)
-  // TODO complete, reconnect, limit attempts...
-  setInterval(() => {
-    const status: Status = store.getters['local/status']
-    if (status === 'available') {
-      console.log(
-        '(poll) local server available. browse disconnected servers...'
-      )
-      for (const server of store.getters[
-        'servers/disconnected'
-      ] as ServerConnection[]) {
-        console.log(`(poll) trying to connect to ${server.id} ${server.name}`)
-        connect(server, store)
-          .then(() => {
-            console.log(`(poll) connected to ${server.id}`)
-          })
-          .catch(() => {
-            console.log(`(poll) impossible to connect to ${server.id}`)
-          })
-      }
-    }
-  }, 4000)
+  // TODO not sure it is really needed
+  // TODO after x attemps, remove the server (if no history)?
+  // setInterval(() => {
+  //   const status: Status = store.getters['local/status']
+  //   if (status === 'available') {
+  //     console.log(
+  //       '(poll) local server available. browse disconnected servers...'
+  //     )
+  //     for (const server of store.getters[
+  //       'servers/disconnected'
+  //     ] as ServerConnection[]) {
+  //       console.log(`(poll) trying to connect to ${server.id} ${server.name}`)
+  //       connect(server, store)
+  //         .then(() => {
+  //           console.log(`(poll) connected to ${server.id}`)
+  //         })
+  //         .catch(() => {
+  //           console.log(`(poll) impossible to connect to ${server.id}`)
+  //         })
+  //     }
+  //   }
+  // }, 4000)
 
   // Vue.prototype.$poll = poll
 }
