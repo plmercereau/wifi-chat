@@ -1,12 +1,5 @@
 <template lang="pug">
   q-layout(view="lHh Lpr lFf")
-    q-overlay(v-model="calling" no-scroll :z-index="5000")
-      template(#body)
-        div.fixed-center
-          div.row.justify-evenly.q-pa-md
-            div Calling {{server.name}}...
-          div.row.justify-evenly.q-pa-md
-            q-btn(color="red" icon="call_end" @click="hangup")        
     q-header(elevated)
       q-toolbar
         q-btn(flat round icon="arrow_back" to='/')

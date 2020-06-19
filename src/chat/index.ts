@@ -7,8 +7,7 @@ import localModule from './store/local'
 import serversModule from './store/servers'
 import messagesModule from './store/messages'
 import callModule from './store/call'
-import { ServerConnection, Status } from './types'
-import { connect } from './webrtc'
+import { ServerConnection } from './types'
 
 type StoreType = {}
 

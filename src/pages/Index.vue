@@ -13,16 +13,16 @@
     q-page-container
       q-page.q-pa-md
         q-list.col-12(v-if="servers.length > 0" bordered separator)
-          q-item(v-for="{id, name, status, hostname, secure, port, avatar} in servers"
-            :to="'/chat/' + id"
-            :key="id"
-            clickable
-            v-ripple)
-            q-item-section(avatar)
-              p-avatar(:src="avatar" :status="status" :name="name")
-            q-item-section
-              q-item-label {{name}}
-              //- q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
+          q-slide-item(v-for="{id, name, status, hostname, secure, port, avatar} in servers" :key="id"
+            @left="opt => onLeft(opt, id)")
+            template(#left)
+              q-icon(name="videocam")
+            q-item(:to="'/chat/' + id" clickable v-ripple)
+              q-item-section(avatar)
+                p-avatar(:src="avatar" :status="status" :name="name")
+              q-item-section
+                q-item-label {{name}}
+                //- q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
         div(v-else) No one else seems to be connected for now. Watching new peers...
 </template>
 
@@ -32,7 +32,7 @@ import { Route, NavigationGuardNext } from 'vue-router'
 import AvatarComponent from 'components/Avatar.vue'
 import { useStart, useServers } from 'src/chat'
 import { store } from 'src/store'
-import { useLocal } from 'src/compositions'
+import { useLocal, useCall } from 'src/compositions'
 
 export default defineComponent({
   name: 'PageIndex',
@@ -52,7 +52,14 @@ export default defineComponent({
         startServer()
       }
     }
+    const { videoCall } = useCall()
+    const onLeft = ({ reset }: { reset: Function }, id: string) => {
+      reset()
+      videoCall(id)
+    }
     return {
+      videoCall,
+      onLeft,
       start,
       name,
       avatar,

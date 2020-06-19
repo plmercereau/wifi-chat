@@ -21,7 +21,7 @@
                   @blur="editingName = false"
                   label="Name"
                   borderless dense autofocus hide-bottom-space)
-                  template(v-slot:append)
+                  template(#append)
                     q-btn(round dense flat icon="save_alt" @click="changeName")
               q-item-section(v-else)
                 q-item-label(caption) Name

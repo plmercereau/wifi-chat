@@ -8,7 +8,7 @@
 - [x] get rid of netcat/checkServer as it is implied when ws connection succeeds/fails
 - [ ] limit animations in quasar.conf to the ones that are actually used
 - [ ] archive offline servers when no messages history
-- [ ] swipe item to call
+- [x] swipe item to call
 - [ ] swipe item to archive
 - [ ] add calls information (rejected/stared + duration) to chat messages
 - [ ] chat duration
@@ -24,3 +24,4 @@
 - [ ] block calls when server is disconnected/not available
 - [ ] block messages when server is disconnected/not available - queue them at a later stage
 - [ ] first chat message is not set in the getter
+- [ ] on start, remote server stays connected in the list (persisted that way)
