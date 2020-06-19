@@ -82,7 +82,7 @@ export default defineComponent({
         getPeer(props.id)?.addStream(local)
       })
     const server = useServer(props)
-    const { hangup } = useCall(server)
+    const { hangup } = useCall()
     return {
       hover,
       showMenu,

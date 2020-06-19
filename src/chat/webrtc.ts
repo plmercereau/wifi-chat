@@ -27,7 +27,7 @@ export class ExtendedPeer extends Peer {
   id: string
   constructor(opts: ExtendedPeerOptions) {
     const { id, signal, ...peerOptions } = opts
-    log('(peer) creating', id, peerOptions.initiator)
+    log('(peer) creating', id, !!peerOptions.initiator)
     super({ trickle: false, objectMode: true, ...peerOptions })
     this.id = id
     setPeer(id, this)
@@ -41,7 +41,7 @@ export class ExtendedPeer extends Peer {
       log('(peer) error', error)
     })
     this.on('close', () => {
-      log('(peer) close')
+      log('(peer) close', this.id)
       peers.delete(this.id)
       store.dispatch('servers/status', {
         id: this.id,
@@ -49,23 +49,23 @@ export class ExtendedPeer extends Peer {
       })
     })
     this.on('connect', () => {
-      log('(peer) connect: ' + id)
+      log('(peer) connect', this.id)
       this.sendName()
       this.sendAvatar()
       this.sendStatus('available')
     })
     this.on('data', strData => {
-      log('(peer) data received', this.id, strData)
+      log('(peer) data received', this.id)
       store.dispatch('servers/on', { id: this.id, strData })
     })
     this.on('stream', (stream: MediaStream) => {
-      console.log('(peer) add stream', stream)
+      console.log('(peer) add stream', this.id)
       remoteStream = stream
       store.dispatch('call/ready')
     })
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.on('track', (track: MediaStreamTrack, stream: MediaStream) => {
-      console.log('(peer) add track')
+      console.log('(peer) add track', this.id)
     })
   }
   private sendData(data: Data) {

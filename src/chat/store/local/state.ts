@@ -11,7 +11,7 @@ export const initialState = (): LocalStateInterface => ({
   id: uid(),
   name: undefined,
   avatar: undefined,
-  status: 'offline'
+  status: 'disconnected'
 })
 
 export default initialState()

@@ -1,11 +1,12 @@
 import { ActionTree } from 'vuex'
-import { MessagesStateInterface } from './state'
+import { log } from 'src/chat/switcher'
 import { getPeer } from '../../webrtc'
 import { ServerConnection } from '../../types'
+import { MessagesStateInterface } from './state'
 
 const actions: ActionTree<MessagesStateInterface, {}> = {
   receive: ({ commit }, { id, message }: { id: string; message: string[] }) => {
-    console.log('messages/receive', id, message)
+    log('dispatch messages/receive', id, message)
     commit('add', {
       id,
       sent: false,
@@ -18,10 +19,10 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
     { commit, rootGetters },
     { id, message }: { id: string; message: string[] }
   ) => {
-    console.log('messages/send', id)
+    log('dispatch messages/send', id)
     const server: ServerConnection | undefined = rootGetters['servers/get'](id)
     if (!server) {
-      console.log('messages/send: no server found')
+      log('messages/send: no server found')
       return
     }
     const peer = getPeer(server)

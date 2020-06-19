@@ -5,8 +5,8 @@
         q-btn(flat round icon="arrow_back" to='/')
         p-avatar(:src="server.avatar" :status="server.status" :name="server.name")
         q-toolbar-title {{server.name}}
-        q-btn(flat round icon="videocam" @click="videoCall")
-        q-btn(flat round icon="call" @click="audioCall")
+        q-btn(v-if="server.status ==='available'" flat round icon="videocam" @click="videoCall(server.id)")
+        q-btn(v-if="server.status ==='available'" flat round icon="call" @click="audioCall(server.id)")
     q-page-container
       q-page.q-pa-md.justify-center
         div.row
@@ -51,7 +51,7 @@ export default defineComponent({
     const server = useServer(props)
     const messages = useMessages(server)
     const { message, send } = useSendMessage(server)
-    const { calling, hangup, videoCall, audioCall } = useCall(server)
+    const { calling, hangup, videoCall, audioCall } = useCall()
 
     const chatRef = ref<Element>([])
     useScrollDown(chatRef, messages)

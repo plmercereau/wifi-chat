@@ -9,9 +9,9 @@
 - [ ] limit animations in quasar.conf to the ones that are actually used
 - [x] archive offline servers when no messages history
 - [x] swipe item to call
-- [ ] swipe item to archive
+- [ ] swipe item to archive?
 - [ ] add calls information (rejected/stared + duration) to chat messages
-- [ ] chat duration
+- [ ] show chat duration
 - [ ] auto-answer option?
 - [ ] add more composable methods
 - [ ] change http(s) mDNS service type to something else e.g. ws(s) or a custom type
@@ -23,7 +23,8 @@
 - [ ] select audio/video sources, if more than one each
 - [ ] start/stop video during call
 - [ ] show audio waves instead of video when video is off - of show avatar?
-- [ ] block calls when server is disconnected/not available
-- [ ] block messages when server is disconnected/not available - queue them at a later stage
+- [x] block calls when server is disconnected/not available
+- [ ] block sending messages when server is disconnected/not available - queue them at a later stage
 - [ ] first chat message is not set in the getter
-- [ ] on start, remote server stays connected in the list (persisted that way)
+- [x] on start, remote server stays connected in the list (persisted that way)
+- [x] set 'busy' status when calling

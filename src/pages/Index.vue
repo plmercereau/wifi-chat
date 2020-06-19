@@ -15,7 +15,7 @@
         q-list.col-12(v-if="servers.length > 0" bordered separator)
           q-slide-item(v-for="{id, name, status, hostname, secure, port, avatar} in servers" :key="id"
             @left="opt => onLeft(opt, id)")
-            template(#left)
+            template(v-if="status==='available'" #left)
               q-icon(name="videocam")
             q-item(:to="'/chat/' + id" clickable v-ripple)
               q-item-section(avatar)

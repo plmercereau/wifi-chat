@@ -1,10 +1,9 @@
 import { store } from 'src/store'
-import { ServerConnection } from 'src/chat/types'
-import { Ref, computed } from '@vue/composition-api'
+import { computed } from '@vue/composition-api'
 
-export const useCall = (server?: Ref<ServerConnection>) => {
+export const useCall = () => {
   const call = (
-    serverOrId: Ref<ServerConnection> | string | undefined = server,
+    id: string,
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     constraints: MediaStreamConstraints = {
@@ -12,23 +11,17 @@ export const useCall = (server?: Ref<ServerConnection>) => {
       video: true
     }
   ) => {
-    const id =
-      typeof serverOrId === 'string' ? serverOrId : serverOrId?.value.id
     store.dispatch('call/ring', { id, initiator: true })
   }
   const calling = computed<boolean>(() => store.getters['call/calling'])
   const hangup = () => {
     store.dispatch('call/hangup', { initiator: true })
   }
-  const videoCall = (
-    s: Ref<ServerConnection> | string | undefined = server
-  ) => {
-    call(s)
+  const videoCall = (id: string) => {
+    call(id)
   }
-  const audioCall = (
-    s: Ref<ServerConnection> | string | undefined = server
-  ) => {
-    call(s, {
+  const audioCall = (id: string) => {
+    call(id, {
       audio: true,
       video: false
     })

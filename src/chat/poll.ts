@@ -8,12 +8,12 @@ export const startPoll = () => {
     const servers: ServerConnection[] = store.getters['servers/disconnected']
     if (status === 'available' && servers.length > 0) {
       console.log(
-        '(poll) local server available. Browse the disconnected servers...'
+        '(poll) local server available. Browse disconnected servers...'
       )
       for (const server of servers) {
         const nbAttempts = serversAttempts.get(server.id) || 0
         if (nbAttempts < 10) {
-          console.log(`(poll) trying to connect to ${server.id} ${server.name}`)
+          console.log(`(poll) connecting to ${server.id} ${server.name}`)
           store
             .dispatch('servers/connect', server)
             .then(() => {
