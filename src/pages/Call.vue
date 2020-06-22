@@ -16,7 +16,7 @@
         transition(appear
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut")
-          video.local.absolute-bottom-right.q-pa-md(v-if="localStream" :srcObject.prop="localStream" autoplay mute)
+          video.local.absolute-bottom-right.q-pa-md(v-if="localStream" :srcObject.prop="localStream" autoplay playsinline muted)
         div.q-pa-lg.justify-center.row.no-wrap.absolute-bottom(@mouseover="hover = true" @mouseleave="hover = false")
           transition(appear
             enter-active-class="animated fadeIn"
@@ -38,7 +38,6 @@ import { getPeer, getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
 import { Route, NavigationGuardNext } from 'vue-router'
 import { useServer, useCall } from 'src/compositions'
 import { log } from 'src/chat/switcher'
-import { Plugins } from '@capacitor/core'
 
 export default defineComponent({
   name: 'PageCall',
