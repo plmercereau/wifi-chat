@@ -35,6 +35,7 @@
 - [ ] i18n: change in settings
 - [ ] i18n: select on initial start
 - [ ] settings: reset
+- [ ] play sound and vibrations when ringing
 
 ## Less important
 
@@ -44,3 +45,4 @@
 - [ ] add more composable methods
 - [ ] change http(s) mDNS service type to something else e.g. ws(s) or a custom type
 - [ ] call buttons on the left or right side of the screen depending on its size
+- [ ] change favicons
