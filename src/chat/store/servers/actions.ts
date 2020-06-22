@@ -29,6 +29,12 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     log('dispatch servers/status')
     commit('update', { id, status: status })
   },
+  disconnect: ({ dispatch, rootGetters }, id: string) => {
+    log('dispatch servers/disconnect')
+    if (rootGetters['call/remote'] === id)
+      dispatch('call/hangup', undefined, { root: true })
+    dispatch('status', { id, status: 'disconnect' })
+  },
   remove: (
     { commit, rootGetters },
     { id, checkHistory }: { id: string; checkHistory: boolean }
@@ -38,7 +44,10 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     if (!checkHistory || rootGetters['messages/get'](id).length === 0)
       commit('remove', id)
   },
-  connect: async ({ rootGetters }, { id, secure, hostname, port }: Server) => {
+  connect: async (
+    { rootGetters, dispatch },
+    { id, secure, hostname, port }: Server
+  ) => {
     // TODO set status to disconnected when the ws connection fails, or when it disconnects
     log('dispatch servers/connect')
     await new Promise<void>((resolve, reject) => {
@@ -77,7 +86,8 @@ const actions: ActionTree<ServersStateInterface, {}> = {
       })
       ws.addEventListener('close', () => {
         log('(ws client) close')
-        peer?.destroy()
+        if (peer) peer.destroy()
+        else dispatch('disconnect', id)
       })
       ws.addEventListener('message', function incoming({ data }) {
         log('(ws client) message', data.length)

@@ -3,36 +3,46 @@ import { computed } from '@vue/composition-api'
 import { Store } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
-import localModule from './store/local'
-import serversModule from './store/servers'
-import messagesModule from './store/messages'
-import callModule from './store/call'
 import { ServerConnection } from './types'
 import { startPoll } from './poll'
-
-type StoreType = {}
+import { GlobalState, local, servers, messages, call } from './store'
 
 export { useStart, useStop, EventBus } from './server'
 
 export interface ChatPluginOptions {
-  store: Store<StoreType>
+  store: Store<GlobalState>
 }
 
-export const useServers = (store: Store<StoreType>) =>
+export const useServers = (store: Store<GlobalState>) =>
   computed<ServerConnection[]>(() => store.getters['servers/list'])
 
 export function ChatPlugin(
   Vue: typeof _Vue,
   { store }: ChatPluginOptions
 ): void {
-  store.registerModule('local', localModule)
-  store.registerModule('servers', serversModule)
-  store.registerModule('messages', messagesModule)
-  store.registerModule('call', callModule)
+  store.registerModule('local', local)
+  store.registerModule('servers', servers)
+  store.registerModule('messages', messages)
+  store.registerModule('call', call)
 
-  const vuexLocal = new VuexPersistence<StoreType>({
+  const vuexLocal = new VuexPersistence<GlobalState>({
     storage: window.localStorage,
-    modules: ['local', 'messages', 'servers']
+    reducer: state => ({
+      messages: state.messages,
+      local: state.local,
+      servers: {
+        servers: Object.keys(state.servers.servers).reduce<{
+          [id: string]: ServerConnection
+        }>((aggr, curs) => {
+          aggr[curs] = {
+            ...state.servers.servers[curs],
+            status: 'disconnected'
+          }
+          return aggr
+        }, {})
+      }
+    })
+    // modules: ['local', 'messages', 'servers']
   })
   vuexLocal.plugin(store)
   startPoll()

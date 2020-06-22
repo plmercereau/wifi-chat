@@ -13,13 +13,6 @@ const mutation: MutationTree<ServersStateInterface> = {
       }
     }
   },
-  online: (state, id: string) => {
-    console.log('commit servers/online')
-    state.servers = {
-      ...state.servers,
-      [id]: { ...state.servers[id], status: 'disconnected' }
-    }
-  },
   remove(state, id: string) {
     console.log('commit servers/remove')
     const servers = { ...state.servers }

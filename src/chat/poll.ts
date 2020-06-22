@@ -23,7 +23,7 @@ export const startPoll = () => {
               console.log(`(poll) impossible to connect to ${server.id}`)
               serversAttempts.set(server.id, nbAttempts + 1)
             })
-        } else {
+        } else if (store.getters['messages/get'](server.id)?.length > 0) {
           // * remove the server if it never had any message
           store.dispatch('servers/remove', {
             id: server.id,

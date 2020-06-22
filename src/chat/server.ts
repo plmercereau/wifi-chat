@@ -12,6 +12,7 @@ import {
 } from './switcher'
 import { Server } from './types'
 import { disconnectAll } from './webrtc'
+import { GlobalState } from './store'
 
 export const EventBus = new Vue()
 
@@ -54,7 +55,7 @@ export const useStop = (store: Store<{}>) => async () => {
   store.commit('local/stopped')
 }
 
-export const useStart = (store: Store<{}>) => {
+export const useStart = (store: Store<GlobalState>) => {
   return async () => {
     if (store.getters['local/name']) {
       log('starting')

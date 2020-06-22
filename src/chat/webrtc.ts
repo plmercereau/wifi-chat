@@ -43,10 +43,7 @@ export class ExtendedPeer extends Peer {
     this.on('close', () => {
       log('(peer) close', this.id)
       peers.delete(this.id)
-      store.dispatch('servers/status', {
-        id: this.id,
-        status: 'disconnected'
-      })
+      store.dispatch('servers/disconnect', this.id)
     })
     this.on('connect', () => {
       log('(peer) connect', this.id)
