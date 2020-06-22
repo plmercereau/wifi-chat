@@ -23,7 +23,7 @@ export default defineComponent({
       () => remoteId.value && store.getters['servers/get'](remoteId.value)
     )
     const pickup = async () => {
-      await store.dispatch('call/pickup', { initiator: true })
+      await store.dispatch('pickup', { initiator: true })
     }
     const stop = watchEffect(() => {
       if (store.getters['call/starting']) {
@@ -33,7 +33,7 @@ export default defineComponent({
     })
 
     const hangup = () => {
-      store.dispatch('call/hangup', { initiator: true })
+      store.dispatch('hangup', { initiator: true })
     }
     return { ringing, receivingCall, remote, pickup, hangup }
   }

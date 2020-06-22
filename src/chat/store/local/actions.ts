@@ -25,6 +25,18 @@ const actions: ActionTree<LocalStateInterface, {}> = {
       commit('status', status)
       getAllPeers().forEach(peer => peer.sendStatus(status))
     }
+  },
+  pickup: {
+    root: true,
+    handler: ({ dispatch }) => {
+      dispatch('status', 'busy', { root: true })
+    }
+  },
+  hangup: {
+    root: true,
+    handler: ({ dispatch }) => {
+      dispatch('status', 'available', { root: true })
+    }
   }
 }
 

@@ -11,25 +11,33 @@ const actions: ActionTree<CallStateInterface, {}> = {
       commit('ring', { id, initiator })
     }
   },
-  pickup: ({ commit, getters, dispatch }, { initiator }: CallOptions = {}) => {
-    log('dispatch call/pickup')
-    const id = getters['remote']
-    if (initiator && id) getPeer(getters['remote'])?.pickup()
-    commit('pickup')
-    dispatch('messages/pickup', id, { root: true })
-    dispatch('local/status', 'busy', { root: true })
+  pickup: {
+    root: true,
+    handler: (
+      { commit, getters, dispatch },
+      { initiator }: CallOptions = {}
+    ) => {
+      log('dispatch call/pickup')
+      const id = getters['remote']
+      if (initiator && id) getPeer(id)?.pickup()
+      commit('pickup')
+    }
   },
   ready: ({ commit }) => {
     log('dispatch call/ready')
     commit('ready')
   },
-  hangup: ({ commit, getters, dispatch }, { initiator }: CallOptions = {}) => {
-    log('dispatch call/hangup')
-    const id = getters['remote']
-    if (initiator && id) getPeer(id)?.hangup()
-    commit('hangup')
-    dispatch('messages/hangup', id, { root: true })
-    dispatch('local/status', 'available', { root: true })
+  hangup: {
+    root: true,
+    handler: (
+      { commit, getters, dispatch },
+      { initiator }: CallOptions = {}
+    ) => {
+      log('dispatch call/hangup')
+      const id = getters['remote']
+      if (initiator && id) getPeer(id)?.hangup()
+      commit('hangup')
+    }
   }
 }
 

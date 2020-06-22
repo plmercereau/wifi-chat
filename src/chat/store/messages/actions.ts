@@ -35,23 +35,31 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
       type: 'message'
     })
   },
-  pickup: ({ commit, rootGetters }, id: string) => {
-    const message: Message = {
-      sent: false,
-      receivedAt: rootGetters['call/startedAt'],
-      message: ['start'],
-      type: 'call'
+  pickup: {
+    root: true,
+    handler: ({ commit, rootGetters }) => {
+      log('dispatch messages/pickup')
+      const message: Message = {
+        sent: false,
+        receivedAt: rootGetters['call/startedAt'],
+        message: ['start'],
+        type: 'call'
+      }
+      commit('add', { id: rootGetters['call/remote'], ...message })
     }
-    commit('add', { id, ...message })
   },
-  hangup: ({ commit, rootGetters }, id: string) => {
-    const message: Message = {
-      sent: false,
-      receivedAt: rootGetters['call/endedAt'],
-      message: ['end'],
-      type: 'call'
+  hangup: {
+    root: true,
+    handler: ({ commit, rootGetters }) => {
+      log('dispatch messages/hangup')
+      const message: Message = {
+        sent: false,
+        receivedAt: rootGetters['call/endedAt'],
+        message: ['end'],
+        type: 'call'
+      }
+      commit('add', { id: rootGetters['call/remote'], ...message })
     }
-    commit('add', { id, ...message })
   }
 }
 

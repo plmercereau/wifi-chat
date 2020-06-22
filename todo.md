@@ -11,7 +11,7 @@
 - [x] swipe item to call
 - [ ] swipe item to archive?
 - [ ] add calls information (rejected/stared + duration) to chat messages
-- [ ] show chat duration
+- [x] show chat duration
 - [ ] auto-answer option?
 - [ ] add more composable methods
 - [ ] change http(s) mDNS service type to something else e.g. ws(s) or a custom type
@@ -28,3 +28,5 @@
 - [x] first chat message is not set in the getter
 - [x] on start, remote server stays connected in the list (persisted that way)
 - [x] set 'busy' status when calling
+- [x] root pickup/hangup vuex actions
+- [ ] root disconnect/connect vuex actions

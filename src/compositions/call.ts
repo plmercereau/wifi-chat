@@ -16,7 +16,7 @@ export const useCall = () => {
   }
   const calling = computed<boolean>(() => store.getters['call/calling'])
   const hangup = () => {
-    store.dispatch('call/hangup', { initiator: true })
+    store.dispatch('hangup', { initiator: true })
   }
   const videoCall = (id: string) => {
     call(id)

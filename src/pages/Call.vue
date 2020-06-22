@@ -86,7 +86,7 @@ export default defineComponent({
         })
         .catch(error => {
           log('(call) error', error)
-          store.dispatch('call/hangup', { initiator: true })
+          store.dispatch('hangup', { initiator: true })
         })
     else
       log(
