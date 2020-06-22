@@ -1,27 +1,26 @@
 # TODO list
 
+## Must
+
 - [x] capture avatar in electon. See https://capacitor.ionicframework.com/docs/pwa-elements/
 - [x] mirror call/ring actions
 - [ ] network/wifi
 - [x] reconnect when connection is lost
 - [x] poll unconnected servers
 - [x] get rid of netcat/checkServer as it is implied when ws connection succeeds/fails
-- [ ] limit animations in quasar.conf to the ones that are actually used
 - [x] archive offline servers when no messages history
 - [x] swipe item to call
-- [ ] swipe item to archive?
 - [ ] add calls information (rejected/stared + duration) to chat messages
 - [x] show chat duration
-- [ ] auto-answer option?
-- [ ] add more composable methods
-- [ ] change http(s) mDNS service type to something else e.g. ws(s) or a custom type
-- [ ] implement WSS?
+- [ ] auto-answer option
+- [ ] auto-call option
 - [x] stop using immutable in the servers vuex module, and uninstall the immutable package
 - [ ] prompts to allow network connections on electron startup: use the same thread (remote?) -> sign electron app?
-- [ ] mute/unmute call
+- [x] mute/unmute call
+- [x] turn the camera on/off
 - [ ] change front/rear camera
-- [ ] select audio/video sources, if more than one each
-- [ ] start/stop video during call
+- [ ] settings: select camera/microphone: show a screen with the mic and video, and dropdown lists of the possible devices. Then persist the selected device ids.
+- [x] start/stop video during call
 - [ ] show audio waves instead of video when video is off - of show avatar?
 - [x] block calls when server is disconnected/not available
 - [ ] block sending messages when server is disconnected/not available - queue them at a later stage
@@ -30,3 +29,18 @@
 - [x] set 'busy' status when calling
 - [x] root pickup/hangup vuex actions
 - [ ] root disconnect/connect vuex actions
+- [ ] call buttons on the left or right side of the screen depending on its size
+- [ ] why all those udp errors in electron dev mode?
+- [ ] sort the list by status - available first, busy second, disconnected at last
+- [ ] i18n
+- [ ] i18n: change in settings
+- [ ] i18n: select on initial start
+- [ ] settings: reset
+
+## Less important
+
+- [ ] implement WSS?
+- [ ] limit animations in quasar.conf to the ones that are actually used
+- [ ] swipe item to archive/delete? -> find a way to clean the list of former/disconnected devices
+- [ ] add more composable methods
+- [ ] change http(s) mDNS service type to something else e.g. ws(s) or a custom type

@@ -21,7 +21,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
           { root: true }
         ),
       status: () => dispatch('status', { id, status: data.value }),
-      call: () => dispatch(`call/${data.value}`, { id }, { root: true })
+      call: () => dispatch(`${data.value}`, { id }, { root: true })
     }
     dataHandlers[data.type]()
   },

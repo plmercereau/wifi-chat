@@ -29,13 +29,15 @@ const actions: ActionTree<LocalStateInterface, {}> = {
   pickup: {
     root: true,
     handler: ({ dispatch }) => {
-      dispatch('status', 'busy', { root: true })
+      log('dispatch local/pickup')
+      dispatch('status', 'busy')
     }
   },
   hangup: {
     root: true,
     handler: ({ dispatch }) => {
-      dispatch('status', 'available', { root: true })
+      log('dispatch local/hangup')
+      dispatch('status', 'available')
     }
   }
 }

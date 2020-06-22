@@ -22,8 +22,17 @@
           transition(appear
             enter-active-class="animated fadeIn"
             leave-active-class="animated fadeOut")
-            div(v-if="visibleMenu")
-              q-btn(color="red" icon="call_end" @click="hangup")  
+            div.q-pa-md.q-gutter-sm(v-if="visibleMenu")
+              q-btn(@click="hangup" icon="call_end" round color="red")
+                q-tooltip Hangup
+              q-btn(@click="toggleMicro" :icon="micro ? 'mic' : 'mic_off'" round)
+                q-tooltip(v-if="micro") Mute
+                q-tooltip(v-else) Unmute
+              q-btn(@click="toggleCamera" :icon="camera ? 'videocam' : 'videocam_off'" round)
+                q-tooltip(v-if="camera") Hide video
+                q-tooltip(v-else) Show video
+              q-btn(@click="toggleFrontRear" :icon="frontCamera ? 'camera_front' : 'camera_rear'" round)
+                q-tooltip Toggle front/rear camera
 </template>
 
 <script lang="ts">
@@ -31,7 +40,8 @@ import {
   defineComponent,
   ref,
   watchEffect,
-  computed
+  computed,
+  Ref
 } from '@vue/composition-api'
 import { store } from 'src/store'
 import AvatarComponent from 'components/Avatar.vue'
@@ -67,6 +77,40 @@ export default defineComponent({
     const visibleMenu = computed(() => hover.value || clicked.value)
     const localStream = ref<MediaStream>()
     const remoteStream = ref<MediaStream>()
+
+    const toggleTrack = (
+      track: 'microphone' | 'camera',
+      toggle: Ref<boolean>
+    ) => {
+      console.log('toggle track')
+      const stream = localStream.value
+      const peer = getPeer(props.id)
+      const getter =
+        track === 'microphone' ? 'getAudioTracks' : 'getVideoTracks'
+      if (stream && peer) {
+        const track = stream[getter]()[0]
+        track.enabled = !track.enabled
+        peer.replaceTrack(track, track, stream)
+        toggle.value = !toggle.value
+      }
+    }
+    const micro = ref(true)
+    const toggleMicro = () => toggleTrack('microphone', micro)
+
+    const camera = ref(true)
+    const toggleCamera = () => toggleTrack('camera', camera)
+
+    // TODO
+    const frontCamera = ref(true)
+    const toggleFrontRear = () => {
+      frontCamera.value = !frontCamera.value
+      navigator.mediaDevices.enumerateDevices().then(res => {
+        res.forEach(device => {
+          console.log(device.toJSON())
+        })
+      })
+    }
+
     const stop = watchEffect(() => {
       if (store.getters['call/ongoing']) remoteStream.value = getRemoteStream()
       else if (remoteStream.value) {
@@ -76,10 +120,16 @@ export default defineComponent({
         stop()
       }
     })
+
     // TODO onMounted and async/await
     if (navigator.mediaDevices)
       navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
+        .getUserMedia({
+          video: {
+            facingMode: 'user' // TODO or environment
+          },
+          audio: true
+        })
         .then(local => {
           localStream.value = local
           getPeer(props.id)?.addStream(local)
@@ -101,6 +151,12 @@ export default defineComponent({
       server,
       timer,
       hangup,
+      micro,
+      toggleMicro,
+      camera,
+      toggleCamera,
+      frontCamera,
+      toggleFrontRear,
       localStream,
       remoteStream
     }
