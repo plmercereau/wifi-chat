@@ -4,13 +4,17 @@
   "description": "Peer to peer video chat without servers or internet",
   "author": "Pierre-Louis Mercereau <24897252+plmercereau@users.noreply.github.com>",
   "private": true,
+  "scripts": {
+    "postinstall": "jetifier"
+  },
   "dependencies": {
-    "@capacitor/android": "^2.1.2",
-    "@capacitor/cli": "^1.0.0",
-    "@capacitor/core": "^1.0.0",
+    "@capacitor/android": "2.2.0",
+    "@capacitor/cli": "^2.0.0",
+    "@capacitor/core": "^2.0.0",
     "@ionic-native/web-socket-server": "^5.26.0",
     "@ionic-native/zeroconf": "^5.26.0",
     "cordova-plugin-websocket-server": "^1.6.0",
-    "cordova-plugin-zeroconf": "^1.4.2"
+    "cordova-plugin-zeroconf": "^1.4.2",
+    "jetifier": "^1.6.6"
   }
 }

@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "description": "Peer to peer video chat without servers or internet",
   "productName": "Wifi Chat",
-  "cordovaId": "plus.platy.chat",
-  "capacitorId": "",
+  "capacitorId": "plus.platy.chat",
   "author": "Pierre-Louis Mercereau <24897252+plmercereau@users.noreply.github.com>",
   "private": true,
   "scripts": {
@@ -12,12 +11,13 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@capacitor/core": "^2.1.2",
+    "@capacitor/core": "^2.2.0",
     "@ionic-native/core": "^5.26.0",
     "@ionic/pwa-elements": "^1.5.2",
     "@quasar/extras": "^1.0.0",
     "@vue/composition-api": "^0.5.0",
     "bonjour": "^3.5.0",
+    "core-js": "^3.0.0",
     "moment": "^2.26.0",
     "quasar": "^1.9.5",
     "simple-peer": "^9.7.2",
@@ -27,7 +27,7 @@
     "ws": "^7.3.0"
   },
   "devDependencies": {
-    "@quasar/app": "^1.6.2",
+    "@quasar/app": "^2.0.0",
     "@quasar/quasar-app-extension-qoverlay": "^1.0.3",
     "@types/bonjour": "^3.5.6",
     "@types/node": "^10.17.15",
@@ -54,9 +54,14 @@
     "yarn": ">= 1.21.1"
   },
   "browserslist": [
-    "last 1 version, not dead, ie >= 11"
-  ],
-  "resolutions": {
-    "@babel/parser": "7.7.5"
-  }
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ]
 }

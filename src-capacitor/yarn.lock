@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@capacitor/android@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.1.2.tgz#1b46359b981753b5d0950ad0e37db223402ec0ad"
-  integrity sha512-V24ZwerrFFWkcLYxhoofhg3Hv4BxH76EFr2zeVJOJkiY9yffey0VMjaE10QPyFrSIshbDtEsYwm2gxUc4wxgjA==
+"@capacitor/android@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-2.2.0.tgz#89410245a173288e6fe9017b0d39f6fdbfae51e9"
+  integrity sha512-mFRGfaA/crSHH6P8PYAIDBXL4LFCsjgRhSqzfTMo1+PPnDsZ77Wy01FtB1EN5JVCRgb+Y1YIChcbf5F2Qn5ZjQ==
 
-"@capacitor/cli@^1.0.0":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-1.5.2.tgz#f5abb08f339113a308d3590a9c2219fcdcd73069"
-  integrity sha512-YmLJm4aBLCVnDc3Is8024TgJzzhS/ms+eHW98sU752thE0mwrDvwB3ULHEn3FvPlVInktIhhDSZyZZD4QpfqSw==
+"@capacitor/cli@^2.0.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-2.2.0.tgz#477b086eff9e158aef72fb3b2807007425d4b951"
+  integrity sha512-JyqBixUOIfJ1FEuT6v9B9yoejL1+Y7tk/eTiKXs4wUOSb2RTwbXUfy4CozteaY72UP9TvvL+duXk3qeyny7/vQ==
   dependencies:
     chalk "^2.3.0"
     commander "^2.12.2"
@@ -24,10 +24,10 @@
     which "^1.3.0"
     xml2js "^0.4.19"
 
-"@capacitor/core@^1.0.0":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-1.5.2.tgz#c32db9fa5659c4327ac467c5eaf47391191683b5"
-  integrity sha512-0UPJUzwVrPM4YY4BPLr6oypmn8FYF7iaOYujAtUtOfQjuoAvg7c5DKdZ8LOQtsuG6JqsIsTcqZ6w8nGQQ+g0YQ==
+"@capacitor/core@^2.0.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-2.2.0.tgz#60f7b2126a5a223cb1ede055a65df6ad0d719f4b"
+  integrity sha512-ClxXjOUCF0wZpznZI6f6uXK2LLzWBx5Ly/g7Hqu8R8wNdaKYoh83eMuT+m5G1gfxhcALAAJNUhHccnCW3ohftg==
   dependencies:
     tslib "^1.9.0"
 
@@ -220,6 +220,11 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
+
+jetifier@^1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-1.6.6.tgz#fec8bff76121444c12dc38d2dad6767c421dab68"
+  integrity sha512-JNAkmPeB/GS2tCRqUzRPsTOHpGDah7xP18vGJfIjZC+W2sxEHbxgJxetIjIqhjQ3yYbYNEELkM/spKLtwoOSUQ==
 
 jsonfile@^4.0.0:
   version "4.0.0"

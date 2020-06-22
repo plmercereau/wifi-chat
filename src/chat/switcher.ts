@@ -1,4 +1,5 @@
 import { Platform } from 'quasar'
+console.log(Platform.is)
 import { Module } from './types'
 
 let _module: Module

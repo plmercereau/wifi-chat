@@ -37,6 +37,8 @@ import AvatarComponent from 'components/Avatar.vue'
 import { getPeer, getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
 import { Route, NavigationGuardNext } from 'vue-router'
 import { useServer, useCall } from 'src/compositions'
+import { log } from 'src/chat/switcher'
+import { Plugins } from '@capacitor/core'
 
 export default defineComponent({
   name: 'PageCall',
@@ -75,12 +77,21 @@ export default defineComponent({
       }
     })
     // TODO onMounted and async/await
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then(local => {
-        localStream.value = local
-        getPeer(props.id)?.addStream(local)
-      })
+    if (navigator.mediaDevices)
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then(local => {
+          localStream.value = local
+          getPeer(props.id)?.addStream(local)
+        })
+        .catch(error => {
+          log('(call) error', error)
+          store.dispatch('call/hangup', { initiator: true })
+        })
+    else
+      log(
+        'navigator.mediaDevices is undefined! The local stream will not start'
+      )
     const server = useServer(props)
     const { hangup } = useCall()
     return {

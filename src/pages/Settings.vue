@@ -63,7 +63,7 @@ export default defineComponent({
         const { dataUrl } = await Camera.getPhoto({
           // * See https://capacitor.ionicframework.com/docs/apis/camera/
           quality: 90,
-          allowEditing: true,
+          allowEditing: false,
           direction: CameraDirection.Front,
           // promptLabelHeader: 'Change your avatar',
           resultType: CameraResultType.DataUrl,
