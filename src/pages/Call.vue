@@ -7,6 +7,7 @@
         q-toolbar.bg-primary.z-top.absolute(v-if="visibleMenu && server")
           avatar(:src="server.avatar" :status="server.status" :name="server.name")
           q-toolbar-title {{server.name}}
+          div {{timer}}
     q-page-container
       q-page
         transition(appear
@@ -92,12 +93,13 @@ export default defineComponent({
         'navigator.mediaDevices is undefined! The local stream will not start'
       )
     const server = useServer(props)
-    const { hangup } = useCall()
+    const { timer, hangup } = useCall()
     return {
       hover,
       showMenu,
       visibleMenu,
       server,
+      timer,
       hangup,
       localStream,
       remoteStream

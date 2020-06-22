@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex'
 import { log } from 'src/chat/switcher'
 import { getPeer } from '../../webrtc'
-import { ServerConnection } from '../../types'
+import { ServerConnection, Message } from '../../types'
 import { MessagesStateInterface } from './state'
 
 const actions: ActionTree<MessagesStateInterface, {}> = {
@@ -34,6 +34,24 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
       message,
       type: 'message'
     })
+  },
+  pickup: ({ commit, rootGetters }, id: string) => {
+    const message: Message = {
+      sent: false,
+      receivedAt: rootGetters['call/startedAt'],
+      message: ['start'],
+      type: 'call'
+    }
+    commit('add', { id, ...message })
+  },
+  hangup: ({ commit, rootGetters }, id: string) => {
+    const message: Message = {
+      sent: false,
+      receivedAt: rootGetters['call/endedAt'],
+      message: ['end'],
+      type: 'call'
+    }
+    commit('add', { id, ...message })
   }
 }
 

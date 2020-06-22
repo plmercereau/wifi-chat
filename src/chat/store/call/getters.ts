@@ -7,7 +7,9 @@ const getters: GetterTree<CallStateInterface, {}> = {
   calling: state => state.initiator && state.status === 'ringing',
   starting: state => state.status === 'starting',
   ongoing: state => state.status === 'ongoing',
-  remote: state => state.remote
+  remote: state => state.remote,
+  startedAt: state => state.startedAt,
+  endedAt: state => state.endedAt
 }
 
 export default getters

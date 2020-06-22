@@ -1,5 +1,6 @@
 import { store } from 'src/store'
-import { computed } from '@vue/composition-api'
+import { computed, ref } from '@vue/composition-api'
+import moment from 'moment'
 
 export const useCall = () => {
   const call = (
@@ -26,5 +27,15 @@ export const useCall = () => {
       video: false
     })
   }
-  return { call, videoCall, audioCall, hangup, calling }
+  const now = ref(Date.now())
+  setInterval(() => {
+    now.value = Date.now()
+  }, 1000)
+
+  const timer = computed(() =>
+    moment(now.value - store.getters['call/startedAt'] - 1000 * 60 * 60).format(
+      'HH:mm:ss'
+    )
+  )
+  return { call, videoCall, audioCall, hangup, calling, timer }
 }

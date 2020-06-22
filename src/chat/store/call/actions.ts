@@ -13,8 +13,10 @@ const actions: ActionTree<CallStateInterface, {}> = {
   },
   pickup: ({ commit, getters, dispatch }, { initiator }: CallOptions = {}) => {
     log('dispatch call/pickup')
-    if (initiator && getters['remote']) getPeer(getters['remote'])?.pickup()
+    const id = getters['remote']
+    if (initiator && id) getPeer(getters['remote'])?.pickup()
     commit('pickup')
+    dispatch('messages/pickup', id, { root: true })
     dispatch('local/status', 'busy', { root: true })
   },
   ready: ({ commit }) => {
@@ -23,8 +25,10 @@ const actions: ActionTree<CallStateInterface, {}> = {
   },
   hangup: ({ commit, getters, dispatch }, { initiator }: CallOptions = {}) => {
     log('dispatch call/hangup')
-    if (initiator && getters['remote']) getPeer(getters['remote'])?.hangup()
+    const id = getters['remote']
+    if (initiator && id) getPeer(id)?.hangup()
     commit('hangup')
+    dispatch('messages/hangup', id, { root: true })
     dispatch('local/status', 'available', { root: true })
   }
 }

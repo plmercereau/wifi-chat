@@ -12,6 +12,7 @@ export type Message = {
   message: string[]
   type: 'message' | 'call'
 }
+
 export type OutputMessage = {
   timestamp: number
   type: 'message' | 'date' | 'call'

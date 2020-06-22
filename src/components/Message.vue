@@ -6,6 +6,7 @@
 import { defineComponent, computed, PropType } from '@vue/composition-api'
 import DefaultMessageComponent from 'components/DefaultMessage.vue'
 import TimestampMessageComponent from 'components/TimestampMessage.vue'
+import CallMessageComponent from 'components/CallMessage.vue'
 import { ServerConnection, OutputMessage } from 'src/chat/types'
 
 export default defineComponent({
@@ -22,8 +23,8 @@ export default defineComponent({
   },
   components: {
     PMessage: DefaultMessageComponent,
-    PDate: TimestampMessageComponent
-    // call : // TODO
+    PDate: TimestampMessageComponent,
+    PCall: CallMessageComponent // TODO
   },
 
   setup(props) {

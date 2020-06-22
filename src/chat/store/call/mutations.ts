@@ -9,12 +9,15 @@ const mutation: MutationTree<CallStateInterface> = {
   },
   ring: (state, { id, initiator }: CallOptions) => {
     log('commit call/ring', id, initiator)
+    state.startedAt = undefined
+    state.endedAt = undefined
     state.status = 'ringing'
     state.remote = id
     state.initiator = !!initiator
   },
   pickup: state => {
     log('commit call/pickup')
+    state.startedAt = Date.now()
     state.status = 'starting'
   },
   ready: state => {
@@ -23,6 +26,8 @@ const mutation: MutationTree<CallStateInterface> = {
   },
   hangup: state => {
     log('commit call/hangup')
+    state.startedAt = undefined
+    state.endedAt = Date.now()
     state.status = 'pending'
     state.remote = undefined
     state.initiator = false

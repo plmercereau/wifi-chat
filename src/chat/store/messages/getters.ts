@@ -13,32 +13,44 @@ const getters: GetterTree<MessagesStateInterface, {}> = {
     let lastDay = 0
     let newMessage: OutputMessage | undefined = undefined
     for (const message of messages) {
-      const timestamp = messageTime(message)
-      const timeSpan = second(timestamp)
-      const day = Math.floor(timestamp / (1000 * 60 * 60 * 24))
-      if (day > lastDay) {
-        result.push({
-          type: 'date',
-          data: [],
-          sent: false,
-          timestamp: timestamp - 1
-        })
-        lastDay = day
-      }
-      if (timeSpan > lastTimeSpan + 3 || lastSender != message.sent) {
-        newMessage = {
-          type: 'message',
-          timestamp,
-          data: message.message,
-          sent: message.sent
+      if (message.type === 'message') {
+        const timestamp = messageTime(message)
+        const timeSpan = second(timestamp)
+        const day = Math.floor(timestamp / (1000 * 60 * 60 * 24))
+        if (day > lastDay) {
+          result.push({
+            type: 'date',
+            data: [],
+            sent: false,
+            timestamp: timestamp - 1
+          })
+          lastDay = day
         }
-        result.push(newMessage)
-        lastTimeSpan = timeSpan
-        lastSender = message.sent
-      } else if (newMessage?.data) {
-        newMessage.data = [...newMessage.data, ...message.message]
+        if (timeSpan > lastTimeSpan + 3 || lastSender != message.sent) {
+          newMessage = {
+            type: 'message',
+            timestamp,
+            data: message.message,
+            sent: message.sent
+          }
+          result.push(newMessage)
+          lastTimeSpan = timeSpan
+          lastSender = message.sent
+        } else if (newMessage?.data) {
+          newMessage.data = [...newMessage.data, ...message.message]
+        }
+      } else {
+        // TODO call history
+        // if (message.message[0] === 'start')
+        //   result.push({
+        //     type: 'call',
+        //     data: ['call started at'],
+        //     timestamp: message.receivedAt || 0,
+        //     sent: false
+        //   })
       }
     }
+
     return result
   }
 }
