@@ -12,7 +12,7 @@
         transition(appear
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut")
-          video.fit.q-pa-xs(v-if="remoteStream" :srcObject.prop="remoteStream" autoplay playsinline)
+          video.window-height.q-pa-xs(v-if="remoteStream" :srcObject.prop="remoteStream" autoplay playsinline)
         transition(appear
           enter-active-class="animated fadeIn"
           leave-active-class="animated fadeOut")
@@ -106,9 +106,15 @@ export default defineComponent({
 })
 </script>
 <style scoped>
+video {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+}
 video.local {
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
   width: 30%;
+  border-radius: 25px;
 }
 </style>

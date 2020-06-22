@@ -39,6 +39,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
       commit('remove', id)
   },
   connect: async ({ rootGetters }, { id, secure, hostname, port }: Server) => {
+    // TODO set status to disconnected when the ws connection fails, or when it disconnects
     log('dispatch servers/connect')
     await new Promise<void>((resolve, reject) => {
       const localId = rootGetters['local/id']
