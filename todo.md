@@ -29,7 +29,6 @@
 - [x] set 'busy' status when calling
 - [x] root pickup/hangup vuex actions
 - [ ] root disconnect/connect vuex actions
-- [ ] call buttons on the left or right side of the screen depending on its size
 - [ ] why all those udp errors in electron dev mode?
 - [ ] sort the list by status - available first, busy second, disconnected at last
 - [ ] i18n
@@ -44,3 +43,4 @@
 - [ ] swipe item to archive/delete? -> find a way to clean the list of former/disconnected devices
 - [ ] add more composable methods
 - [ ] change http(s) mDNS service type to something else e.g. ws(s) or a custom type
+- [ ] call buttons on the left or right side of the screen depending on its size
