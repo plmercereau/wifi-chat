@@ -2,32 +2,11 @@
 
 ## Must
 
-- [x] capture avatar in electon. See https://capacitor.ionicframework.com/docs/pwa-elements/
-- [x] mirror call/ring actions
 - [ ] network/wifi
-- [x] reconnect when connection is lost
-- [x] poll unconnected servers
-- [x] get rid of netcat/checkServer as it is implied when ws connection succeeds/fails
-- [x] archive offline servers when no messages history
-- [x] swipe item to call
-- [ ] add calls information (rejected/stared + duration) to chat messages
-- [x] show chat duration
 - [ ] auto-answer option
 - [ ] auto-call option
-- [x] stop using immutable in the servers vuex module, and uninstall the immutable package
 - [ ] prompts to allow network connections on electron startup: use the same thread (remote?) -> sign electron app?
-- [x] mute/unmute call
-- [x] turn the camera on/off
-- [ ] change front/rear camera
-- [ ] settings: select camera/microphone: show a screen with the mic and video, and dropdown lists of the possible devices. Then persist the selected device ids.
-- [x] start/stop video during call
-- [ ] show audio waves instead of video when video is off - of show avatar?
-- [x] block calls when server is disconnected/not available
 - [ ] block sending messages when server is disconnected/not available - queue them at a later stage
-- [x] first chat message is not set in the getter
-- [x] on start, remote server stays connected in the list (persisted that way)
-- [x] set 'busy' status when calling
-- [x] root pickup/hangup vuex actions
 - [ ] root disconnect/connect vuex actions
 - [ ] why all those udp errors in electron dev mode?
 - [ ] sort the list by status - available first, busy second, disconnected at last
@@ -36,6 +15,27 @@
 - [ ] i18n: select on initial start
 - [ ] settings: reset
 - [ ] play sound and vibrations when ringing
+- [ ] add calls information (rejected/stared + duration) to chat messages
+- [ ] change front/rear camera
+- [ ] settings: select camera/microphone: show a screen with the mic and video, and dropdown lists of the possible devices. Then persist the selected device ids.
+- [ ] show audio waves instead of video when video is off - of show avatar?
+- [x] capture avatar in electon. See https://capacitor.ionicframework.com/docs/pwa-elements/
+- [x] mirror call/ring actions
+- [x] reconnect when connection is lost
+- [x] poll unconnected servers
+- [x] get rid of netcat/checkServer as it is implied when ws connection succeeds/fails
+- [x] archive offline servers when no messages history
+- [x] swipe item to call
+- [x] show chat duration
+- [x] stop using immutable in the servers vuex module, and uninstall the immutable package
+- [x] mute/unmute call
+- [x] turn the camera on/off
+- [x] start/stop video during call
+- [x] block calls when server is disconnected/not available
+- [x] first chat message is not set in the getter
+- [x] on start, remote server stays connected in the list (persisted that way)
+- [x] set 'busy' status when calling
+- [x] root pickup/hangup vuex actions
 
 ## Less important
 
