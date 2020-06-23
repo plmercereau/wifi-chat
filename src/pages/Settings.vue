@@ -28,6 +28,7 @@
                 q-item-label {{name}}
               q-item-section(v-if="!editingName" side top)
                 q-btn(icon="create" flat round color="primary" @click="editName")
+            q-separator
             q-item
               q-item-section
                 q-item-label(caption) {{ $t('language') }}
