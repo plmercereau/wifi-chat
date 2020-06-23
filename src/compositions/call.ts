@@ -1,7 +1,9 @@
-import { store } from 'src/store'
 import { computed } from '@vue/composition-api'
+import { Store } from 'vuex'
 
-export const useCall = () => {
+import { GlobalState } from 'src/chat/store'
+
+export const useCall = (store: Store<GlobalState>) => {
   const call = (
     id: string,
 

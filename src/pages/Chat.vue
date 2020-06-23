@@ -36,26 +36,30 @@ import {
 
 export default defineComponent({
   name: 'PageChat',
+
   components: {
     PAvatar: AvatarComponent,
     PMessage: MessageComponent
   },
+
   props: {
     id: {
       type: String,
       required: true
     }
   },
+
   beforeRouteEnter: (to, from, next) => {
     if (store.getters['servers/get'](to.params['id'])) next()
     else next('/')
   },
-  setup(props) {
+
+  setup(props, { root: { $store } }) {
     const { id } = toRefs(props)
-    const server = useServer(id)
-    const messages = useMessages(server)
-    const { message, send } = useSendMessage(server)
-    const { calling, hangup, videoCall, audioCall } = useCall()
+    const server = useServer($store, id)
+    const messages = useMessages($store, server)
+    const { message, send } = useSendMessage($store, server)
+    const { calling, hangup, videoCall, audioCall } = useCall($store)
 
     const chatRef = ref<Element>([])
     useScrollDown(chatRef, messages)

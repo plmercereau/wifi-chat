@@ -29,33 +29,37 @@
 import { defineComponent } from '@vue/composition-api'
 import { Route, NavigationGuardNext } from 'vue-router'
 import AvatarComponent from 'components/Avatar.vue'
-import { useServers } from 'src/chat'
 import { store } from 'src/store'
-import { useLocal, useCall } from 'src/compositions'
+import { useLocal, useCall, useServers } from 'src/compositions'
 
 export default defineComponent({
   name: 'PageIndex',
+
   components: {
     PAvatar: AvatarComponent
   },
+
   beforeRouteEnter: (to: Route, from: Route, next: NavigationGuardNext) => {
     if (store.getters['local/name']) next()
     else next('/start')
   },
-  setup() {
-    const { name, avatar, status } = useLocal()
-    const { videoCall } = useCall()
+
+  setup(_, { root: { $store } }) {
+    const { name, avatar, status } = useLocal($store)
+    const { videoCall } = useCall($store)
+
     const onLeft = ({ reset }: { reset: Function }, id: string) => {
       reset()
       videoCall(id)
     }
+
     return {
       videoCall,
       onLeft,
       name,
       avatar,
       status,
-      servers: useServers(store)
+      servers: useServers($store)
     }
   }
 })

@@ -1,5 +1,4 @@
 import _Vue from 'vue'
-import { computed } from '@vue/composition-api'
 import { Store } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
@@ -9,9 +8,6 @@ import { GlobalState, local, connections, messages, call } from './store'
 export interface ChatPluginOptions {
   store: Store<GlobalState>
 }
-
-export const useServers = (store: Store<GlobalState>) =>
-  computed<ServerConnection[]>(() => store.getters['connections/list'])
 
 let store: Store<GlobalState>
 

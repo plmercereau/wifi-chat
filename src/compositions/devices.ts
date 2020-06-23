@@ -1,9 +1,11 @@
 import { ref, Ref } from '@vue/composition-api'
+import { Store } from 'vuex'
+
+import { GlobalState } from 'src/chat/store'
 import { getPeer } from 'src/chat/webrtc'
 import { log } from 'src/chat/switcher'
-import { store } from 'src/store'
 
-export const useLocalDevices = (id: Ref<string>) => {
+export const useLocalDevices = (store: Store<GlobalState>, id: Ref<string>) => {
   const stream = ref<MediaStream | undefined>()
   // TODO onMounted and async/await
   if (navigator.mediaDevices)

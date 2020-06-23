@@ -82,7 +82,7 @@ export default defineComponent({
       toggleMicro,
       toggleCamera,
       toggleFrontRear
-    } = useLocalDevices(id)
+    } = useLocalDevices($store, id)
 
     const remoteStream = ref<MediaStream>()
 
@@ -96,8 +96,8 @@ export default defineComponent({
       }
     })
 
-    const server = useServer(id)
-    const { startedAt, hangup } = useCall()
+    const server = useServer($store, id)
+    const { startedAt, hangup } = useCall($store)
     return {
       hover,
       showMenu,

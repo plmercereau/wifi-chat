@@ -60,7 +60,7 @@ export default defineComponent({
   },
   setup(_, { root: { $store, $tc, $router } }) {
     // TODO create an inline input component that wraps the 'set name' logic
-    const { name, avatar } = useLocal()
+    const { name, avatar } = useLocal($store)
     const inputName = ref('')
     const editingName = ref(false)
     const editName = () => {

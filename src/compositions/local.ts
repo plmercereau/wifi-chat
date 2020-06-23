@@ -1,7 +1,9 @@
 import { computed } from '@vue/composition-api'
-import { store } from 'src/store'
+import { Store } from 'vuex'
 
-export const useLocal = () => {
+import { GlobalState } from 'src/chat/store'
+
+export const useLocal = (store: Store<GlobalState>) => {
   const name = computed<string>(() => store.getters['local/name'])
   const avatar = computed<string>(() => store.getters['local/avatar'])
   const status = computed<string>(() => store.getters['local/status'])
