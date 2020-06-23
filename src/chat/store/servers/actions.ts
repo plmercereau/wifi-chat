@@ -33,7 +33,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     log('dispatch servers/disconnect')
     if (rootGetters['call/remote'] === id)
       dispatch('hangup', undefined, { root: true })
-    dispatch('status', { id, status: 'disconnect' })
+    dispatch('status', { id, status: 'disconnected' })
   },
   remove: (
     { commit, rootGetters },
