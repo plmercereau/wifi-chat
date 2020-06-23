@@ -6,7 +6,6 @@ export const useSendMessage = (server: Ref<ServerConnection>) => {
   const message = ref('')
   const send = () => {
     if (!message.value) return
-    console.log(`Sending ${message.value}`)
     store.dispatch('messages/send', {
       id: server.value.id,
       message: [message.value]

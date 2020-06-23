@@ -11,7 +11,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     { commit, dispatch },
     { id, strData }: { id: string; strData: string }
   ) => {
-    log('dispatch servers/on')
+    log('(dispatch) connections/on')
     const data: Data = JSON.parse(strData)
     const dataHandlers = {
       name: () => commit('update', { id, name: data.value }),
@@ -28,11 +28,11 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     dataHandlers[data.type]()
   },
   status: ({ commit }, { id, status }: { id: string; status: Status }) => {
-    log('dispatch servers/status')
+    log('(dispatch) connections/status')
     commit('update', { id, status: status })
   },
   disconnect: ({ dispatch, rootGetters }, id: string) => {
-    log('dispatch servers/disconnect')
+    log('(dispatch) connections/disconnect')
     if (rootGetters['call/remote'] === id)
       dispatch('hangup', undefined, { root: true })
     dispatch('status', { id, status: 'disconnected' })
@@ -41,7 +41,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     { commit, rootGetters },
     { id, checkHistory }: { id: string; checkHistory: boolean }
   ) => {
-    log('dispatch servers/remove')
+    log('(dispatch) connections/remove')
     // TODO rootGetters['messages/get'](id).length === 0 => dedicated getter
     if (!checkHistory || rootGetters['messages/get'](id).length === 0)
       commit('remove', id)
@@ -51,7 +51,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     { id, secure, hostname, port }: Server
   ) => {
     // TODO set status to disconnected when the ws connection fails, or when it disconnects
-    log('dispatch servers/connect')
+    log('(dispatch) connections/connect')
     await new Promise<void>((resolve, reject) => {
       const localId = rootGetters['local/id']
       if (getPeer(id)) {
@@ -107,7 +107,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
   reset: {
     root: true,
     handler: ({ commit }) => {
-      log('dispatch servers/reset')
+      log('(dispatch) connections/reset')
       disconnectAll()
       commit('reset')
     }

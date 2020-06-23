@@ -15,7 +15,7 @@ import {
   ref,
   toRefs
 } from '@vue/composition-api'
-import { store } from 'src/store'
+
 import moment from 'moment'
 
 export default defineComponent({
@@ -30,10 +30,10 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  setup(props, { root: { $store } }) {
     const { server, message } = toRefs(props)
     const avatar = computed(() =>
-      message.value.sent ? store.getters['local/avatar'] : server.value.avatar
+      message.value.sent ? $store.getters['local/avatar'] : server.value.avatar
     )
     const now = ref(Date.now())
     setInterval(() => (now.value = Date.now()), 3000)

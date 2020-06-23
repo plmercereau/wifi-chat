@@ -46,7 +46,7 @@ export class ExtendedPeer extends Peer {
     this.on('close', () => {
       log('(peer) close', this.id)
       peers.delete(this.id)
-      this.store.dispatch('servers/disconnect', this.id)
+      this.store.dispatch('connections/disconnect', this.id)
     })
     this.on('connect', () => {
       log('(peer) connect', this.id)
@@ -56,7 +56,7 @@ export class ExtendedPeer extends Peer {
     })
     this.on('data', strData => {
       log('(peer) data received', this.id)
-      this.store.dispatch('servers/on', { id: this.id, strData })
+      this.store.dispatch('connections/on', { id: this.id, strData })
     })
     this.on('stream', (stream: MediaStream) => {
       console.log('(peer) add stream', this.id)

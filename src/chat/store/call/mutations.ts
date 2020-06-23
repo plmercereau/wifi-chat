@@ -6,11 +6,11 @@ import { CallStateInterface, initialState, CallOptions } from './state'
 
 const mutation: MutationTree<CallStateInterface> = {
   reset: state => {
-    log('commit call/reset')
+    log('(commit) call/reset')
     Object.assign(state, initialState())
   },
   ring: (state, { id, initiator }: CallOptions) => {
-    log('commit call/ring', id, initiator)
+    log('(commit) call/ring', id, initiator)
     state.startedAt = undefined
     state.endedAt = undefined
     state.status = 'ringing'
@@ -18,16 +18,16 @@ const mutation: MutationTree<CallStateInterface> = {
     state.initiator = !!initiator
   },
   pickup: state => {
-    log('commit call/pickup')
+    log('(commit) call/pickup')
     state.startedAt = Date.now()
     state.status = 'starting'
   },
   ready: state => {
-    log('commit call/ready')
+    log('(commit) call/ready')
     state.status = 'ongoing'
   },
   hangup: state => {
-    log('commit call/hangup')
+    log('(commit) call/hangup')
     state.startedAt = undefined
     state.endedAt = Date.now()
     state.status = 'pending'

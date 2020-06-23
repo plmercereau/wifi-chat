@@ -47,12 +47,10 @@
 import { defineComponent, ref } from '@vue/composition-api'
 import PAvatarImage from 'components/AvatarImage.vue'
 import PSelectLanguage from 'components/SelectLanguage.vue'
-import { store } from 'src/store'
 import { useLocal } from 'src/compositions'
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core'
 const { Camera } = Plugins
 import { Dialog } from 'quasar'
-import { useStop } from 'src/chat'
 
 export default defineComponent({
   name: 'PageChat',
@@ -60,7 +58,7 @@ export default defineComponent({
     PAvatarImage,
     PSelectLanguage
   },
-  setup(_, ctx) {
+  setup(_, { root: { $store, $tc, $router } }) {
     // TODO create an inline input component that wraps the 'set name' logic
     const { name, avatar } = useLocal()
     const inputName = ref('')
@@ -70,7 +68,7 @@ export default defineComponent({
       inputName.value = name.value
     }
     const changeName = () => {
-      store.dispatch('local/name', inputName.value)
+      $store.dispatch('local/name', inputName.value)
       editingName.value = false
     }
 
@@ -85,24 +83,22 @@ export default defineComponent({
           resultType: CameraResultType.DataUrl,
           height: 128
         })
-        store.dispatch('local/avatar', dataUrl)
+        $store.dispatch('local/avatar', dataUrl)
       } catch (error) {
-        console.log(error)
+        console.log('(avatar)', error)
       }
     }
-    const stopServer = useStop(store)
+
     const reset = () => {
-      console.log('HEREHERE')
       Dialog.create({
-        title: ctx.root.$tc('reset_confirm_title'),
-        message: ctx.root.$tc('reset_confirm_message'),
+        title: $tc('reset_confirm_title'),
+        message: $tc('reset_confirm_message'),
         cancel: true,
         persistent: true,
         focus: 'cancel'
       }).onOk(async () => {
-        await stopServer()
-        await store.dispatch('reset', undefined, { root: true })
-        ctx.root.$router.push('/start')
+        await $store.dispatch('reset', undefined, { root: true })
+        $router.push('/start')
       })
     }
     return {

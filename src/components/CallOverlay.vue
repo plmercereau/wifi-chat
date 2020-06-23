@@ -12,28 +12,28 @@
 
 <script lang="ts">
 import { defineComponent, computed, watchEffect } from '@vue/composition-api'
-import { store } from '../store'
+
 export default defineComponent({
   name: 'CallOverlay',
-  setup(_, { root: { $router } }) {
-    const ringing = computed(() => store.getters['call/ringing'])
-    const receivingCall = computed(() => store.getters['call/receivingCall'])
-    const remoteId = computed(() => store.getters['call/remote'])
+  setup(_, { root: { $router, $store } }) {
+    const ringing = computed(() => $store.getters['call/ringing'])
+    const receivingCall = computed(() => $store.getters['call/receivingCall'])
+    const remoteId = computed(() => $store.getters['call/remote'])
     const remote = computed(
-      () => remoteId.value && store.getters['servers/get'](remoteId.value)
+      () => remoteId.value && $store.getters['servers/get'](remoteId.value)
     )
     const pickup = async () => {
-      await store.dispatch('pickup', { initiator: true })
+      await $store.dispatch('pickup', { initiator: true })
     }
     const stop = watchEffect(() => {
-      if (store.getters['call/starting']) {
+      if ($store.getters['call/starting']) {
         $router.push(`/call/${remoteId.value}`)
         stop()
       }
     })
 
     const hangup = () => {
-      store.dispatch('hangup', { initiator: true })
+      $store.dispatch('hangup', { initiator: true })
     }
     return { ringing, receivingCall, remote, pickup, hangup }
   }

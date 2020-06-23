@@ -20,7 +20,7 @@ const zeroconfToServer = ({
   if (!hostname || hostname.startsWith('unknown')) hostname = ipv4Addresses[0]
 
   if (!hostname) return
-  log('hostname', hostname)
+  log('(mdns) hostname', hostname)
   return {
     id: (txtRecord as TxtTypes).id,
     hostname: hostname,
@@ -30,13 +30,13 @@ const zeroconfToServer = ({
 }
 
 export const unpublish = async () => {
-  log('unpublishing...')
+  log('(mdns) unpublish')
   await Zeroconf.stop()
-  log('Service unregistered')
+  log('(mdns) service unregistered')
 }
 
 export const publish = async (id: string) => {
-  log('publishing...')
+  log('(mdns) publish')
   await unpublish()
   const result = await Zeroconf.register(
     `_${SERVICE_TYPE}._tcp.`,
@@ -48,15 +48,16 @@ export const publish = async (id: string) => {
       id
     }
   )
-  log('Service registered', JSON.stringify(result))
+  log('(mdns) service registered', JSON.stringify(result))
 }
 
 export const watch = (onUp: WatchEvent, onDown: WatchEvent) => {
+  log('(mdns) watch')
   Zeroconf.watch(`_${SERVICE_TYPE}._tcp.`, 'local.').subscribe(result => {
     if (result.action === 'added') {
       onUp(zeroconfToServer(result.service))
     } else if (result.action === 'resolved') {
-      log('resolved service', result.service)
+      log('(mdns) resolved service', result.service)
       onUp(zeroconfToServer(result.service))
     } else {
       onDown(zeroconfToServer(result.service))
@@ -65,5 +66,6 @@ export const watch = (onUp: WatchEvent, onDown: WatchEvent) => {
 }
 
 export const unwatch = async () => {
+  log('(mdns) unwatch')
   await Zeroconf.unwatch(`_${SERVICE_TYPE}._tcp.`, 'local.')
 }

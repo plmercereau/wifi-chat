@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api'
-import { store } from 'src/store'
 import { Locale } from 'src/chat/types'
 
 export default defineComponent({
@@ -26,12 +25,12 @@ export default defineComponent({
       required: false
     }
   },
-  setup() {
+  setup(_, { root: { $store } }) {
     const lang = computed<Locale>({
-      get: () => store.getters['local/locale'],
-      set: (value: Locale) => store.dispatch('local/locale', value)
+      get: () => $store.getters['local/locale'],
+      set: (value: Locale) => $store.dispatch('local/locale', value)
     })
-    const langOptions = [
+    const langOptions: { value: Locale; label: string }[] = [
       { value: 'en-us', label: '🇬🇧 English' },
       { value: 'fr', label: '🇫🇷 Français' }
     ]

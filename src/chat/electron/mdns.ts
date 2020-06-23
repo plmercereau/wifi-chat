@@ -30,7 +30,7 @@ const bonjourToServer = (bonjourService: Service): Server | undefined => {
 let browser: Browser | undefined
 
 export const watch = (onUp: WatchEvent, onDown: WatchEvent) => {
-  log('watch')
+  log('(mdns) watch')
   browser = getBonjour().find(
     { type: SERVICE_TYPE, protocol: 'tcp' },
     service => {
@@ -44,17 +44,17 @@ export const watch = (onUp: WatchEvent, onDown: WatchEvent) => {
 }
 
 export const unwatch = async () => {
-  log('unwatch')
+  log('(mdns) unwatch')
   browser?.stop()
   return Promise.resolve()
 }
 
 export const unpublish = async () =>
   new Promise<void>(resolve => {
-    log('unpublishing...')
+    log('(mdns) unpublish')
     if (bonjour) {
       bonjour.unpublishAll(() => {
-        log('unpublished all')
+        log('(mdns) unpublished all')
         bonjour?.destroy()
         resolve()
       })
@@ -63,7 +63,8 @@ export const unpublish = async () =>
 
 export const publish = async (id: string) => {
   electron.remote.app.on('will-quit', () => {
-    log('ELECTRON EVENT!!!!!!')
+    // TODO check if it works
+    log('(mdns) ELECTRON EVENT!!!!!!')
     unpublish().then(() => {
       electron.remote.app.quit()
     })
@@ -77,8 +78,8 @@ export const publish = async (id: string) => {
       id
     }
   }
-  log('publishing...', serviceOptions)
+  log('(mdns) publish', serviceOptions)
   const service = getBonjour().publish(serviceOptions)
-  log('published', service)
+  log('(mdns) published', service)
   return Promise.resolve()
 }

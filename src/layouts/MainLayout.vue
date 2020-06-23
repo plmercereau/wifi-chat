@@ -22,12 +22,10 @@ export default defineComponent({
     watch(
       () => context.root.$route,
       (to, from) => {
-        console.log('new route')
         const toDepth = to.path.split('/').length
         const fromDepth = from.path.split('/').length
         transitionName.value =
           toDepth < fromDepth ? 'slide-right' : 'slide-left'
-        console.log(transitionName.value)
       }
     )
     return { isIndex, transitionName }

@@ -1,4 +1,4 @@
-export type Locale = 'en-us'
+export type Locale = 'en-us' | 'fr'
 
 export interface Server {
   id: string

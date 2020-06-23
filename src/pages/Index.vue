@@ -29,7 +29,7 @@
 import { defineComponent } from '@vue/composition-api'
 import { Route, NavigationGuardNext } from 'vue-router'
 import AvatarComponent from 'components/Avatar.vue'
-import { useStart, useServers } from 'src/chat'
+import { useServers } from 'src/chat'
 import { store } from 'src/store'
 import { useLocal, useCall } from 'src/compositions'
 
@@ -44,13 +44,6 @@ export default defineComponent({
   },
   setup() {
     const { name, avatar, status } = useLocal()
-    const startServer = useStart(store)
-    const start = () => {
-      if (name.value) {
-        store.dispatch('local/name', name.value)
-        startServer()
-      }
-    }
     const { videoCall } = useCall()
     const onLeft = ({ reset }: { reset: Function }, id: string) => {
       reset()
@@ -59,7 +52,6 @@ export default defineComponent({
     return {
       videoCall,
       onLeft,
-      start,
       name,
       avatar,
       status,

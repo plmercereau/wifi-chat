@@ -23,11 +23,12 @@ export const useLocalDevices = (id: Ref<string>) => {
         store.dispatch('hangup', { initiator: true })
       })
   else
-    log('navigator.mediaDevices is undefined! The local stream will not start')
+    log(
+      '(call) navigator.mediaDevices is undefined! The local stream will not start'
+    )
 
   const toggleTrack = (track: 'microphone' | 'camera') => {
-    console.log('toggle track')
-
+    console.log('(call) toggle track')
     const peer = getPeer(id.value)
     const getter = track === 'microphone' ? 'getAudioTracks' : 'getVideoTracks'
     if (stream.value && peer) {
@@ -36,8 +37,10 @@ export const useLocalDevices = (id: Ref<string>) => {
       peer.replaceTrack(track, track, stream.value)
     }
   }
+
   const toggleMicro = () => toggleTrack('microphone')
   const toggleCamera = () => toggleTrack('camera')
+
   // TODO
   const toggleFrontRear = () => {
     navigator.mediaDevices.enumerateDevices().then(res => {

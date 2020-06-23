@@ -1,17 +1,17 @@
-import { ServersStateInterface } from './servers/state'
+import { ServersStateInterface } from './connections/state'
 import { MessagesStateInterface } from './messages/state'
 import { LocalStateInterface } from './local/state'
 import { CallStateInterface } from './call/state'
 import local from './local'
-import servers from './servers'
+import connections from './connections'
 import messages from './messages'
 import call from './call'
 
 export type GlobalState = {
-  servers: ServersStateInterface
+  connections: ServersStateInterface
   messages: MessagesStateInterface
   local: LocalStateInterface
   call: CallStateInterface
 }
 
-export { local, servers, messages, call }
+export { local, connections, messages, call }

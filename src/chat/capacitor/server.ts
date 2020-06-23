@@ -7,7 +7,7 @@ import { getStore } from '../index'
 import { log } from './utils'
 
 export const stopServer = async () => {
-  log('stop ws server')
+  log('(ws server) stop')
   await WebSocketServer.stop()
 }
 
@@ -15,17 +15,17 @@ export const startServer = async () => {
   try {
     await stopServer()
   } finally {
-    log('start ws server')
+    log('(ws server) start')
     return new Promise<void>((resolve, reject) => {
       const peerIds: Map<string, string> = new Map()
 
       WebSocketServer.start(SERVICE_PORT, {}).subscribe({
         next: server => {
-          log(`listening to port ${server.addr}:${server.port}...`)
+          log(`(ws server) listening to port ${server.addr}:${server.port}...`)
           resolve()
         },
         error: error => {
-          log('Unexpected error', error)
+          log('(ws server) unexpected error', error)
           reject(error)
         }
       })
@@ -38,7 +38,7 @@ export const startServer = async () => {
         log(`(ws server) received message from ${result.conn.uuid}.`, result)
         const parsedData = JSON.parse(result.msg)
         if (parsedData.id) {
-          log('(ws server) received ID', parsedData.id)
+          log('(ws server) received id', parsedData.id)
           if (getStore().getters['local/id'] === parsedData.id) {
             log('(ws server) loopback peer. Do nothing')
           } else {
@@ -53,7 +53,7 @@ export const startServer = async () => {
           }
         } else {
           log(
-            '(ws server) trigger signal of peer id ',
+            '(ws server) trigger signal of peer id',
             peerIds.get(result.conn.uuid)
           )
           const id = peerIds.get(result.conn.uuid)

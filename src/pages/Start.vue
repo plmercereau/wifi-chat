@@ -18,21 +18,18 @@
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
 import PSelectLanguage from 'components/SelectLanguage.vue'
-import { store } from 'src/store'
-import { useStart } from 'src/chat'
 
 export default defineComponent({
   name: 'PageIndex',
   components: {
     PSelectLanguage
   },
-  setup(_, { root: { $router } }) {
+  setup(_, { root: { $store, $router } }) {
     const name = ref<string>('')
-    const start = useStart(store)
     const save = async () => {
       if (name.value) {
-        store.dispatch('local/name', name.value)
-        await start()
+        $store.dispatch('local/name', name.value)
+        await $store.dispatch('local/start')
         $router.push('/')
       }
     }

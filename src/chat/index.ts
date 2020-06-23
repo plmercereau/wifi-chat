@@ -4,16 +4,14 @@ import { Store } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
 import { ServerConnection } from './types'
-import { startPoll } from './poll'
-import { GlobalState, local, servers, messages, call } from './store'
-export { useStart, useStop, EventBus } from './server'
+import { GlobalState, local, connections, messages, call } from './store'
 
 export interface ChatPluginOptions {
   store: Store<GlobalState>
 }
 
 export const useServers = (store: Store<GlobalState>) =>
-  computed<ServerConnection[]>(() => store.getters['servers/list'])
+  computed<ServerConnection[]>(() => store.getters['connections/list'])
 
 let store: Store<GlobalState>
 
@@ -23,7 +21,7 @@ export function ChatPlugin(
 ): void {
   store = vuexStore
   store.registerModule('local', local)
-  store.registerModule('servers', servers)
+  store.registerModule('connections', connections)
   store.registerModule('messages', messages)
   store.registerModule('call', call)
 
@@ -32,23 +30,24 @@ export function ChatPlugin(
     reducer: state => ({
       messages: state.messages,
       local: state.local,
-      servers: {
-        servers: Object.keys(state.servers.servers).reduce<{
+      connections: {
+        connections: Object.keys(state.connections.servers).reduce<{
           [id: string]: ServerConnection
         }>((aggr, curs) => {
-          aggr[curs] = {
-            ...state.servers.servers[curs],
-            status: 'disconnected'
-          }
+          // * Persist only servers with names
+          if (state.connections.servers[curs].name)
+            aggr[curs] = {
+              ...state.connections.servers[curs],
+              // * Set persisted status to 'disconnected'
+              status: 'disconnected'
+            }
           return aggr
         }, {})
       }
     })
-    // modules: ['local', 'messages', 'servers']
   })
   vuexLocal.plugin(store)
   store.dispatch('local/locale')
-  startPoll()
 }
 
 export const getStore = () => store

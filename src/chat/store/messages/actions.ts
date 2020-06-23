@@ -8,7 +8,7 @@ import { MessagesStateInterface } from './state'
 
 const actions: ActionTree<MessagesStateInterface, {}> = {
   receive: ({ commit }, { id, message }: { id: string; message: string[] }) => {
-    log('dispatch messages/receive', id, message)
+    log('(dispatch) messages/receive', id, message)
     commit('add', {
       id,
       sent: false,
@@ -21,10 +21,12 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
     { commit, rootGetters },
     { id, message }: { id: string; message: string[] }
   ) => {
-    log('dispatch messages/send', id)
-    const server: ServerConnection | undefined = rootGetters['servers/get'](id)
+    log('(dispatch) messages/send', id)
+    const server: ServerConnection | undefined = rootGetters['connections/get'](
+      id
+    )
     if (!server) {
-      log('messages/send: no server found')
+      log('dispatch) messages/send: no server found')
       return
     }
     const peer = getPeer(server)
@@ -40,7 +42,7 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
   pickup: {
     root: true,
     handler: ({ commit, rootGetters }) => {
-      log('dispatch messages/pickup')
+      log('(dispatch) messages/pickup')
       const message: Message = {
         sent: false,
         receivedAt: rootGetters['call/startedAt'],
@@ -53,7 +55,7 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
   hangup: {
     root: true,
     handler: ({ commit, rootGetters }) => {
-      log('dispatch messages/hangup')
+      log('(dispatch) messages/hangup')
       const message: Message = {
         sent: false,
         receivedAt: rootGetters['call/endedAt'],
@@ -66,7 +68,7 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
   reset: {
     root: true,
     handler: ({ commit }) => {
-      log('dispatch servers/reset')
+      log('(dispatch) messages/reset')
       commit('reset')
     }
   }

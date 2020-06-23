@@ -10,7 +10,6 @@
 <script lang="ts">
 import { defineComponent, onMounted, watch, ref } from '@vue/composition-api'
 import CallOverlay from 'components/CallOverlay.vue'
-import { useStart } from './chat'
 import { store } from './store'
 
 export default defineComponent({
@@ -19,7 +18,6 @@ export default defineComponent({
     CallOverlay: CallOverlay
   },
   setup(_, context) {
-    const start = useStart(store)
     const transitionName = ref('fadeInLeft')
     watch(
       // TODO create a navigation vuex module
@@ -36,7 +34,7 @@ export default defineComponent({
       }
     )
     onMounted(async () => {
-      await start()
+      await store.dispatch('local/start')
     })
     return { transitionName }
   }

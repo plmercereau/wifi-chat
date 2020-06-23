@@ -65,7 +65,7 @@ export default defineComponent({
     if (store.getters['local/id'] && store.getters['call/remote']) next()
     else next('/')
   },
-  setup(props, { root: { $router } }) {
+  setup(props, { root: { $router, $store } }) {
     const { id } = toRefs(props)
     const hover = ref(false)
     const clicked = ref(false)
@@ -87,7 +87,7 @@ export default defineComponent({
     const remoteStream = ref<MediaStream>()
 
     const stop = watchEffect(() => {
-      if (store.getters['call/ongoing']) remoteStream.value = getRemoteStream()
+      if ($store.getters['call/ongoing']) remoteStream.value = getRemoteStream()
       else if (remoteStream.value) {
         removeAllTracks(remoteStream.value)
         removeAllTracks(localStream.value)

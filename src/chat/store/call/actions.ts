@@ -9,8 +9,8 @@ const actions: ActionTree<CallStateInterface, {}> = {
   ring: {
     root: true,
     handler: ({ commit, rootGetters }, { id, initiator }: CallOptions) => {
-      log('dispatch call/ring')
-      if (rootGetters['servers/get'](id)?.status === 'available') {
+      log('(dispatch) call/ring')
+      if (rootGetters['connections/get'](id)?.status === 'available') {
         if (initiator && id) getPeer(id)?.ring()
         commit('ring', { id, initiator })
       }
@@ -19,20 +19,20 @@ const actions: ActionTree<CallStateInterface, {}> = {
   pickup: {
     root: true,
     handler: ({ commit, getters }, { initiator }: CallOptions = {}) => {
-      log('dispatch call/pickup')
+      log('(dispatch) call/pickup')
       const id = getters['remote']
       if (initiator && id) getPeer(id)?.pickup()
       commit('pickup')
     }
   },
   ready: ({ commit }) => {
-    log('dispatch call/ready')
+    log('(dispatch) call/ready')
     commit('ready')
   },
   hangup: {
     root: true,
     handler: ({ commit, getters }, { initiator }: CallOptions = {}) => {
-      log('dispatch call/hangup')
+      log('(dispatch) call/hangup')
       const id = getters['remote']
       if (initiator && id) getPeer(id)?.hangup()
       commit('hangup')
@@ -41,7 +41,7 @@ const actions: ActionTree<CallStateInterface, {}> = {
   reset: {
     root: true,
     handler: ({ commit }) => {
-      log('dispatch call/reset')
+      log('(dispatch) call/reset')
       commit('reset')
     }
   }
