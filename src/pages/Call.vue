@@ -39,17 +39,15 @@ import {
   ref,
   watchEffect,
   computed,
-  Ref,
   toRefs
 } from '@vue/composition-api'
 import { store } from 'src/store'
 import PAvatar from 'components/Avatar.vue'
 import PTimer from 'components/Timer.vue'
 import PToggleButton from 'components/ToggleButton.vue'
-import { getPeer, getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
+import { getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
 import { Route, NavigationGuardNext } from 'vue-router'
 import { useServer, useCall, useLocalDevices } from 'src/compositions'
-import { log } from 'src/chat/switcher'
 
 export default defineComponent({
   name: 'PageCall',

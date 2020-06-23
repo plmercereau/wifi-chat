@@ -5,9 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from '@vue/composition-api'
-import moment from 'moment'
-import { store } from 'src/store'
+import { defineComponent, ref } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'ToggleButton',

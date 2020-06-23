@@ -5,7 +5,6 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from '@vue/composition-api'
 import moment from 'moment'
-import { store } from 'src/store'
 
 export default defineComponent({
   name: 'Timer',

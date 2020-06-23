@@ -9,7 +9,7 @@
 - [ ] block sending messages when server is disconnected/not available - queue them at a later stage
 - [ ] root disconnect/connect vuex actions
 - [ ] why all those udp errors in electron dev mode?
-- [ ] sort the list by status - available first, busy second, disconnected at last
+- [x] sort the list by status - available first, busy second, disconnected at last
 - [ ] i18n
 - [ ] i18n: change in settings
 - [ ] i18n: select on initial start
