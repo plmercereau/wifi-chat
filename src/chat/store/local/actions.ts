@@ -1,9 +1,13 @@
 import { ActionTree } from 'vuex'
 import moment from 'moment'
-import { getAllPeers } from 'src/chat/webrtc'
-import { Status, Locale } from 'src/chat/types'
-import { log } from 'src/chat/switcher'
+
+import { getAllPeers } from '../../webrtc'
+import { Status, Locale } from '../../types'
+import { log } from '../../switcher'
+
+// TODO break dependency to boot e.g. get the i18n instance when initialising the Vue plugin
 import { i18n } from 'src/boot/i18n'
+
 import { LocalStateInterface } from './state'
 
 const actions: ActionTree<LocalStateInterface, {}> = {

@@ -6,7 +6,6 @@ import VuexPersistence from 'vuex-persist'
 import { ServerConnection } from './types'
 import { startPoll } from './poll'
 import { GlobalState, local, servers, messages, call } from './store'
-
 export { useStart, useStop, EventBus } from './server'
 
 export interface ChatPluginOptions {
@@ -16,10 +15,13 @@ export interface ChatPluginOptions {
 export const useServers = (store: Store<GlobalState>) =>
   computed<ServerConnection[]>(() => store.getters['servers/list'])
 
+let store: Store<GlobalState>
+
 export function ChatPlugin(
   Vue: typeof _Vue,
-  { store }: ChatPluginOptions
+  { store: vuexStore }: ChatPluginOptions
 ): void {
+  store = vuexStore
   store.registerModule('local', local)
   store.registerModule('servers', servers)
   store.registerModule('messages', messages)
@@ -48,3 +50,5 @@ export function ChatPlugin(
   store.dispatch('local/locale')
   startPoll()
 }
+
+export const getStore = () => store

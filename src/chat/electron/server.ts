@@ -1,9 +1,7 @@
 import WebSocket from 'ws'
-// import electron from 'electron'
 const WS = window.require('ws')
 
-import { store } from '../../store'
-
+import { getStore } from '../index'
 import { ExtendedPeer, getPeer } from '../webrtc'
 import { SERVICE_PORT } from '../config'
 
@@ -42,7 +40,7 @@ export const startServer = async () => {
         log('(ws server) received message. parsed data:', parsedData)
         if (parsedData.id) {
           log('(ws server) received ID', parsedData.id)
-          if (store.getters['local/id'] === parsedData.id) {
+          if (getStore().getters['local/id'] === parsedData.id) {
             log('(ws server) loopback peer. Do nothing')
           } else {
             new ExtendedPeer({

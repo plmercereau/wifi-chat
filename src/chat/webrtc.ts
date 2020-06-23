@@ -1,11 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import adapter from 'webrtc-adapter'
+import { Store } from 'vuex'
 import Peer from 'simple-peer'
 
-import { store } from 'src/store'
-
+import { getStore } from './index'
 import { Server, Status, Data } from './types'
 import { log } from './switcher'
+import { GlobalState } from './store'
 
 let remoteStream: MediaStream | undefined
 
@@ -25,11 +26,13 @@ export const removeAllTracks = (stream?: MediaStream) => {
 export const setPeer = (id: string, peer: ExtendedPeer) => peers.set(id, peer)
 export class ExtendedPeer extends Peer {
   id: string
+  store: Store<GlobalState>
   constructor(opts: ExtendedPeerOptions) {
     const { id, signal, ...peerOptions } = opts
     log('(peer) creating', id, !!peerOptions.initiator)
     super({ trickle: false, objectMode: true, ...peerOptions })
     this.id = id
+    this.store = getStore()
     setPeer(id, this)
 
     this.on('signal', data => {
@@ -43,7 +46,7 @@ export class ExtendedPeer extends Peer {
     this.on('close', () => {
       log('(peer) close', this.id)
       peers.delete(this.id)
-      store.dispatch('servers/disconnect', this.id)
+      this.store.dispatch('servers/disconnect', this.id)
     })
     this.on('connect', () => {
       log('(peer) connect', this.id)
@@ -53,12 +56,12 @@ export class ExtendedPeer extends Peer {
     })
     this.on('data', strData => {
       log('(peer) data received', this.id)
-      store.dispatch('servers/on', { id: this.id, strData })
+      this.store.dispatch('servers/on', { id: this.id, strData })
     })
     this.on('stream', (stream: MediaStream) => {
       console.log('(peer) add stream', this.id)
       remoteStream = stream
-      store.dispatch('call/ready')
+      this.store.dispatch('call/ready')
     })
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.on('track', (track: MediaStreamTrack, stream: MediaStream) => {
@@ -74,13 +77,13 @@ export class ExtendedPeer extends Peer {
   sendName() {
     this.sendData({
       type: 'name',
-      value: store.getters['local/name']
+      value: this.store.getters['local/name']
     })
   }
   sendAvatar() {
     this.sendData({
       type: 'avatar',
-      value: store.getters['local/avatar']
+      value: this.store.getters['local/avatar']
     })
   }
   sendStatus(status: Status) {

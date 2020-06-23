@@ -1,6 +1,8 @@
 import { MutationTree } from 'vuex'
-import { Message } from 'src/chat/types'
-import { log } from 'src/chat/switcher'
+
+import { Message } from '../../types'
+import { log } from '../../switcher'
+
 import { MessagesStateInterface, initialState } from './state'
 
 const mutation: MutationTree<MessagesStateInterface> = {

@@ -1,5 +1,7 @@
-import { Status, Locale } from 'src/chat/types'
 import { uid, Quasar } from 'quasar'
+
+import { Status, Locale } from '../../types'
+
 export interface LocalStateInterface {
   id: string
   name?: string

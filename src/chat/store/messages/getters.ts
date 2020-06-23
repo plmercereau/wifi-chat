@@ -1,7 +1,9 @@
 import { GetterTree } from 'vuex'
+
+import { second, messageTime } from '../../utils'
+import { OutputMessage } from '../../types'
+
 import { MessagesStateInterface } from './state'
-import { second, messageTime } from 'src/chat/utils'
-import { OutputMessage } from 'src/chat/types'
 
 const getters: GetterTree<MessagesStateInterface, {}> = {
   all: state => state.messages,

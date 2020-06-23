@@ -1,7 +1,9 @@
 import { MutationTree } from 'vuex'
+
 import { ServerConnection, Server } from '../../types'
+import { log } from '../../switcher'
+
 import { ServersStateInterface, initialState } from './state'
-import { log } from 'src/chat/switcher'
 
 const mutation: MutationTree<ServersStateInterface> = {
   add(state, server: Server) {

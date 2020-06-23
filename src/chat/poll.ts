@@ -1,7 +1,8 @@
 import { Status, ServerConnection } from './types'
-import { store } from 'src/store'
+import { getStore } from './index'
 
 export const startPoll = () => {
+  const store = getStore()
   const serversAttempts: Map<string, number> = new Map()
   return setInterval(() => {
     const status: Status = store.getters['local/status']

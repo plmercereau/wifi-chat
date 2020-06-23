@@ -1,7 +1,9 @@
 import { ActionTree } from 'vuex'
+
+import { getPeer } from '../../webrtc'
+import { log } from '../../switcher'
+
 import { CallStateInterface, CallOptions } from './state'
-import { getPeer } from 'src/chat/webrtc'
-import { log } from 'src/chat/switcher'
 
 const actions: ActionTree<CallStateInterface, {}> = {
   ring: {

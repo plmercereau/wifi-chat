@@ -1,6 +1,8 @@
 import { MutationTree } from 'vuex'
-import { Status, Locale } from 'src/chat/types'
-import { log } from 'src/chat/switcher'
+
+import { Status, Locale } from '../../types'
+import { log } from '../../switcher'
+
 import { LocalStateInterface, initialState } from './state'
 
 const mutation: MutationTree<LocalStateInterface> = {

@@ -1,5 +1,7 @@
 import { MutationTree } from 'vuex'
-import { log } from 'src/chat/switcher'
+
+import { log } from '../../switcher'
+
 import { CallStateInterface, initialState, CallOptions } from './state'
 
 const mutation: MutationTree<CallStateInterface> = {

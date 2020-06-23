@@ -1,7 +1,9 @@
 import { GetterTree } from 'vuex'
+
+import { getPeer } from '../../webrtc'
+import { compareServerConnections } from '../../utils'
+
 import { ServersStateInterface } from './state'
-import { getPeer } from 'src/chat/webrtc'
-import { compareServerConnections } from 'src/chat/utils'
 
 const getters: GetterTree<ServersStateInterface, {}> = {
   all: state => Object.values(state.servers),

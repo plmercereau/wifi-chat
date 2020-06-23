@@ -1,10 +1,11 @@
 import { WebSocketServer } from 'app/src-capacitor/node_modules/@ionic-native/web-socket-server'
 
 import { SERVICE_PORT } from '../config'
+import { getPeer, ExtendedPeer } from '../webrtc'
+import { getStore } from '../index'
 
 import { log } from './utils'
-import { getPeer, ExtendedPeer } from '../webrtc'
-import { store } from 'src/store'
+
 export const stopServer = async () => {
   log('stop ws server')
   await WebSocketServer.stop()
@@ -38,7 +39,7 @@ export const startServer = async () => {
         const parsedData = JSON.parse(result.msg)
         if (parsedData.id) {
           log('(ws server) received ID', parsedData.id)
-          if (store.getters['local/id'] === parsedData.id) {
+          if (getStore().getters['local/id'] === parsedData.id) {
             log('(ws server) loopback peer. Do nothing')
           } else {
             new ExtendedPeer({

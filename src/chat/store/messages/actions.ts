@@ -1,7 +1,9 @@
 import { ActionTree } from 'vuex'
-import { log } from 'src/chat/switcher'
+
+import { log } from '../../switcher'
 import { getPeer } from '../../webrtc'
 import { ServerConnection, Message } from '../../types'
+
 import { MessagesStateInterface } from './state'
 
 const actions: ActionTree<MessagesStateInterface, {}> = {

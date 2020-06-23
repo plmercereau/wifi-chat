@@ -1,8 +1,10 @@
 import { ActionTree } from 'vuex'
+
+import { Data, Status, Server } from '../../types'
+import { log } from '../../switcher'
+import { getPeer, ExtendedPeer, disconnectAll } from '../../webrtc'
+
 import { ServersStateInterface } from './state'
-import { Data, Status, Server } from 'src/chat/types'
-import { log } from 'src/chat/switcher'
-import { getPeer, ExtendedPeer, disconnectAll } from 'src/chat/webrtc'
 
 const actions: ActionTree<ServersStateInterface, {}> = {
   on: (
