@@ -32,8 +32,8 @@ export default defineComponent({
       set: (value: Locale) => store.dispatch('local/locale', value)
     })
     const langOptions = [
-      { value: 'en-us', label: 'English' },
-      { value: 'fr', label: 'Français' }
+      { value: 'en-us', label: '🇬🇧 English' },
+      { value: 'fr', label: '🇫🇷 Français' }
     ]
     return { lang, langOptions }
   }
