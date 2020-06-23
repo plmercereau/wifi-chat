@@ -2,14 +2,14 @@
   q-layout(view="lHh Lpr lFf")
     q-header(elevated)
       q-toolbar
-        q-toolbar-title Wifi Video Chat
+        q-toolbar-title {{ $t('title') }}
         p-avatar(:src="avatar" :status="status" :name="name")
         q-toolbar-title {{name}}
         q-btn(round unelevated icon="more_vert")
           q-menu(auto-close)
             q-list
               q-item(clickable to="/settings")
-                q-item-section Settings
+                q-item-section {{ $t('settings') }}
     q-page-container
       q-page.q-pa-md
         q-list.col-12(v-if="servers.length > 0" bordered separator)
@@ -22,8 +22,7 @@
                 p-avatar(:src="avatar" :status="status" :name="name")
               q-item-section
                 q-item-label {{name}}
-                //- q-item-label(caption) {{secure ? 'https' : 'http'}}://{{hostname}}:{{port}}
-        div(v-else) No one else seems to be connected for now. Watching new peers...
+        div(v-else) {{ $t('empty_list') }}
 </template>
 
 <script lang="ts">

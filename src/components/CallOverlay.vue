@@ -3,8 +3,8 @@
     template(#body)
       div(v-if="remote").fixed-center
         div.row.justify-evenly.q-pa-md
-          div(v-if="receivingCall") {{remote.name}} is calling you
-          div(v-else) Calling {{remote.name}}...
+          div(v-if="receivingCall") {{ $t('receiving_call', { name: remote.name }) }}
+          div(v-else) {{ $t('calling', { name: remote.name }) }}
         div.row.justify-evenly.q-gutter-xl
           q-btn(v-if="receivingCall" color="green" icon="call" @click="pickup")
           q-btn(color="red" icon="call_end" @click="hangup")        

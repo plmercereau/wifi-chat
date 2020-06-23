@@ -2,19 +2,17 @@
   q-layout(view="lHh Lpr lFf")
     q-header(elevated)
       q-toolbar
-        q-toolbar-title Start
+        q-toolbar-title {{ $t('start') }}
     q-page-container
       q-page.q-pa-md
-        div.row.justify-center
+        div.row.justify-center 
           q-input.col-8(v-model="name"
-            :rules="[val => !!val || 'Required']"
+            :rules="[val => !!val || $t('required')]"
             @keydown.enter.prevent="save"
-            label="Name"
+            :label="$t('name')"
             dense autofocus)
         div.row.justify-center
-          q-btn.self-center(@click="save") Start
-
-        
+          q-btn.self-center(@click="save") {{ $t('start') }}
 </template>
 
 <script lang="ts">

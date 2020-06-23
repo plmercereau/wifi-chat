@@ -1,7 +1,9 @@
 import { ActionTree } from 'vuex'
+import moment from 'moment'
 import { getAllPeers } from 'src/chat/webrtc'
-import { Status } from 'src/chat/types'
+import { Status, Locale } from 'src/chat/types'
 import { log } from 'src/chat/switcher'
+import { i18n } from 'src/boot/i18n'
 import { LocalStateInterface } from './state'
 
 const actions: ActionTree<LocalStateInterface, {}> = {
@@ -39,6 +41,15 @@ const actions: ActionTree<LocalStateInterface, {}> = {
       log('dispatch local/hangup')
       dispatch('status', 'available')
     }
+  },
+  locale: ({ commit, state }, locale?: Locale) => {
+    log('dispatch local/locale')
+    const newLocale =
+      (locale && i18n.availableLocales.includes(locale) && locale) ||
+      i18n.fallbackLocale.toString()
+    if (newLocale !== state.locale) commit('locale', newLocale)
+    i18n.locale = newLocale
+    moment.locale(newLocale)
   }
 }
 

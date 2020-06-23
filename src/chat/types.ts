@@ -1,3 +1,5 @@
+export type Locale = 'en-us'
+
 export interface Server {
   id: string
   port: number

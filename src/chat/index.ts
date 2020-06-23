@@ -45,5 +45,6 @@ export function ChatPlugin(
     // modules: ['local', 'messages', 'servers']
   })
   vuexLocal.plugin(store)
+  store.dispatch('local/locale')
   startPoll()
 }

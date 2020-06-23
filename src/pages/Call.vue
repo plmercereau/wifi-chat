@@ -24,15 +24,14 @@
             leave-active-class="animated fadeOut")
             div.q-pa-md.q-gutter-sm(v-if="visibleMenu")
               q-btn(@click="hangup" icon="call_end" round color="red")
-                q-tooltip Hangup
+                q-tooltip {{ $t('hangup') }}
               p-toggle-button(@toggle="toggleMicro"
-                iconTrue="mic" iconFalse="mic_off" tooltipTrue="Mute" tooltipFalse="Unmute")
+                iconTrue="mic" iconFalse="mic_off" :tooltipTrue="$t('mute')" :tooltipFalse="$t('unmute')")
               p-toggle-button(@toggle="toggleCamera"
-                iconTrue="videocam" iconFalse="videocam_off" tooltipTrue="Hide video" tooltipFalse="Show video")
+                iconTrue="videocam" iconFalse="videocam_off" :tooltipTrue="$t('camera_off')" tooltipFalse="$t('camera_on')")
               p-toggle-button(@toggle="toggleFrontRear"
-                iconTrue="camera_front" iconFalse="camera_rear" tooltipTrue="Toggle front/rear camera" tooltipFalse="Toggle front/rear camera")
+                iconTrue="camera_front" iconFalse="camera_rear" :tooltipTrue="$t('rear_camera')" :tooltipFalse="$t('front_camera')")
 </template>
-
 <script lang="ts">
 import {
   defineComponent,

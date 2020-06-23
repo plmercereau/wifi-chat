@@ -3,7 +3,7 @@
     q-header(elevated)
       q-toolbar
         q-btn(flat round icon="arrow_back" to='/')
-        q-toolbar-title Settings
+        q-toolbar-title {{ $t('settings') }}
     q-page-container
       q-page
         div.q-pa-md.justify-center.row
@@ -16,33 +16,42 @@
                 q-icon(name="person")
               q-item-section(v-if="editingName")
                 q-input(v-model="inputName"
-                  :rules="[val => !!val || 'Required']"
+                  :rules="[val => !!val || $t('required')]"
                   @keydown.enter.prevent="changeName"
                   @blur="editingName = false"
-                  label="Name"
+                  :label="$t('name')"
                   borderless dense autofocus hide-bottom-space)
                   template(#append)
                     q-btn(round dense flat icon="save_alt" @click="changeName")
               q-item-section(v-else)
-                q-item-label(caption) Name
+                q-item-label(caption) {{ $t('name') }}
                 q-item-label {{name}}
               q-item-section(v-if="!editingName" side top)
                 q-btn(icon="create" flat round color="primary" @click="editName")
             q-separator
+            q-item
+              q-item-section
+                q-item-label(caption) {{ $t('language') }}
+              q-item-section
+                q-item-label
+                  p-select-language
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api'
-import AvatarImageComponent from 'components/AvatarImage.vue'
+import { defineComponent, ref, computed } from '@vue/composition-api'
+import PAvatarImage from 'components/AvatarImage.vue'
+import PSelectLanguage from 'components/SelectLanguage.vue'
 import { store } from 'src/store'
 import { useLocal } from 'src/compositions'
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core'
+import { Locale } from 'src/chat/types'
 const { Camera } = Plugins
 
 export default defineComponent({
   name: 'PageChat',
   components: {
-    PAvatarImage: AvatarImageComponent
+    PAvatarImage,
+    PSelectLanguage
   },
   setup() {
     // TODO create an inline input component that wraps the 'set name' logic
@@ -74,6 +83,7 @@ export default defineComponent({
         console.log(error)
       }
     }
+
     return {
       name,
       avatar,

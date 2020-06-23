@@ -16,7 +16,7 @@
               :message="message"
               :server="server")
         q-footer.q-pa-xs.justify-center.row.no-wrap()
-          q-input.col(dense filled autofocus placeholder="Type your message" v-model="message" @keydown.enter.prevent="send")
+          q-input.col(dense filled autofocus :placeholder="$t('type_message')" v-model="message" @keydown.enter.prevent="send")
           q-btn.q-mx-sm(flat round icon="send" @click="send")
 </template>
 

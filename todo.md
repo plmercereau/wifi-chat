@@ -10,12 +10,12 @@
 - [ ] root disconnect/connect vuex actions
 - [ ] why all those udp errors in electron dev mode?
 - [x] sort the list by status - available first, busy second, disconnected at last
-- [ ] i18n
-- [ ] i18n: change in settings
+- [x] i18n
+- [x] i18n: moment
+- [x] i18n: change in settings
 - [ ] i18n: select on initial start
 - [ ] settings: reset
 - [ ] play sound and vibrations when ringing
-- [ ] add calls information (rejected/stared + duration) to chat messages
 - [ ] change front/rear camera
 - [ ] settings: select camera/microphone: show a screen with the mic and video, and dropdown lists of the possible devices. Then persist the selected device ids.
 - [ ] show audio waves instead of video when video is off - of show avatar?
@@ -39,6 +39,7 @@
 
 ## Less important
 
+- [ ] add calls information (rejected/stared + duration) to chat messages
 - [ ] implement WSS?
 - [ ] limit animations in quasar.conf to the ones that are actually used
 - [ ] swipe item to archive/delete? -> find a way to clean the list of former/disconnected devices
