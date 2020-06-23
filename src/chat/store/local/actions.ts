@@ -53,7 +53,7 @@ const actions: ActionTree<LocalStateInterface, {}> = {
   },
   reset: {
     root: true,
-    handler: async ({ commit }) => {
+    handler: ({ commit }) => {
       log('dispatch local/reset')
       commit('reset')
     }

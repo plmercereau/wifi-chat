@@ -1,10 +1,11 @@
 <template lang="pug">
   q-select(v-model="lang"
     :options="langOptions"
-    borderless
+    :label="label"
+    :borderless="dense"
     emit-value
     map-options
-    options-dense
+    :options-dense="dense"
     style="min-width: 150px")
 </template>
 
@@ -15,7 +16,17 @@ import { Locale } from 'src/chat/types'
 
 export default defineComponent({
   name: 'SelectLanguage',
-  setup(props) {
+  props: {
+    label: {
+      type: String,
+      required: false
+    },
+    dense: {
+      type: Boolean,
+      required: false
+    }
+  },
+  setup() {
     const lang = computed<Locale>({
       get: () => store.getters['local/locale'],
       set: (value: Locale) => store.dispatch('local/locale', value)

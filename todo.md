@@ -13,7 +13,7 @@
 - [x] i18n
 - [x] i18n: moment
 - [x] i18n: change in settings
-- [ ] i18n: select on initial start
+- [x] i18n: select on initial start
 - [ ] scroll problem when list update (from poll)
 - [x] settings: reset
 - [ ] play sound and vibrations when ringing

@@ -33,7 +33,7 @@
                 q-item-label(caption) {{ $t('language') }}
               q-item-section
                 q-item-label
-                  p-select-language
+                  p-select-language(dense)
             q-separator
             q-item
               q-item-section
