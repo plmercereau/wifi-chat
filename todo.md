@@ -42,7 +42,7 @@
 - [ ] implement WSS?
 - [ ] limit animations in quasar.conf to the ones that are actually used
 - [ ] swipe item to archive/delete? -> find a way to clean the list of former/disconnected devices
-- [ ] add more composable methods
+- [x] add more composable methods
 - [ ] change http(s) mDNS service type to something else e.g. ws(s) or a custom type
 - [ ] call buttons on the left or right side of the screen depending on its size
 - [ ] change favicons

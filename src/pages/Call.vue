@@ -5,9 +5,9 @@
         enter-active-class="animated fadeIn"
         leave-active-class="animated fadeOut")
         q-toolbar.bg-primary.z-top.absolute(v-if="visibleMenu && server")
-          avatar(:src="server.avatar" :status="server.status" :name="server.name")
+          p-avatar(:src="server.avatar" :status="server.status" :name="server.name")
           q-toolbar-title {{server.name}}
-          div {{timer}}
+          p-timer(:start="startedAt")
     q-page-container
       q-page
         transition(appear
@@ -25,14 +25,12 @@
             div.q-pa-md.q-gutter-sm(v-if="visibleMenu")
               q-btn(@click="hangup" icon="call_end" round color="red")
                 q-tooltip Hangup
-              q-btn(@click="toggleMicro" :icon="micro ? 'mic' : 'mic_off'" round)
-                q-tooltip(v-if="micro") Mute
-                q-tooltip(v-else) Unmute
-              q-btn(@click="toggleCamera" :icon="camera ? 'videocam' : 'videocam_off'" round)
-                q-tooltip(v-if="camera") Hide video
-                q-tooltip(v-else) Show video
-              q-btn(@click="toggleFrontRear" :icon="frontCamera ? 'camera_front' : 'camera_rear'" round)
-                q-tooltip Toggle front/rear camera
+              p-toggle-button(@toggle="toggleMicro"
+                iconTrue="mic" iconFalse="mic_off" tooltipTrue="Mute" tooltipFalse="Unmute")
+              p-toggle-button(@toggle="toggleCamera"
+                iconTrue="videocam" iconFalse="videocam_off" tooltipTrue="Hide video" tooltipFalse="Show video")
+              p-toggle-button(@toggle="toggleFrontRear"
+                iconTrue="camera_front" iconFalse="camera_rear" tooltipTrue="Toggle front/rear camera" tooltipFalse="Toggle front/rear camera")
 </template>
 
 <script lang="ts">
@@ -41,19 +39,24 @@ import {
   ref,
   watchEffect,
   computed,
-  Ref
+  Ref,
+  toRefs
 } from '@vue/composition-api'
 import { store } from 'src/store'
-import AvatarComponent from 'components/Avatar.vue'
+import PAvatar from 'components/Avatar.vue'
+import PTimer from 'components/Timer.vue'
+import PToggleButton from 'components/ToggleButton.vue'
 import { getPeer, getRemoteStream, removeAllTracks } from 'src/chat/webrtc'
 import { Route, NavigationGuardNext } from 'vue-router'
-import { useServer, useCall } from 'src/compositions'
+import { useServer, useCall, useLocalDevices } from 'src/compositions'
 import { log } from 'src/chat/switcher'
 
 export default defineComponent({
   name: 'PageCall',
   components: {
-    avatar: AvatarComponent
+    PAvatar,
+    PTimer,
+    PToggleButton
   },
   props: {
     id: {
@@ -66,6 +69,7 @@ export default defineComponent({
     else next('/')
   },
   setup(props, { root: { $router } }) {
+    const { id } = toRefs(props)
     const hover = ref(false)
     const clicked = ref(false)
     let timeout: NodeJS.Timeout
@@ -75,87 +79,37 @@ export default defineComponent({
       timeout = setTimeout(() => (clicked.value = false), 1500)
     }
     const visibleMenu = computed(() => hover.value || clicked.value)
-    const localStream = ref<MediaStream>()
+
+    const {
+      stream: localStream,
+      toggleMicro,
+      toggleCamera,
+      toggleFrontRear
+    } = useLocalDevices(id)
+
     const remoteStream = ref<MediaStream>()
-
-    const toggleTrack = (
-      track: 'microphone' | 'camera',
-      toggle: Ref<boolean>
-    ) => {
-      console.log('toggle track')
-      const stream = localStream.value
-      const peer = getPeer(props.id)
-      const getter =
-        track === 'microphone' ? 'getAudioTracks' : 'getVideoTracks'
-      if (stream && peer) {
-        const track = stream[getter]()[0]
-        track.enabled = !track.enabled
-        peer.replaceTrack(track, track, stream)
-        toggle.value = !toggle.value
-      }
-    }
-    const micro = ref(true)
-    const toggleMicro = () => toggleTrack('microphone', micro)
-
-    const camera = ref(true)
-    const toggleCamera = () => toggleTrack('camera', camera)
-
-    // TODO
-    const frontCamera = ref(true)
-    const toggleFrontRear = () => {
-      frontCamera.value = !frontCamera.value
-      navigator.mediaDevices.enumerateDevices().then(res => {
-        res.forEach(device => {
-          console.log(device.toJSON())
-        })
-      })
-    }
 
     const stop = watchEffect(() => {
       if (store.getters['call/ongoing']) remoteStream.value = getRemoteStream()
       else if (remoteStream.value) {
         removeAllTracks(remoteStream.value)
         removeAllTracks(localStream.value)
-        $router.push(`/chat/${props.id}`)
+        $router.push(`/chat/${id.value}`)
         stop()
       }
     })
 
-    // TODO onMounted and async/await
-    if (navigator.mediaDevices)
-      navigator.mediaDevices
-        .getUserMedia({
-          video: {
-            facingMode: 'user' // TODO or environment
-          },
-          audio: true
-        })
-        .then(local => {
-          localStream.value = local
-          getPeer(props.id)?.addStream(local)
-        })
-        .catch(error => {
-          log('(call) error', error)
-          store.dispatch('hangup', { initiator: true })
-        })
-    else
-      log(
-        'navigator.mediaDevices is undefined! The local stream will not start'
-      )
-    const server = useServer(props)
-    const { timer, hangup } = useCall()
+    const server = useServer(id)
+    const { startedAt, hangup } = useCall()
     return {
       hover,
       showMenu,
       visibleMenu,
       server,
-      timer,
+      startedAt,
       hangup,
-      micro,
       toggleMicro,
-      camera,
       toggleCamera,
-      frontCamera,
       toggleFrontRear,
       localStream,
       remoteStream

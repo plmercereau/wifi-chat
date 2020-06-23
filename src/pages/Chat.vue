@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api'
+import { defineComponent, ref, toRefs } from '@vue/composition-api'
 import { store } from 'src/store'
 import AvatarComponent from 'components/Avatar.vue'
 import MessageComponent from 'components/Message.vue'
@@ -41,14 +41,18 @@ export default defineComponent({
     PMessage: MessageComponent
   },
   props: {
-    id: String
+    id: {
+      type: String,
+      required: true
+    }
   },
   beforeRouteEnter: (to, from, next) => {
     if (store.getters['servers/get'](to.params['id'])) next()
     else next('/')
   },
   setup(props) {
-    const server = useServer(props)
+    const { id } = toRefs(props)
+    const server = useServer(id)
     const messages = useMessages(server)
     const { message, send } = useSendMessage(server)
     const { calling, hangup, videoCall, audioCall } = useCall()
