@@ -8,11 +8,15 @@
 - [ ] prompts to allow network connections on electron startup: use the same thread (remote?) -> sign electron app?
 - [ ] block sending messages when server is disconnected/not available - queue them at a later stage
 - [ ] root disconnect/connect vuex actions
-- [ ] why all those udp errors in electron dev mode?
+- [ ] still all those udp errors in electron dev mode?
 - [ ] scroll problem when list update (from poll)
 - [ ] play sound and vibrations when ringing
 - [ ] change front/rear camera
 - [ ] settings: select camera/microphone: show a screen with the mic and video, and dropdown lists of the possible devices. Then persist the selected device ids.
+- [ ] in the upper right button: change status disconnect/connect (start/stop server), and 'busy' status
+- [ ] badges/toast when receiving new messages
+- [ ] handle calls when the app runs in background
+- [ ] handle messages when the apps runs in background (notifications/toasts)
 - [x] sort the list by status - available first, busy second, disconnected at last
 - [x] i18n
 - [x] i18n: moment

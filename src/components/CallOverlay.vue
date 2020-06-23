@@ -20,7 +20,7 @@ export default defineComponent({
     const receivingCall = computed(() => $store.getters['call/receivingCall'])
     const remoteId = computed(() => $store.getters['call/remote'])
     const remote = computed(
-      () => remoteId.value && $store.getters['servers/get'](remoteId.value)
+      () => remoteId.value && $store.getters['connections/get'](remoteId.value)
     )
     const pickup = async () => {
       await $store.dispatch('pickup', { initiator: true })

@@ -8,4 +8,4 @@ export const useServers = (store: Store<GlobalState>) =>
   computed<ServerConnection[]>(() => store.getters['connections/list'])
 
 export const useServer = (store: Store<GlobalState>, id: Ref<string>) =>
-  computed<ServerConnection>(() => store.getters['servers/get'](id.value))
+  computed<ServerConnection>(() => store.getters['connections/get'](id.value))

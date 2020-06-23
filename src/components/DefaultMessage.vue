@@ -30,7 +30,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props, { root: { $store } }) {
+  setup(props, { root: { $store, $tc } }) {
     const { server, message } = toRefs(props)
     const avatar = computed(() =>
       message.value.sent ? $store.getters['local/avatar'] : server.value.avatar
@@ -40,7 +40,9 @@ export default defineComponent({
     const timestamp = computed(() =>
       moment(message.value.timestamp).from(now.value)
     )
-    const name = computed(() => (message.value.sent ? 'me' : server.value.name))
+    const name = computed(() =>
+      message.value.sent ? $tc('me') : server.value.name
+    )
     return { timestamp, avatar, name }
   }
 })

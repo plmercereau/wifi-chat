@@ -25,5 +25,6 @@
   "reset": "Reset the entire application",
   "reset_button": "Reset",
   "reset_confirm_message": "Do you really want to reset the application? This will remove the entire data.",
-  "reset_confirm_title": "Confirm reset"
+  "reset_confirm_title": "Confirm reset",
+  "me": "me"
 }
