@@ -49,7 +49,7 @@ module.exports = configure(function(ctx) {
       all: 'auto',
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Dialog']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ts

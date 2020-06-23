@@ -28,24 +28,30 @@
                 q-item-label {{name}}
               q-item-section(v-if="!editingName" side top)
                 q-btn(icon="create" flat round color="primary" @click="editName")
-            q-separator
             q-item
               q-item-section
                 q-item-label(caption) {{ $t('language') }}
               q-item-section
                 q-item-label
                   p-select-language
+            q-separator
+            q-item
+              q-item-section
+                q-item-label(caption) {{ $t('reset') }}
+              q-item-section
+                q-btn(@click="reset") {{ $t('reset_button') }}
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@vue/composition-api'
+import { defineComponent, ref } from '@vue/composition-api'
 import PAvatarImage from 'components/AvatarImage.vue'
 import PSelectLanguage from 'components/SelectLanguage.vue'
 import { store } from 'src/store'
 import { useLocal } from 'src/compositions'
 import { Plugins, CameraResultType, CameraDirection } from '@capacitor/core'
-import { Locale } from 'src/chat/types'
 const { Camera } = Plugins
+import { Dialog } from 'quasar'
+import { useStop } from 'src/chat'
 
 export default defineComponent({
   name: 'PageChat',
@@ -53,7 +59,7 @@ export default defineComponent({
     PAvatarImage,
     PSelectLanguage
   },
-  setup() {
+  setup(_, ctx) {
     // TODO create an inline input component that wraps the 'set name' logic
     const { name, avatar } = useLocal()
     const inputName = ref('')
@@ -83,7 +89,21 @@ export default defineComponent({
         console.log(error)
       }
     }
-
+    const stopServer = useStop(store)
+    const reset = () => {
+      console.log('HEREHERE')
+      Dialog.create({
+        title: ctx.root.$tc('reset_confirm_title'),
+        message: ctx.root.$tc('reset_confirm_message'),
+        cancel: true,
+        persistent: true,
+        focus: 'cancel'
+      }).onOk(async () => {
+        await stopServer()
+        await store.dispatch('reset', undefined, { root: true })
+        ctx.root.$router.push('/start')
+      })
+    }
     return {
       name,
       avatar,
@@ -91,7 +111,8 @@ export default defineComponent({
       editingName,
       changeName,
       inputName,
-      changeAvatar
+      changeAvatar,
+      reset
     }
   }
 })

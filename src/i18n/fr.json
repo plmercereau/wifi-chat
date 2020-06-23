@@ -21,5 +21,9 @@
     "yesterday": "[Hier]",
     "lastWeek": "dddd [dernier]",
     "other": "Do dddd"
-  }
+  },
+  "reset": "Réinitialiser l'application",
+  "reset_button": "Réinitialiser",
+  "reset_confirm_message": "Êtes-vous sûr de vouloir réinitialiser l'application? Toutes les données seront supprimées.",
+  "reset_confirm_title": "Confirmation"
 }

@@ -35,6 +35,13 @@ const actions: ActionTree<CallStateInterface, {}> = {
       if (initiator && id) getPeer(id)?.hangup()
       commit('hangup')
     }
+  },
+  reset: {
+    root: true,
+    handler: ({ commit }) => {
+      log('dispatch call/reset')
+      commit('reset')
+    }
   }
 }
 

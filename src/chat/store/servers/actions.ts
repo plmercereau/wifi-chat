@@ -2,7 +2,7 @@ import { ActionTree } from 'vuex'
 import { ServersStateInterface } from './state'
 import { Data, Status, Server } from 'src/chat/types'
 import { log } from 'src/chat/switcher'
-import { getPeer, ExtendedPeer } from 'src/chat/webrtc'
+import { getPeer, ExtendedPeer, disconnectAll } from 'src/chat/webrtc'
 
 const actions: ActionTree<ServersStateInterface, {}> = {
   on: (
@@ -101,6 +101,14 @@ const actions: ActionTree<ServersStateInterface, {}> = {
         }
       })
     })
+  },
+  reset: {
+    root: true,
+    handler: ({ commit }) => {
+      log('dispatch servers/reset')
+      disconnectAll()
+      commit('reset')
+    }
   }
 }
 

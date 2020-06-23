@@ -3,7 +3,7 @@ import { log } from 'src/chat/switcher'
 import { CallStateInterface, initialState, CallOptions } from './state'
 
 const mutation: MutationTree<CallStateInterface> = {
-  reset(state) {
+  reset: state => {
     log('commit call/reset')
     Object.assign(state, initialState())
   },

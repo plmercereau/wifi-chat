@@ -13,12 +13,13 @@ let wss: WebSocket.Server | undefined
 
 export const stopServer = () =>
   new Promise<void>((resolve, reject) => {
-    log('stop ws server')
     if (wss) {
+      log('(ws server) stop')
       for (const client of wss.clients) {
         client.close()
       }
       wss.close(err => {
+        console.log('(ws server) close: error', err)
         if (err) reject(err)
         else resolve()
       })
@@ -30,7 +31,7 @@ export const startServer = async () => {
     await stopServer()
   } finally {
     log('(ws server) start')
-    const wss = new WS.Server({ port: SERVICE_PORT }) as WebSocket.Server
+    wss = new WS.Server({ port: SERVICE_PORT }) as WebSocket.Server
     const peerIds: Map<WebSocket, string> = new Map()
 
     wss.on('connection', ws => {
@@ -67,7 +68,7 @@ export const startServer = async () => {
       })
     })
     wss.on('error', error => {
-      log('wss error', error)
+      log('(ws server) wss error', error)
     })
     return Promise.resolve()
   }

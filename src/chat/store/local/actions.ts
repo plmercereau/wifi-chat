@@ -50,6 +50,13 @@ const actions: ActionTree<LocalStateInterface, {}> = {
     if (newLocale !== state.locale) commit('locale', newLocale)
     i18n.locale = newLocale
     moment.locale(newLocale)
+  },
+  reset: {
+    root: true,
+    handler: async ({ commit }) => {
+      log('dispatch local/reset')
+      commit('reset')
+    }
   }
 }
 

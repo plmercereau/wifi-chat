@@ -60,6 +60,13 @@ const actions: ActionTree<MessagesStateInterface, {}> = {
       }
       commit('add', { id: rootGetters['call/remote'], ...message })
     }
+  },
+  reset: {
+    root: true,
+    handler: ({ commit }) => {
+      log('dispatch servers/reset')
+      commit('reset')
+    }
   }
 }
 

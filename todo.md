@@ -15,11 +15,10 @@
 - [x] i18n: change in settings
 - [ ] i18n: select on initial start
 - [ ] scroll problem when list update (from poll)
-- [ ] settings: reset
+- [x] settings: reset
 - [ ] play sound and vibrations when ringing
 - [ ] change front/rear camera
 - [ ] settings: select camera/microphone: show a screen with the mic and video, and dropdown lists of the possible devices. Then persist the selected device ids.
-- [ ] show audio waves instead of video when video is off - of show avatar?
 - [x] capture avatar in electon. See https://capacitor.ionicframework.com/docs/pwa-elements/
 - [x] mirror call/ring actions
 - [x] reconnect when connection is lost
@@ -40,6 +39,7 @@
 
 ## Less important
 
+- [ ] show audio waves instead of video when video is off - of show avatar?
 - [ ] add calls information (rejected/stared + duration) to chat messages
 - [ ] implement WSS?
 - [ ] limit animations in quasar.conf to the ones that are actually used

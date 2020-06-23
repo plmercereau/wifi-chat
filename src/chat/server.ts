@@ -50,7 +50,6 @@ export const useStop = (store: Store<{}>) => async () => {
   await unpublish()
   await stopServer()
   disconnectAll()
-  store.commit('reset') // TODO does it really work?
   EventBus.$emit('stopped')
   store.commit('local/stopped')
 }
