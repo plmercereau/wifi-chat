@@ -81,6 +81,23 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
 
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+
+    // TODO remove when vuex typings and inference improves
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/ban-types': [
+      'warn',
+      {
+        types: {
+          Function: {
+            message: 'Prefer a specific function type, like `() => void`.'
+          }
+        }
+      }
+    ]
   }
 }

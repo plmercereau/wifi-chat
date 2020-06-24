@@ -13,9 +13,10 @@ import { app } from 'electron'
 electronDebug({ showDevTools: true })
 
 // Install vuejs devtools
-app.whenReady().then(() => {
+void app.whenReady().then(() => {
   installExtension(VUEJS_DEVTOOLS)
     .then(ext => {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       console.log(`Added Extension: ${ext.name}`)
     })
     .catch(err => {

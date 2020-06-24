@@ -10,6 +10,7 @@ let bonjour: Bonjour | undefined
 
 const getBonjour = () => {
   if (!bonjour)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     bonjour = electron.remote.require('bonjour')({
       loopback: process.env.NODE_ENV === 'development'
     })
@@ -34,11 +35,11 @@ export const watch = (onUp: WatchEvent, onDown: WatchEvent) => {
   browser = getBonjour().find(
     { type: SERVICE_TYPE, protocol: 'tcp' },
     service => {
-      onUp(bonjourToServer(service))
+      void onUp(bonjourToServer(service))
     }
   )
   browser.on('down', service => {
-    onDown(bonjourToServer(service))
+    void onDown(bonjourToServer(service))
   })
   browser.start()
 }
@@ -65,7 +66,7 @@ export const publish = async (id: string) => {
   electron.remote.app.on('will-quit', () => {
     // TODO check if it works
     log('(mdns) ELECTRON EVENT!!!!!!')
-    unpublish().then(() => {
+    void unpublish().then(() => {
       electron.remote.app.quit()
     })
   })

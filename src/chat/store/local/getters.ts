@@ -1,7 +1,7 @@
 import { GetterTree } from 'vuex'
 import { LocalStateInterface } from './state'
 
-const getters: GetterTree<LocalStateInterface, {}> = {
+const getters: GetterTree<LocalStateInterface, unknown> = {
   id: state => state.id,
   name: state => state.name,
   avatar: state => state.avatar,

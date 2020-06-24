@@ -3,7 +3,7 @@
     q-header(elevated)
       q-toolbar
         q-btn(flat round icon="arrow_back" to='/')
-        q-toolbar-title {{ $t('settings') }}
+        q-toolbar-title {{ $t('device_settings') }}
     q-page-container
       q-page
         div.q-pa-md.justify-center.row

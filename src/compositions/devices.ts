@@ -22,7 +22,7 @@ export const useLocalDevices = (store: Store<GlobalState>, id: Ref<string>) => {
       })
       .catch(error => {
         log('(call) error', error)
-        store.dispatch('hangup', { initiator: true })
+        void store.dispatch('hangup', { initiator: true })
       })
   else
     log(
@@ -44,11 +44,10 @@ export const useLocalDevices = (store: Store<GlobalState>, id: Ref<string>) => {
   const toggleCamera = () => toggleTrack('camera')
 
   // TODO
-  const toggleFrontRear = () => {
-    navigator.mediaDevices.enumerateDevices().then(res => {
-      res.forEach(device => {
-        console.log(device.toJSON())
-      })
+  const toggleFrontRear = async () => {
+    const res = await navigator.mediaDevices.enumerateDevices()
+    res.forEach(device => {
+      console.log(device.toJSON())
     })
   }
 

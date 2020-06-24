@@ -4,7 +4,7 @@ import { Store } from 'vuex'
 import { GlobalState } from 'src/chat/store'
 
 export const useCall = (store: Store<GlobalState>) => {
-  const call = (
+  const call = async (
     id: string,
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -13,17 +13,17 @@ export const useCall = (store: Store<GlobalState>) => {
       video: true
     }
   ) => {
-    store.dispatch('ring', { id, initiator: true })
+    await store.dispatch('ring', { id, initiator: true })
   }
   const calling = computed<boolean>(() => store.getters['call/calling'])
-  const hangup = () => {
-    store.dispatch('hangup', { initiator: true })
+  const hangup = async () => {
+    await store.dispatch('hangup', { initiator: true })
   }
-  const videoCall = (id: string) => {
-    call(id)
+  const videoCall = async (id: string) => {
+    await call(id)
   }
-  const audioCall = (id: string) => {
-    call(id, {
+  const audioCall = async (id: string) => {
+    await call(id, {
       audio: true,
       video: false
     })

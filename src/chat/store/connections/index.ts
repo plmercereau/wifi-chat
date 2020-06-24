@@ -4,7 +4,7 @@ import actions from './actions'
 import getters from './getters'
 import mutations from './mutations'
 
-const vuexModule: Module<ServersStateInterface, {}> = {
+const vuexModule: Module<ServersStateInterface, unknown> = {
   namespaced: true,
   actions,
   getters,

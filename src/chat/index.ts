@@ -43,7 +43,7 @@ export function ChatPlugin(
     })
   })
   vuexLocal.plugin(store)
-  store.dispatch('local/locale')
+  void store.dispatch('local/locale')
 }
 
 export const getStore = () => store

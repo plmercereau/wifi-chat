@@ -5,7 +5,9 @@ try {
     process.platform === 'win32' &&
     nativeTheme.shouldUseDarkColors === true
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     require('fs').unlinkSync(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('path').join(app.getPath('userData'), 'DevTools Extensions')
     )
   }
@@ -16,6 +18,7 @@ try {
  * The reason we are setting it here is that the path needs to be evaluated at runtime
  */
 if (process.env.PROD) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   global.__statics = require('path')
     .join(__dirname, 'statics')
     .replace(/\\/g, '\\\\')
@@ -43,7 +46,7 @@ function createWindow() {
     }
   })
 
-  mainWindow.loadURL(process.env.APP_URL)
+  void mainWindow.loadURL(process.env.APP_URL)
 
   mainWindow.on('closed', () => {
     mainWindow = null

@@ -30,10 +30,12 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props, { root: { $store, $tc } }) {
+  setup(props, { root }) {
     const { server, message } = toRefs(props)
     const avatar = computed(() =>
-      message.value.sent ? $store.getters['local/avatar'] : server.value.avatar
+      message.value.sent
+        ? root.$store.getters['local/avatar']
+        : server.value.avatar
     )
     const now = ref(Date.now())
     setInterval(() => (now.value = Date.now()), 3000)
@@ -41,7 +43,7 @@ export default defineComponent({
       moment(message.value.timestamp).from(now.value)
     )
     const name = computed(() =>
-      message.value.sent ? $tc('me') : server.value.name
+      message.value.sent ? root.$tc('me') : server.value.name
     )
     return { timestamp, avatar, name }
   }

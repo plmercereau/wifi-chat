@@ -6,36 +6,37 @@ import { getPeer, ExtendedPeer, disconnectAll } from '../../webrtc'
 
 import { ServersStateInterface } from './state'
 
-const actions: ActionTree<ServersStateInterface, {}> = {
+const actions: ActionTree<ServersStateInterface, unknown> = {
   on: (
     { commit, dispatch },
     { id, strData }: { id: string; strData: string }
   ) => {
     log('(dispatch) connections/on')
-    const data: Data = JSON.parse(strData)
+    const data = JSON.parse(strData) as Data
     const dataHandlers = {
       name: () => commit('update', { id, name: data.value }),
       avatar: () => commit('update', { id, avatar: data.value }),
-      message: () =>
-        dispatch(
+      message: async () =>
+        await dispatch(
           'messages/receive',
           { id, message: data.value },
           { root: true }
         ),
-      status: () => dispatch('status', { id, status: data.value }),
-      call: () => dispatch(`${data.value}`, { id }, { root: true })
+      status: async () => await dispatch('status', { id, status: data.value }),
+      call: async () =>
+        await dispatch(`${data.value as string}`, { id }, { root: true })
     }
-    dataHandlers[data.type]()
+    void dataHandlers[data.type]()
   },
   status: ({ commit }, { id, status }: { id: string; status: Status }) => {
     log('(dispatch) connections/status')
     commit('update', { id, status: status })
   },
-  disconnect: ({ dispatch, rootGetters }, id: string) => {
+  disconnect: async ({ dispatch, rootGetters }, id: string) => {
     log('(dispatch) connections/disconnect')
     if (rootGetters['call/remote'] === id)
-      dispatch('hangup', undefined, { root: true })
-    dispatch('status', { id, status: 'disconnected' })
+      await dispatch('hangup', undefined, { root: true })
+    await dispatch('status', { id, status: 'disconnected' })
   },
   remove: (
     { commit, rootGetters },
@@ -53,7 +54,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
     // TODO set status to disconnected when the ws connection fails, or when it disconnects
     log('(dispatch) connections/connect')
     await new Promise<void>((resolve, reject) => {
-      const localId = rootGetters['local/id']
+      const localId = rootGetters['local/id'] as string
       if (getPeer(id)) {
         log('(ws client): peer already exists.', getPeer(id))
         reject()
@@ -77,7 +78,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
           resolve()
         })
         peer.on('error', error => {
-          reject('(ws client) peer error. reject ' + error)
+          reject(`(ws client) peer error. reject. Message: ${error.message}`)
         })
         ws.send(JSON.stringify({ id: localId }))
       })
@@ -89,7 +90,7 @@ const actions: ActionTree<ServersStateInterface, {}> = {
       ws.addEventListener('close', () => {
         log('(ws client) close')
         if (peer) peer.destroy()
-        else dispatch('disconnect', id)
+        else void dispatch('disconnect', id)
       })
       ws.addEventListener('message', function incoming({ data }) {
         log('(ws client) message', data.length)

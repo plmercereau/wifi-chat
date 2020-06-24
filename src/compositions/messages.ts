@@ -17,9 +17,9 @@ export const useSendMessage = (
   server: Ref<ServerConnection>
 ) => {
   const message = ref('')
-  const send = () => {
+  const send = async () => {
     if (!message.value) return
-    store.dispatch('messages/send', {
+    await store.dispatch('messages/send', {
       id: server.value.id,
       message: [message.value]
     })

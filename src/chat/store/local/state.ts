@@ -15,7 +15,7 @@ export const initialState = (): LocalStateInterface => ({
   name: undefined,
   avatar: undefined,
   status: 'disconnected',
-  locale: Quasar.lang.getLocale()
+  locale: Quasar.lang.getLocale() as Locale
 })
 
 export default initialState()

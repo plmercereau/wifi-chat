@@ -10,36 +10,41 @@ export const startPoll = ({
   getters,
   rootGetters,
   dispatch
-}: ActionContext<LocalStateInterface, {}>) => {
-  const serversAttempts: Map<string, number> = new Map()
+}: ActionContext<LocalStateInterface, unknown>) => {
+  const serversAttempts: Map<string, number> = new Map<string, number>()
   poll = window.setInterval(() => {
-    const status: Status = getters['status']
-    const servers: ServerConnection[] = rootGetters['connections/disconnected']
+    const status = getters['status'] as Status
+    const servers = rootGetters[
+      'connections/disconnected'
+    ] as ServerConnection[]
     if (status === 'available' && servers.length > 0) {
       console.log('(poll) local server available. Browse disconnected servers')
       for (const server of servers) {
-        const nbAttempts = serversAttempts.get(server.id) || 0
-        if (nbAttempts < 10) {
-          console.log(`(poll) connecting to ${server.id} ${server.name}`)
+        // ? don't try servers with no name
+        if (server.name) {
+          const nbAttempts = serversAttempts.get(server.id) || 0
+          if (nbAttempts < 10) {
+            console.log(`(poll) connecting to ${server.id} ${server.name}`)
 
-          dispatch('connections/connect', server, { root: true })
-            .then(() => {
-              console.log(`(poll) connected to ${server.id}`)
-            })
-            .catch(() => {
-              console.log(`(poll) impossible to connect to ${server.id}`)
-              serversAttempts.set(server.id, nbAttempts + 1)
-            })
-        } else if (rootGetters['messages/get'](server.id)?.length > 0) {
-          // * remove the server if it never had any message
-          dispatch(
-            'connections/remove',
-            {
-              id: server.id,
-              checkHistory: true
-            },
-            { root: true }
-          )
+            dispatch('connections/connect', server, { root: true })
+              .then(() => {
+                console.log(`(poll) connected to ${server.id}`)
+              })
+              .catch(() => {
+                console.log(`(poll) impossible to connect to ${server.id}`)
+                serversAttempts.set(server.id, nbAttempts + 1)
+              })
+          } else if (rootGetters['messages/get'](server.id)?.length > 0) {
+            // * remove the server if it never had any message
+            void dispatch(
+              'connections/remove',
+              {
+                id: server.id,
+                checkHistory: true
+              },
+              { root: true }
+            )
+          }
         }
       }
     }
@@ -54,7 +59,7 @@ export const useAddServer = ({
   rootGetters,
   commit,
   dispatch
-}: ActionContext<LocalStateInterface, {}>) => async (
+}: ActionContext<LocalStateInterface, unknown>) => async (
   server?: Server
 ): Promise<void> => {
   if (server) {
@@ -73,7 +78,7 @@ export const useAddServer = ({
 
 export const useRemoveServer = ({
   commit
-}: ActionContext<LocalStateInterface, {}>) => async (
+}: ActionContext<LocalStateInterface, unknown>) => async (
   server?: Server
 ): Promise<void> => {
   log('(remove server) remove', JSON.stringify(server))

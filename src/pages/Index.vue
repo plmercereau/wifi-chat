@@ -48,9 +48,9 @@ export default defineComponent({
     const { name, avatar, status } = useLocal($store)
     const { videoCall } = useCall($store)
 
-    const onLeft = ({ reset }: { reset: Function }, id: string) => {
+    const onLeft = async ({ reset }: { reset: () => void }, id: string) => {
       reset()
-      videoCall(id)
+      await videoCall(id)
     }
 
     return {

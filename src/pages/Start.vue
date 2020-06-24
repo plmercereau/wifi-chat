@@ -28,9 +28,9 @@ export default defineComponent({
     const name = ref<string>('')
     const save = async () => {
       if (name.value) {
-        $store.dispatch('local/name', name.value)
+        await $store.dispatch('local/name', name.value)
         await $store.dispatch('local/start')
-        $router.push('/')
+        await $router.push('/')
       }
     }
     return {

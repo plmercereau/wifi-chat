@@ -18,7 +18,9 @@ export default defineComponent({
   setup(_, { root: { $router, $store } }) {
     const ringing = computed(() => $store.getters['call/ringing'])
     const receivingCall = computed(() => $store.getters['call/receivingCall'])
-    const remoteId = computed(() => $store.getters['call/remote'])
+    const remoteId = computed<string | undefined>(
+      () => $store.getters['call/remote']
+    )
     const remote = computed(
       () => remoteId.value && $store.getters['connections/get'](remoteId.value)
     )
@@ -26,14 +28,14 @@ export default defineComponent({
       await $store.dispatch('pickup', { initiator: true })
     }
     const stop = watchEffect(() => {
-      if ($store.getters['call/starting']) {
-        $router.push(`/call/${remoteId.value}`)
+      if (remoteId.value && $store.getters['call/starting']) {
+        void $router.push(`/call/${remoteId.value}`)
         stop()
       }
     })
 
-    const hangup = () => {
-      $store.dispatch('hangup', { initiator: true })
+    const hangup = async () => {
+      await $store.dispatch('hangup', { initiator: true })
     }
     return { ringing, receivingCall, remote, pickup, hangup }
   }

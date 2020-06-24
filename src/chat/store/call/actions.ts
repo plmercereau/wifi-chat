@@ -5,7 +5,7 @@ import { log } from '../../switcher'
 
 import { CallStateInterface, CallOptions } from './state'
 
-const actions: ActionTree<CallStateInterface, {}> = {
+const actions: ActionTree<CallStateInterface, unknown> = {
   ring: {
     root: true,
     handler: ({ commit, rootGetters }, { id, initiator }: CallOptions) => {
@@ -20,7 +20,7 @@ const actions: ActionTree<CallStateInterface, {}> = {
     root: true,
     handler: ({ commit, getters }, { initiator }: CallOptions = {}) => {
       log('(dispatch) call/pickup')
-      const id = getters['remote']
+      const id = getters['remote'] as string
       if (initiator && id) getPeer(id)?.pickup()
       commit('pickup')
     }
@@ -33,7 +33,7 @@ const actions: ActionTree<CallStateInterface, {}> = {
     root: true,
     handler: ({ commit, getters }, { initiator }: CallOptions = {}) => {
       log('(dispatch) call/hangup')
-      const id = getters['remote']
+      const id = getters['remote'] as string
       if (initiator && id) getPeer(id)?.hangup()
       commit('hangup')
     }

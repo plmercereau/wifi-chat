@@ -55,12 +55,12 @@ export const watch = (onUp: WatchEvent, onDown: WatchEvent) => {
   log('(mdns) watch')
   Zeroconf.watch(`_${SERVICE_TYPE}._tcp.`, 'local.').subscribe(result => {
     if (result.action === 'added') {
-      onUp(zeroconfToServer(result.service))
+      void onUp(zeroconfToServer(result.service))
     } else if (result.action === 'resolved') {
       log('(mdns) resolved service', result.service)
-      onUp(zeroconfToServer(result.service))
+      void onUp(zeroconfToServer(result.service))
     } else {
-      onDown(zeroconfToServer(result.service))
+      void onDown(zeroconfToServer(result.service))
     }
   })
 }

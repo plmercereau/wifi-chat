@@ -5,7 +5,7 @@ import { OutputMessage } from '../../types'
 
 import { MessagesStateInterface } from './state'
 
-const getters: GetterTree<MessagesStateInterface, {}> = {
+const getters: GetterTree<MessagesStateInterface, unknown> = {
   all: state => state.messages,
   get: state => (id: string) => {
     const messages = state.messages[id] || []

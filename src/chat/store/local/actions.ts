@@ -19,7 +19,7 @@ import { i18n } from 'src/boot/i18n'
 import { LocalStateInterface } from './state'
 import { useAddServer, useRemoveServer, stopPoll, startPoll } from './utils'
 
-const actions: ActionTree<LocalStateInterface, {}> = {
+const actions: ActionTree<LocalStateInterface, unknown> = {
   name: ({ commit, state }, name: string) => {
     log('(dispatch) local/name')
     if (name && name !== state.name) {
@@ -43,16 +43,16 @@ const actions: ActionTree<LocalStateInterface, {}> = {
   },
   pickup: {
     root: true,
-    handler: ({ dispatch }) => {
+    handler: async ({ dispatch }) => {
       log('(dispatch) local/pickup')
-      dispatch('status', 'busy')
+      await dispatch('status', 'busy')
     }
   },
   hangup: {
     root: true,
-    handler: ({ dispatch }) => {
+    handler: async ({ dispatch }) => {
       log('(dispatch) local/hangup')
-      dispatch('status', 'available')
+      await dispatch('status', 'available')
     }
   },
   locale: ({ commit, state }, locale?: Locale) => {

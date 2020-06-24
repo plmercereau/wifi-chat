@@ -1,4 +1,5 @@
 import WebSocket from 'ws'
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const WS = window.require('ws')
 
 import { getStore } from '../index'
@@ -30,13 +31,13 @@ export const startServer = async () => {
   } finally {
     log('(ws server) start')
     wss = new WS.Server({ port: SERVICE_PORT }) as WebSocket.Server
-    const peerIds: Map<WebSocket, string> = new Map()
+    const peerIds = new Map<WebSocket, string>()
 
     wss.on('connection', ws => {
       log('(ws server) connection')
 
       ws.on('message', data => {
-        const parsedData = JSON.parse(data.toString())
+        const parsedData = JSON.parse(data.toString()) as { id?: string }
         log('(ws server) received message. parsed data:', parsedData)
         if (parsedData.id) {
           log('(ws server) received ID', parsedData.id)

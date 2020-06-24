@@ -17,7 +17,7 @@ export const startServer = async () => {
   } finally {
     log('(ws server) start')
     return new Promise<void>((resolve, reject) => {
-      const peerIds: Map<string, string> = new Map()
+      const peerIds = new Map<string, string>()
 
       WebSocketServer.start(SERVICE_PORT, {}).subscribe({
         next: server => {
@@ -36,7 +36,7 @@ export const startServer = async () => {
 
       WebSocketServer.watchMessage().subscribe(result => {
         log(`(ws server) received message from ${result.conn.uuid}.`, result)
-        const parsedData = JSON.parse(result.msg)
+        const parsedData = JSON.parse(result.msg) as { id?: string }
         if (parsedData.id) {
           log('(ws server) received id', parsedData.id)
           if (getStore().getters['local/id'] === parsedData.id) {
@@ -46,7 +46,7 @@ export const startServer = async () => {
               id: parsedData.id,
               initiator: true,
               signal: (message: string) => {
-                WebSocketServer.send(result.conn, message)
+                void WebSocketServer.send(result.conn, message)
               }
             })
             peerIds.set(result.conn.uuid, parsedData.id)

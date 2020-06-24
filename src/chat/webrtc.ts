@@ -46,7 +46,7 @@ export class ExtendedPeer extends Peer {
     this.on('close', () => {
       log('(peer) close', this.id)
       peers.delete(this.id)
-      this.store.dispatch('connections/disconnect', this.id)
+      void this.store.dispatch('connections/disconnect', this.id)
     })
     this.on('connect', () => {
       log('(peer) connect', this.id)
@@ -54,14 +54,14 @@ export class ExtendedPeer extends Peer {
       this.sendAvatar()
       this.sendStatus('available')
     })
-    this.on('data', strData => {
+    this.on('data', (strData: string) => {
       log('(peer) data received', this.id)
-      this.store.dispatch('connections/on', { id: this.id, strData })
+      void this.store.dispatch('connections/on', { id: this.id, strData })
     })
     this.on('stream', (stream: MediaStream) => {
       console.log('(peer) add stream', this.id)
       remoteStream = stream
-      this.store.dispatch('call/ready')
+      void this.store.dispatch('call/ready')
     })
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     this.on('track', (track: MediaStreamTrack, stream: MediaStream) => {
@@ -77,13 +77,13 @@ export class ExtendedPeer extends Peer {
   sendName() {
     this.sendData({
       type: 'name',
-      value: this.store.getters['local/name']
+      value: this.store.getters['local/name'] as string
     })
   }
   sendAvatar() {
     this.sendData({
       type: 'avatar',
-      value: this.store.getters['local/avatar']
+      value: this.store.getters['local/avatar'] as string
     })
   }
   sendStatus(status: Status) {

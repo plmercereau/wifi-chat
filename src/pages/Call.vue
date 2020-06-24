@@ -91,7 +91,7 @@ export default defineComponent({
       else if (remoteStream.value) {
         removeAllTracks(remoteStream.value)
         removeAllTracks(localStream.value)
-        $router.push(`/chat/${id.value}`)
+        void $router.push(`/chat/${id.value}`)
         stop()
       }
     })
