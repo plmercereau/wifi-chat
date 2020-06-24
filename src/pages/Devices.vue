@@ -29,6 +29,7 @@
 import { defineComponent, ref, onMounted, computed } from '@vue/composition-api'
 import PAvatarImage from 'components/AvatarImage.vue'
 import PSelectLanguage from 'components/SelectLanguage.vue'
+
 // TODO animation/transition the video and audio components - loading is a bit rough
 export default defineComponent({
   name: 'PageChat',
@@ -76,12 +77,12 @@ export default defineComponent({
 
     onMounted(async () => {
       try {
-        devices.value = await navigator.mediaDevices.enumerateDevices()
-        console.log('(device)', devices.value)
         stream.value = await navigator.mediaDevices.getUserMedia({
           audio: true,
           video: true
         })
+        devices.value = await navigator.mediaDevices.enumerateDevices()
+        console.log('(devices)', devices.value)
         if (videoInputDevices.value.length === 1)
           videoInput.value = videoInputDevices.value[0].deviceId
         if (audioInputDevices.value.length === 1)
@@ -128,7 +129,8 @@ export default defineComponent({
       audioInputDevices,
       audioOutputDevices,
       videoInputDevices,
-      leave
+      leave,
+      devices
     }
   }
 })

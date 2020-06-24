@@ -21,7 +21,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/settings/device',
-    component: () => import('pages/Device.vue')
+    component: () => import('pages/Devices.vue')
   },
   {
     path: '/start',

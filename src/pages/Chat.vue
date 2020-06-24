@@ -50,7 +50,6 @@ export default defineComponent({
   },
 
   beforeRouteEnter: (to, from, next) => {
-    console.log(store.getters['connections/get'])
     if (store.getters['connections/get'](to.params['id'])) next()
     else next('/')
   },

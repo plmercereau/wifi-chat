@@ -12,7 +12,7 @@
 - [ ] scroll problem when list update (from poll)
 - [ ] play sound and vibrations when ringing
 - [ ] change front/rear camera
-- [ ] settings: select camera/microphone: show a screen with the mic and video, and dropdown lists of the possible devices. Then persist the selected device ids.
+- [ ] settings: select camera/microphone: show a screen with the mic and video, and dropdown lists of the possible devices. Then persist the selected device ids. Blocked on [this issue](https://github.com/ionic-team/capacitor/issues/3022)
 - [ ] in the upper right button: change status disconnect/connect (start/stop server), and 'busy' status
 - [ ] badges/toast when receiving new messages
 - [ ] handle calls when the app runs in background
