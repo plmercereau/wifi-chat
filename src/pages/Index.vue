@@ -9,7 +9,7 @@
           q-menu(auto-close)
             q-list
               q-item(clickable to="/settings")
-                q-item-section {{ $t('settings') }}
+                q-item-section {{ $t('settings.title') }}
     q-page-container
       q-page.q-pa-md
         q-list.col-12(v-if="servers.length > 0" bordered separator)

@@ -3,7 +3,7 @@
     q-header(elevated)
       q-toolbar
         q-btn(flat round icon="arrow_back" to='/')
-        q-toolbar-title {{ $t('settings') }}
+        q-toolbar-title {{ $t('settings.title') }}
     q-page-container
       q-page
         div.q-pa-md.justify-center.row
@@ -33,8 +33,13 @@
               q-item-section
                 q-item-label(caption) {{ $t('language') }}
               q-item-section
-                q-item-label
-                  p-select-language(dense)
+                p-select-language(dense)
+            q-separator
+            q-item
+              q-item-section
+                q-item-label(caption) {{ $t('settings.device.title') }}
+              q-item-section
+                q-btn(to="/settings/device") {{ $t('settings.device.change') }}
             q-separator
             q-item
               q-item-section
@@ -58,9 +63,9 @@ export default defineComponent({
     PAvatarImage,
     PSelectLanguage
   },
-  setup(_, { root: { $store, $tc, $router } }) {
+  setup(_, { root }) {
     // TODO create an inline input component that wraps the 'set name' logic
-    const { name, avatar } = useLocal($store)
+    const { name, avatar } = useLocal(root.$store)
     const inputName = ref('')
     const editingName = ref(false)
     const editName = () => {
@@ -68,7 +73,7 @@ export default defineComponent({
       inputName.value = name.value
     }
     const changeName = async () => {
-      await $store.dispatch('local/name', inputName.value)
+      await root.$store.dispatch('local/name', inputName.value)
       editingName.value = false
     }
 
@@ -83,7 +88,7 @@ export default defineComponent({
           resultType: CameraResultType.DataUrl,
           height: 128
         })
-        await $store.dispatch('local/avatar', dataUrl)
+        await root.$store.dispatch('local/avatar', dataUrl)
       } catch (error) {
         console.log('(avatar)', error)
       }
@@ -91,14 +96,14 @@ export default defineComponent({
 
     const reset = () => {
       Dialog.create({
-        title: $tc('reset_confirm_title'),
-        message: $tc('reset_confirm_message'),
+        title: root.$tc('reset_confirm_title'),
+        message: root.$tc('reset_confirm_message'),
         cancel: true,
         persistent: true,
         focus: 'cancel'
       }).onOk(async () => {
-        await $store.dispatch('reset', undefined, { root: true })
-        await $router.push('/start')
+        await root.$store.dispatch('reset', undefined, { root: true })
+        await root.$router.push('/start')
       })
     }
     return {

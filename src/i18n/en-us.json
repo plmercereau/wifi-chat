@@ -1,7 +1,13 @@
 {
   "title": "Wifi Video Chat",
   "start": "Start",
-  "settings": "Settings",
+  "settings": {
+    "device": {
+      "change": "Change",
+      "title": "Audio & video settings"
+    },
+    "title": "Settings"
+  },
   "name": "Name",
   "required": "Required",
   "hangup": "Hangup",

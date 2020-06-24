@@ -21,15 +21,14 @@ export default defineComponent({
     const transitionName = ref('fadeInLeft')
     watch(
       // TODO create a navigation vuex module
+      // TODO not sure it triggers at the right time
       () => context.root.$route,
       (to, from) => {
         if (from) {
-          const toDepth = to.path.split('/').length
-          const fromDepth = from.path.split('/').length
+          const toDepth = to.path === '/' ? 1 : to.path.split('/').length
+          const fromDepth = from.path === '/' ? 1 : from.path.split('/').length
           transitionName.value =
-            to.path === '/' || toDepth < fromDepth
-              ? 'fadeInLeft'
-              : 'fadeInRight'
+            toDepth < fromDepth ? 'fadeInLeft' : 'fadeInRight'
         }
       }
     )
