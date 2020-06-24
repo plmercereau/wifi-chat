@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 import { ActionTree } from 'vuex'
 import moment from 'moment'
 
