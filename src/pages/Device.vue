@@ -2,7 +2,7 @@
   q-layout(view="lHh Lpr lFf")
     q-header(elevated)
       q-toolbar
-        q-btn(flat round icon="arrow_back" to='/settings')
+        q-btn(flat round icon="arrow_back" @click="leave")
         q-toolbar-title {{ $t('settings.device.title') }}
     q-page-container
       q-page
@@ -36,7 +36,7 @@ export default defineComponent({
     PAvatarImage,
     PSelectLanguage
   },
-  setup(_, { root: { $store } }) {
+  setup(_, { root: { $store, $router } }) {
     const audiometer = ref(0.0)
     const hasDevices = ref(!!navigator.mediaDevices)
     const stream = ref<MediaStream>()
@@ -99,6 +99,10 @@ export default defineComponent({
       }
     })
 
+    const leave = () => {
+      $router.go(-1)
+    }
+
     // TODO close video when leaving the page - except when ongoing call
     return {
       hasDevices,
@@ -109,7 +113,8 @@ export default defineComponent({
       videoInput,
       audioInputDevices,
       audioOutputDevices,
-      videoInputDevices
+      videoInputDevices,
+      leave
     }
   }
 })

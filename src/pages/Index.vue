@@ -6,10 +6,12 @@
         p-avatar(:src="avatar" :status="status" :name="name")
         q-toolbar-title {{name}}
         q-btn(round unelevated icon="more_vert")
-          q-menu(auto-close)
-            q-list
+          q-menu(auto-close fit)
+            q-list(style="min-width: 120px")
               q-item(clickable to="/settings")
                 q-item-section {{ $t('settings.title') }}
+              q-item(clickable to="/settings/device")
+                q-item-section {{ $t('settings.device.title_short') }}
     q-page-container
       q-page.q-pa-md
         q-list.col-12(v-if="servers.length > 0" bordered separator)

@@ -4,7 +4,8 @@
   "settings": {
     "device": {
       "change": "Modifier",
-      "title": "Configuration audio & video"
+      "title": "Audio & video",
+      "title_short": "Audio & video"
     },
     "title": "Configuration"
   },
