@@ -26,9 +26,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from '@vue/composition-api'
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  computed,
+  onUnmounted
+} from '@vue/composition-api'
 import PAvatarImage from 'components/AvatarImage.vue'
 import PSelectLanguage from 'components/SelectLanguage.vue'
+import { removeAllTracks } from 'src/chat/webrtc'
 
 // TODO animation/transition the video and audio components - loading is a bit rough
 export default defineComponent({
@@ -87,6 +94,7 @@ export default defineComponent({
           videoInput.value = videoInputDevices.value[0].deviceId
         if (audioInputDevices.value.length === 1)
           audioInput.value = audioInputDevices.value[0].deviceId
+        console.log(videoInputDevices.value[0].label)
         // TODO separate into a distinct component
         const audioContext = new window.AudioContext()
         const source = audioContext.createMediaStreamSource(stream.value)
@@ -112,6 +120,10 @@ export default defineComponent({
         console.log(err)
         hasDevices.value = false
       }
+    })
+
+    onUnmounted(() => {
+      removeAllTracks(stream.value)
     })
 
     const leave = () => {
