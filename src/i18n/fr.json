@@ -32,5 +32,10 @@
   "reset_button": "Réinitialiser",
   "reset_confirm_message": "Êtes-vous sûr de vouloir réinitialiser l'application? Toutes les données seront supprimées.",
   "reset_confirm_title": "Confirmation",
-  "me": "moi"
+  "me": "moi",
+  "device": {
+    "audio_input": "Micro",
+    "audio_output": "Hauts-parleurs",
+    "video_input": "Caméra"
+  }
 }

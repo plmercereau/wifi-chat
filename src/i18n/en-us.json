@@ -32,5 +32,10 @@
   "reset_button": "Reset",
   "reset_confirm_message": "Do you really want to reset the application? This will remove the entire data.",
   "reset_confirm_title": "Confirm reset",
-  "me": "me"
+  "me": "me",
+  "device": {
+    "audio_input": "Microphone",
+    "audio_output": "Speaker",
+    "video_input": "Camera"
+  }
 }
