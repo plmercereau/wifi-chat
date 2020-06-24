@@ -62,7 +62,7 @@ export default defineComponent({
     const { message, send } = useSendMessage($store, server)
     const { calling, hangup, videoCall, audioCall } = useCall($store)
 
-    const chatRef = ref<Element>([])
+    const chatRef = ref<Element>()
     useScrollDown(chatRef, messages)
 
     return {

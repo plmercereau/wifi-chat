@@ -15,7 +15,7 @@
     "@ionic-native/core": "^5.26.0",
     "@ionic/pwa-elements": "^1.5.2",
     "@quasar/extras": "^1.0.0",
-    "@vue/composition-api": "^0.5.0",
+    "@vue/composition-api": "^0.6.6",
     "bonjour": "^3.5.0",
     "core-js": "^3.0.0",
     "moment": "^2.26.0",

@@ -3,13 +3,15 @@ import { scroll } from 'quasar'
 const { getScrollHeight, getScrollTarget, setScrollPosition } = scroll
 
 export const useScrollDown = <T>(
-  element: Ref<Element>,
+  element: Ref<Element | undefined>,
   watchedRef: Ref<T>
 ): void => {
   const scrollDown = (duration = 500) => {
-    const target = getScrollTarget(element.value)
-    const offset = getScrollHeight(element.value)
-    setScrollPosition(target, offset, duration)
+    if (element.value) {
+      const target = getScrollTarget(element.value)
+      const offset = getScrollHeight(element.value)
+      setScrollPosition(target, offset, duration)
+    }
   }
 
   onMounted(() => {
