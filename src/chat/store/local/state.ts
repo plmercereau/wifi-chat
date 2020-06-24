@@ -1,6 +1,7 @@
-import { uid, Quasar } from 'quasar'
+import { uid } from 'quasar'
 
 import { Status, Locale } from '../../types'
+import { getInitialLocale } from 'src/i18n'
 
 export interface LocalStateInterface {
   id: string
@@ -15,7 +16,7 @@ export const initialState = (): LocalStateInterface => ({
   name: undefined,
   avatar: undefined,
   status: 'disconnected',
-  locale: Quasar.lang.getLocale() as Locale
+  locale: getInitialLocale() as Locale
 })
 
 export default initialState()
