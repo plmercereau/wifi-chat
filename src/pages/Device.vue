@@ -42,16 +42,30 @@ export default defineComponent({
     const stream = ref<MediaStream>()
     const devices = ref<MediaDeviceInfo[]>([])
 
-    // TODO computed get/set linked to vuex store
-    const audioInput = ref('default')
-    const audioInputDevices = computed(() =>
-      devices.value.filter(device => device.kind === 'audioinput')
-    )
-
-    // TODO computed get/set linked to vuex store
-    const videoInput = ref('default')
+    // TODO store in vuex
+    const _videoInput = ref('default')
+    const videoInput = computed({
+      get: () => _videoInput.value,
+      set: async (deviceId: string) => {
+        await stream.value?.getVideoTracks()[0].applyConstraints({ deviceId })
+        _videoInput.value = deviceId
+      }
+    })
     const videoInputDevices = computed(() =>
       devices.value.filter(device => device.kind === 'videoinput')
+    )
+
+    // TODO store in vuex
+    const _audioInput = ref('default')
+    const audioInput = computed({
+      get: () => _audioInput.value,
+      set: async (deviceId: string) => {
+        await stream.value?.getAudioTracks()[0].applyConstraints({ deviceId })
+        _audioInput.value = deviceId
+      }
+    })
+    const audioInputDevices = computed(() =>
+      devices.value.filter(device => device.kind === 'audioinput')
     )
 
     // TODO handle audio output - not in getUserMedia - and will need to play a sound
@@ -68,10 +82,10 @@ export default defineComponent({
           audio: true,
           video: true
         })
-        if (audioInputDevices.value.length === 1)
-          audioInput.value = audioInputDevices.value[0].deviceId
         if (videoInputDevices.value.length === 1)
           videoInput.value = videoInputDevices.value[0].deviceId
+        if (audioInputDevices.value.length === 1)
+          audioInput.value = audioInputDevices.value[0].deviceId
         // TODO separate into a distinct component
         const audioContext = new window.AudioContext()
         const source = audioContext.createMediaStreamSource(stream.value)
