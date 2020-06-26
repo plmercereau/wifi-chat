@@ -3,5 +3,14 @@
   "appName": "Wifi Chat",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
-  "webDir": "www"
+  "webDir": "www",
+  "server": {
+    "url": "https://pilou-a7f20b70.localhost.run",
+    "hostname": "pilou-a7f20b70.localhost.run",
+    "allowNavigation": [
+      "pilou-a7f20b70.localhost.run",
+      "localhost",
+      "10.136.1.99"
+    ]
+  }
 }

@@ -15,7 +15,7 @@
               option-value="deviceId" emit-value map-options borderless) 
             q-linear-progress.q-mt-md(:value="audiometer" instant-feedback)
             q-select(v-model="audioInput"
-              :options="audioOutputDevices"
+              :options="audioInputDevices"
               :label="$t('device.audio_input')"
               option-value="deviceId" emit-value map-options borderless) 
             q-select(v-model="audioOutput"
@@ -36,6 +36,7 @@ import {
 import PAvatarImage from 'components/AvatarImage.vue'
 import PSelectLanguage from 'components/SelectLanguage.vue'
 import { removeAllTracks } from 'src/chat/webrtc'
+import { enumerateDevices } from 'src/chat/switcher'
 
 // TODO animation/transition the video and audio components - loading is a bit rough
 export default defineComponent({
@@ -88,13 +89,23 @@ export default defineComponent({
           audio: true,
           video: true
         })
-        devices.value = await navigator.mediaDevices.enumerateDevices()
-        console.log('(devices)', devices.value)
-        if (videoInputDevices.value.length === 1)
-          videoInput.value = videoInputDevices.value[0].deviceId
-        if (audioInputDevices.value.length === 1)
-          audioInput.value = audioInputDevices.value[0].deviceId
-        console.log(videoInputDevices.value[0].label)
+        devices.value = await enumerateDevices()
+        if (videoInputDevices.value.length) {
+          let index = videoInputDevices.value.findIndex(
+            device => device.deviceId === 'default'
+          )
+          index = index === -1 ? 0 : index
+          videoInput.value = videoInputDevices.value[index].deviceId
+        }
+
+        if (audioInputDevices.value.length) {
+          let index = audioInputDevices.value.findIndex(
+            device => device.deviceId === 'default'
+          )
+          index = index === -1 ? 0 : index
+          audioInput.value = audioInputDevices.value[index].deviceId
+        }
+
         // TODO separate into a distinct component
         const audioContext = new window.AudioContext()
         const source = audioContext.createMediaStreamSource(stream.value)
@@ -141,8 +152,7 @@ export default defineComponent({
       audioInputDevices,
       audioOutputDevices,
       videoInputDevices,
-      leave,
-      devices
+      leave
     }
   }
 })

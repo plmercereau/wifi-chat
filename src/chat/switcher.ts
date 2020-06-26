@@ -18,7 +18,8 @@ const {
   startServer,
   stopServer,
   publish,
-  unpublish
+  unpublish,
+  enumerateDevices
 } = _module
 
 export {
@@ -29,5 +30,6 @@ export {
   startServer,
   stopServer,
   publish,
-  unpublish
+  unpublish,
+  enumerateDevices
 }

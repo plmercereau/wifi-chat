@@ -68,6 +68,7 @@ export interface Module {
   unwatch: () => Promise<void>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   log: (...message: any) => void
+  enumerateDevices: () => Promise<MediaDeviceInfo[]>
 }
 
 export interface TxtTypes {
