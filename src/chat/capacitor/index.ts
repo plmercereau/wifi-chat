@@ -4,6 +4,7 @@ import { log } from './utils'
 import { startServer, stopServer } from './server'
 import { publish, unpublish, watch, unwatch } from './mdns'
 import { Plugins } from '@capacitor/core'
+import 'app/src-capacitor/node_modules/capacitor-enumerate-media-devices'
 const { EnumeratePlugin } = Plugins
 
 const enumerateDevices: () => Promise<MediaDeviceInfo[]> = async () => {
