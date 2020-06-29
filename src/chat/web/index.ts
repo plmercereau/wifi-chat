@@ -21,8 +21,8 @@ const webModule: Module = {
     throw Error('not implemented')
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  log: console.log,
-  enumerateDevices: () => navigator.mediaDevices.enumerateDevices()
+  log: console.log
+  // enumerateDevices: () => navigator.mediaDevices.enumerateDevices()
 }
 
 export default webModule

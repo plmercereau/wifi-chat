@@ -9,20 +9,20 @@
         div.q-pa-md.row
           div.text-center(v-if="hasDevices")
             video(:srcObject.prop="stream" autoplay playsinline muted)
-            q-select(v-model="videoInput"
-              :options="videoInputDevices"
+            q-select(v-model="cameraId"
+              :options="cameras"
               :label="$t('device.video_input')"
               option-value="deviceId" emit-value map-options borderless) 
             q-linear-progress.q-mt-md(:value="audiometer" instant-feedback)
-            q-select(v-model="audioInput"
-              :options="audioInputDevices"
+            q-select(v-model="microId"
+              :options="microphones"
               :label="$t('device.audio_input')"
               option-value="deviceId" emit-value map-options borderless) 
-            q-select(v-model="audioOutput"
-              :options="audioOutputDevices"
-              :label="$t('device.audio_output')"
-              option-value="deviceId" emit-value map-options borderless) 
-          div(v-else) Cannot access to your audio and video devices. The application won't likely work correctly.
+            //- q-select(v-model="audioOutput"
+            //-   :options="audioOutputDevices"
+            //-   :label="$t('device.audio_output')"
+            //-   option-value="deviceId" emit-value map-options borderless) 
+          div(v-else) {{ $t('device.error') }}
 </template>
 
 <script lang="ts">
@@ -33,10 +33,11 @@ import {
   computed,
   onUnmounted
 } from '@vue/composition-api'
+import { Loading } from 'quasar'
 import PAvatarImage from 'components/AvatarImage.vue'
 import PSelectLanguage from 'components/SelectLanguage.vue'
 import { removeAllTracks } from 'src/chat/webrtc'
-import { enumerateDevices } from 'src/chat/switcher'
+import { getDevicesInfo } from 'src/chat/devices'
 
 // TODO animation/transition the video and audio components - loading is a bit rough
 export default defineComponent({
@@ -51,59 +52,75 @@ export default defineComponent({
     const stream = ref<MediaStream>()
     const devices = ref<MediaDeviceInfo[]>([])
 
+    const constraints = computed<MediaStreamConstraints>(
+      () => $store.getters['local/constraints']
+    )
+
     // TODO store in vuex
-    const _videoInput = ref('default')
-    const videoInput = computed({
-      get: () => _videoInput.value,
+    const _cameraId = ref()
+    const cameraId = computed({
+      get: () => _cameraId.value,
       set: async (deviceId: string) => {
-        await stream.value?.getVideoTracks()[0].applyConstraints({ deviceId })
-        _videoInput.value = deviceId
+        $store.commit('local/updateConstraints', { video: { deviceId } })
+        stream.value = await navigator.mediaDevices.getUserMedia(
+          constraints.value
+        )
+        _cameraId.value = deviceId
       }
     })
-    const videoInputDevices = computed(() =>
+    const cameras = computed(() =>
       devices.value.filter(device => device.kind === 'videoinput')
     )
 
     // TODO store in vuex
-    const _audioInput = ref('default')
-    const audioInput = computed({
-      get: () => _audioInput.value,
+    const _microId = ref()
+    const microId = computed({
+      get: () => _microId.value,
       set: async (deviceId: string) => {
-        await stream.value?.getAudioTracks()[0].applyConstraints({ deviceId })
-        _audioInput.value = deviceId
+        $store.commit('local/updateConstraints', { audio: { deviceId } })
+        stream.value = await navigator.mediaDevices.getUserMedia(
+          constraints.value
+        )
+        // await stream.value?.getAudioTracks()[0].applyConstraints({ deviceId })
+        _microId.value = deviceId
       }
     })
-    const audioInputDevices = computed(() =>
+    const microphones = computed(() =>
       devices.value.filter(device => device.kind === 'audioinput')
     )
 
     // TODO handle audio output - not in getUserMedia - and will need to play a sound
-    const audioOutput = ref('default')
-    const audioOutputDevices = computed(() =>
-      devices.value.filter(device => device.kind === 'audiooutput')
-    )
+    // const audioOutput = ref('default')
+    // const audioOutputDevices = computed(() =>
+    //   devices.value.filter(device => device.kind === 'audiooutput')
+    // )
 
     onMounted(async () => {
       try {
-        stream.value = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: true
-        })
-        devices.value = await enumerateDevices()
-        if (videoInputDevices.value.length) {
-          let index = videoInputDevices.value.findIndex(
+        Loading.show()
+        devices.value = await getDevicesInfo()
+        stream.value = await navigator.mediaDevices.getUserMedia(
+          constraints.value
+        )
+
+        if ($store.getters['local/cameraId'])
+          _cameraId.value = $store.getters['local/cameraId'] as string
+        else if (cameras.value.length) {
+          let index = cameras.value.findIndex(
             device => device.deviceId === 'default'
           )
           index = index === -1 ? 0 : index
-          videoInput.value = videoInputDevices.value[index].deviceId
+          _cameraId.value = cameras.value[index].deviceId
         }
 
-        if (audioInputDevices.value.length) {
-          let index = audioInputDevices.value.findIndex(
+        if ($store.getters['local/microphoneId'])
+          _microId.value = $store.getters['local/microphoneId'] as string
+        else if (microphones.value.length) {
+          let index = microphones.value.findIndex(
             device => device.deviceId === 'default'
           )
           index = index === -1 ? 0 : index
-          audioInput.value = audioInputDevices.value[index].deviceId
+          _microId.value = microphones.value[index].deviceId
         }
 
         // TODO separate into a distinct component
@@ -130,10 +147,13 @@ export default defineComponent({
       } catch (err) {
         console.log(err)
         hasDevices.value = false
+      } finally {
+        Loading.hide()
       }
     })
 
     onUnmounted(() => {
+      console.log('unmounted')
       removeAllTracks(stream.value)
     })
 
@@ -146,12 +166,12 @@ export default defineComponent({
       hasDevices,
       stream,
       audiometer,
-      audioInput,
-      audioOutput,
-      videoInput,
-      audioInputDevices,
-      audioOutputDevices,
-      videoInputDevices,
+      microId,
+      // audioOutput,
+      cameraId,
+      microphones,
+      // audioOutputDevices,
+      cameras,
       leave
     }
   }

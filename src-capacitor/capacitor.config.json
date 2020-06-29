@@ -3,5 +3,6 @@
   "appName": "Wifi Chat",
   "bundledWebRuntime": false,
   "npmClient": "yarn",
-  "webDir": "www"
+  "webDir": "www",
+  "server": {}
 }

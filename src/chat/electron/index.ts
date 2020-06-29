@@ -14,8 +14,8 @@ const electronModule: Module = {
   unpublish,
   watch,
   unwatch,
-  log,
-  enumerateDevices: () => navigator.mediaDevices.enumerateDevices()
+  log
+  // enumerateDevices: () => navigator.mediaDevices.enumerateDevices()
 }
 
 export default electronModule

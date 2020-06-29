@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.Plugin;
-import plus.platy.enumeratemediadevices.EnumeratePlugin;
+// import plus.platy.enumeratemediadevices.EnumeratePlugin;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class MainActivity extends BridgeActivity {
         // Additional plugins you've installed go here
         // Ex: add(TotallyAwesomePlugin.class);
         // TODO try to put this in the plugin, not in the project
-        add(EnumeratePlugin.class);
+        // add(EnumeratePlugin.class);
       }
     });
 

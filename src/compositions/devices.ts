@@ -7,15 +7,9 @@ import { log } from 'src/chat/switcher'
 
 export const useLocalDevices = (store: Store<GlobalState>, id: Ref<string>) => {
   const stream = ref<MediaStream | undefined>()
-  // TODO onMounted and async/await
   if (navigator.mediaDevices)
     navigator.mediaDevices
-      .getUserMedia({
-        video: {
-          facingMode: 'user' // TODO or environment
-        },
-        audio: true
-      })
+      .getUserMedia(store.getters['local/constraints'])
       .then(local => {
         stream.value = local
         getPeer(id.value)?.addStream(local)

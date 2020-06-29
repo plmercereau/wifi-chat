@@ -37,6 +37,7 @@
   "device": {
     "audio_input": "Microphone",
     "audio_output": "Speaker",
-    "video_input": "Camera"
+    "video_input": "Camera",
+    "error": "Cannot access to your audio and video devices. The application won't likely work correctly."
   }
 }

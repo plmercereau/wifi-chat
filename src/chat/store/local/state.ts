@@ -9,6 +9,7 @@ export interface LocalStateInterface {
   avatar?: string
   status: Status
   locale: Locale
+  constraints: MediaStreamConstraints
 }
 
 export const initialState = (): LocalStateInterface => ({
@@ -16,7 +17,13 @@ export const initialState = (): LocalStateInterface => ({
   name: undefined,
   avatar: undefined,
   status: 'disconnected',
-  locale: getInitialLocale() as Locale
+  locale: getInitialLocale() as Locale,
+  constraints: {
+    video: {
+      facingMode: 'user' // TODO or environment
+    },
+    audio: true
+  }
 })
 
 export default initialState()

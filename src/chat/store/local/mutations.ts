@@ -41,6 +41,9 @@ const mutation: MutationTree<LocalStateInterface> = {
   locale: (state, locale: Locale) => {
     log('(commit) local/locale')
     state.locale = locale
+  },
+  updateConstraints: (state, constraints: MediaStreamConstraints) => {
+    state.constraints = { ...state.constraints, ...constraints }
   }
 }
 

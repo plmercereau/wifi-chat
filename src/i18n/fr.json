@@ -37,6 +37,7 @@
   "device": {
     "audio_input": "Micro",
     "audio_output": "Hauts-parleurs",
-    "video_input": "Caméra"
+    "video_input": "Caméra",
+    "error": "Impossible d'accéder à vos équipements. L'application risque fortement de ne pas fonctionner correctement"
   }
 }
