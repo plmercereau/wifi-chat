@@ -24,7 +24,7 @@
     "vue-i18n": "^8.0.0",
     "vuex-persist": "^2.2.0",
     "webrtc-adapter": "^7.6.2",
-    "ws": "^7.3.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
