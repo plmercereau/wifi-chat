@@ -18,7 +18,7 @@
     "@vue/composition-api": "^0.6.6",
     "bonjour": "^3.5.0",
     "core-js": "^3.0.0",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "quasar": "^1.9.5",
     "simple-peer": "^9.7.2",
     "vue-i18n": "^8.0.0",
